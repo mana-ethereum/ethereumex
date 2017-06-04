@@ -5,6 +5,12 @@ defmodule Ethereumex.Mixfile do
     [app: :ethereumex,
      version: "0.1.0",
      elixir: "~> 1.4",
+     description: "Elixir JSON-RPC client for the Ethereum blockchain",
+     package: [
+       maintainers: ["Ayrat Badykov"],
+       licenses: ["MIT"],
+       links: %{"GitHub" => "https://github.com/ayrat555/ethereumex"}
+     ],
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps(),
@@ -20,7 +26,8 @@ defmodule Ethereumex.Mixfile do
     [{:httpoison, "~> 0.11.1"},
      {:poison, "~> 3.1.0"},
      {:exvcr, "~> 0.8", only: :test},
-     {:credo, "~> 0.8", only: [:dev, :test], runtime: false}]
+     {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
+     {:ex_doc, "~> 0.14", only: :dev, runtime: false}]
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]

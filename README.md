@@ -96,7 +96,7 @@ Currently only official [DApp APIs](https://github.com/ethereum/wiki/wiki/JSON-R
 * shh_hasIdentity
 * shh_newGroup
 * shh_addToGroup
-* shh_newFilter`
+* shh_newFilter
 * shh_uninstallFilter
 * shh_getFilterChanges
 * shh_getMessages
