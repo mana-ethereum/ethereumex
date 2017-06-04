@@ -1,4 +1,4 @@
-defmodule Ethereumex.Client.HttpClient do
+defmodule Ethereumex.HttpClient do
   use Ethereumex.Client
   import Ethereumex.Config
 
