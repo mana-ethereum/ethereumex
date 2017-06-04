@@ -1,18 +1,14 @@
 defmodule Ethereumex do
-  @moduledoc """
-  Documentation for Ethereumex.
-  """
+  use Application
 
-  @doc """
-  Hello world.
+  def start(_type, _args) do
+    import Supervisor.Spec, warn: false
 
-  ## Examples
+    children = [
+      worker(Ethereumex.HttpClient, []),
+    ]
 
-      iex> Ethereumex.hello
-      :world
-
-  """
-  def hello do
-    :world
+    opts = [strategy: :one_for_one, name: Ethereumex.Supervisor]
+    Supervisor.start_link(children, opts)
   end
 end

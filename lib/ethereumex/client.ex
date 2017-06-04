@@ -33,7 +33,7 @@ defmodule Ethereumex.Client do
 
       methods
       |> Enum.each(fn({original_name, formatted_name}) ->
-        def unquote(formatted_name)(params) when is_list(params) do
+        def unquote(formatted_name)(params \\ []) when is_list(params) do
           params = params |> add_method_info(unquote(original_name))
 
           GenServer.call __MODULE__, {:request, params}

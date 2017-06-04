@@ -12,7 +12,7 @@ defmodule Ethereumex.HttpClientTest do
 
   test "sends successfull request" do
     use_cassette "http_client_request" do
-      result = HttpClient.web3_client_version([])
+      result = HttpClient.web3_client_version
 
       {
         :ok,
@@ -27,7 +27,7 @@ defmodule Ethereumex.HttpClientTest do
 
   test "sends failed request" do
     use_cassette "http_client_failed_request" do
-      result = HttpClient.eth_coinbase([])
+      result = HttpClient.eth_coinbase
 
       {
         :error,
