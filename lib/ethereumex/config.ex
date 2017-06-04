@@ -17,6 +17,10 @@ defmodule Ethereumex.Config do
   end
 
   defp env_var!(var) do
-    Application.fetch_env!(:ethereumex, var)
+    value = Application.fetch_env!(:ethereumex, var)
+
+    if is_nil(value), do: raise ArgumentError, message: "#{var} is not provided!"
+
+    value
   end
 end
