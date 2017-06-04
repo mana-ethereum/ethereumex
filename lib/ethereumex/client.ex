@@ -38,16 +38,6 @@ defmodule Ethereumex.Client do
 
           GenServer.call __MODULE__, {:request, params}
         end
-
-        def unquote(formatted_name)(params_list) when is_tuple(params_list) do
-          params_list  =
-            params_list
-            |> Enum.map(fn(params) ->
-              params |> add_method_info(unquote(original_name))
-            end)
-
-          GenServer.call __MODULE__, {:batch_request, params_list}
-        end
       end)
 
       def request(_) do
