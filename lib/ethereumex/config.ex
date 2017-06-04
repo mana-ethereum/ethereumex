@@ -1,4 +1,6 @@
 defmodule Ethereumex.Config do
+  @moduledoc false
+
   def rpc_url do
     "#{scheme()}://#{host()}:#{port()}"
   end

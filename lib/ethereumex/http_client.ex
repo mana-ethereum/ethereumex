@@ -1,6 +1,7 @@
 defmodule Ethereumex.HttpClient do
   use Ethereumex.Client
   import Ethereumex.Config
+  @moduledoc false
 
   def request(payload) do
     payload

@@ -1,6 +1,7 @@
 defmodule Ethereumex.Client do
   @callback request(payload :: map) :: tuple
   @callback batch_request(payload :: list) :: tuple
+  @moduledoc false
 
   alias Ethereumex.Client.Utils
 

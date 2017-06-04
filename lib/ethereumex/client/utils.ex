@@ -1,4 +1,6 @@
 defmodule Ethereumex.Client.Utils do
+  @moduledoc false
+
   def available_methods do
     read_methods() |> Enum.map(&format_name/1)
   end
