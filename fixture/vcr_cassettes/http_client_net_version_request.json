@@ -1,0 +1,22 @@
+[
+  {
+    "request": {
+      "body": "{\"params\":[],\"method\":\"net_version\",\"jsonrpc\":\"2.0\",\"id\":2}",
+      "headers": [],
+      "method": "post",
+      "options": [],
+      "request_body": "",
+      "url": "http://localhost:8545"
+    },
+    "response": {
+      "body": "{\"jsonrpc\":\"2.0\",\"id\":2,\"result\":\"1\"}\n",
+      "headers": {
+        "Content-Type": "application/json",
+        "Date": "Sun, 04 Jun 2017 18:46:55 GMT",
+        "Content-Length": "38"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]
