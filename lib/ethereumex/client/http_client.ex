@@ -1,12 +1,8 @@
 defmodule Ethereumex.Client.HttpClient do
-  @behaviour Ethereumex.Client
+  use Ethereumex.Client
   import Ethereumex.Config
 
   def request(payload) do
-    _request(payload)
-  end
-
-  defp _request(payload) do
     payload
     |> encode_payload
     |> post_request
@@ -30,9 +26,10 @@ defmodule Ethereumex.Client.HttpClient do
   defp decode_body(body, code) do
     decoded_body = body |> Poison.decode!
 
-    case code do
-      200 -> {:ok, decoded_body}
-      _   -> {:error, decoded_body}
+    case {code, decoded_body} do
+      {200, %{"error" => error}} -> {:error, error}
+      {200, _}                   -> {:ok, decoded_body}
+      _                          -> {:error, decoded_body}
     end
   end
 end
