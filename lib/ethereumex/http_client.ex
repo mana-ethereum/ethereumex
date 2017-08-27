@@ -3,6 +3,7 @@ defmodule Ethereumex.HttpClient do
   import Ethereumex.Config
   @moduledoc false
 
+  @spec post_request(map()) :: {:ok | :error, any()}
   def request(payload) do
     payload
     |> encode_payload
@@ -13,6 +14,7 @@ defmodule Ethereumex.HttpClient do
     payload |> Poison.encode!
   end
 
+  @spec post_request(binary()) :: {:ok | :error, any()}
   defp post_request(payload) do
     response = rpc_url() |> HTTPoison.post(payload)
 
@@ -24,6 +26,7 @@ defmodule Ethereumex.HttpClient do
     end
   end
 
+  @spec decode_body(binary(), integer()) :: {:ok | :error, any()}
   defp decode_body(body, code) do
     decoded_body = body |> Poison.decode!
 

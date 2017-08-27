@@ -1,22 +1,27 @@
 defmodule Ethereumex.Config do
   @moduledoc false
 
+  @spec rpc_url() :: binary()
   def rpc_url do
     "#{scheme()}://#{host()}:#{port()}"
   end
 
-  def scheme do
+  @spec scheme() :: binary()
+  defp scheme do
     env_var!(:scheme)
   end
 
-  def host do
+  @spec host() :: binary()
+  defp host do
     env_var!(:host)
   end
 
-  def port do
+  @spec port() :: integer()
+  defp port do
     env_var!(:port)
   end
 
+  @spec env_var!(atom()) :: binary() | integer()
   defp env_var!(var) do
     value = Application.fetch_env!(:ethereumex, var)
 

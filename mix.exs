@@ -27,7 +27,8 @@ defmodule Ethereumex.Mixfile do
      {:poison, "~> 3.1.0"},
      {:exvcr, "~> 0.8", only: :test},
      {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
-     {:ex_doc, "~> 0.14", only: :dev, runtime: false}]
+     {:ex_doc, "~> 0.14", only: :dev, runtime: false},
+     {:dialyxir, "~> 0.5", only: [:dev], runtime: false}]
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]

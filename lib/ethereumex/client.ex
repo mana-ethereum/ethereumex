@@ -1,6 +1,5 @@
 defmodule Ethereumex.Client do
   @callback request(payload :: map) :: tuple
-  @callback batch_request(payload :: list) :: tuple
   @moduledoc false
 
   alias Ethereumex.Client.Utils
@@ -44,9 +43,7 @@ defmodule Ethereumex.Client do
       def request(_) do
       end
 
-      def batch_request(_) do
-      end
-
+      @spec add_method_info([binary] | [map], binary()) :: map()
       defp add_method_info(params, method_name) do
         %{}
         |> Map.put("method", method_name)
@@ -54,7 +51,7 @@ defmodule Ethereumex.Client do
         |> Map.put("params", params)
       end
 
-      defoverridable [request: 1, batch_request: 1]
+      defoverridable [request: 1]
     end
   end
 end
