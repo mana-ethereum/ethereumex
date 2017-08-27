@@ -38,4 +38,24 @@ defmodule Ethereumex.HttpClientTest do
       } = result
     end
   end
+
+  test "sends request with map as params" do
+    use_cassette "http_client_request_with_map_params" do
+      params = [%{"data" => "0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675",
+                  "from" => "0xc2b7b953C339c6ec4Bb88fAB5a4d19A033e6c4b1", "gas" => "0x76c0",
+                  "gasPrice" => "0x9184e72a000",
+                  "to" => "0xc2b7b953C339c6ec4Bb88fAB5a4d19A033e6c4b1",
+                  "value" => "0x9184e72a"}]
+
+      result = HttpClient.eth_send_transaction(params)
+
+      {
+        :error,
+        %{
+          "code" => -32000,
+          "message" => "unknown account"
+        }
+      } = result
+    end
+  end
 end
