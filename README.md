@@ -33,9 +33,6 @@ config :ethereumex,
 
 ## Usage
 
-### Note
-Currently only official [DApp APIs](https://github.com/ethereum/wiki/wiki/JSON-RPC) are implemented. More features (new api methods, smart contract creation) will be added soon.
-
 ### Available methods:
 
 * web3_clientVersion
@@ -118,6 +115,19 @@ iex> Ethereumex.HttpClient.eth_get_balance(["0x407d73d8a49eeb85d32cf465507dd71d5
 {:ok, %{"id" => 2, "jsonrpc" => "2.0", "result" => "0x0"}}
 ```
 Note that all method names are snakecases, so, for example, shh_getMessages method has corresponding Ethereumex.HttpClient.shh_get_messages/1 method
+
+### Custom requests
+Many Ethereum protocol implementations support additional JSON-RPC API methods. To use them, you should call Ethereumex.HttpClient.send_request/2 method.
+
+For example, let's call geth's rpc_modules method.
+
+```elixir
+iex> Ethereumex.HttpClient.send_request("rpc_modules")
+{:ok,
+ %{"id" => 5, "jsonrpc" => "2.0",
+   "result" => %{"eth" => "1.0", "net" => "1.0", "rpc" => "1.0",
+     "web3" => "1.0"}}}
+```
 
 ## Contributing
 
