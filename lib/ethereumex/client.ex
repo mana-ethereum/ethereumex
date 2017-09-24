@@ -1,5 +1,5 @@
 defmodule Ethereumex.Client do
-  @callback request(payload :: map) :: tuple
+  @callback request(map()) :: any()
   @moduledoc false
 
   alias Ethereumex.Client.Utils
@@ -34,16 +34,22 @@ defmodule Ethereumex.Client do
       methods
       |> Enum.each(fn({original_name, formatted_name}) ->
         def unquote(formatted_name)(params \\ []) when is_list(params) do
-          params = params |> add_method_info(unquote(original_name))
-
-          GenServer.call __MODULE__, {:request, params}
+          send_request(unquote(original_name), params)
         end
       end)
 
-      def request(_) do
+      @spec send_request(binary(), [binary()] | [map()]) :: any()
+      def send_request(method_name, params \\ []) when is_list(params) do
+        params = params |> add_method_info(method_name)
+
+        GenServer.call __MODULE__, {:request, params}
       end
 
-      @spec add_method_info([binary] | [map], binary()) :: map()
+      @spec request(map()) :: any()
+      def request(_payload) do
+      end
+
+      @spec add_method_info([binary()] | [map()], binary()) :: map()
       defp add_method_info(params, method_name) do
         %{}
         |> Map.put("method", method_name)
