@@ -8,7 +8,7 @@ Add Ethereumex to your `mix.exs` dependencies:
 1. Add `ethereumex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
-  [{:ethereumex, "~> 0.1.0"}]
+  [{:ethereumex, "~> 0.1.2"}]
 end
 ```
 
