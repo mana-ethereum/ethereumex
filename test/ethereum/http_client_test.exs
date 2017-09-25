@@ -58,4 +58,23 @@ defmodule Ethereumex.HttpClientTest do
       } = result
     end
   end
+
+  test "sends custom geth request" do
+    use_cassette "http_client_custom_request" do
+      result = HttpClient.send_request("rpc_modules")
+
+      {:ok,
+       %{"id" => 3,
+	 "jsonrpc" => "2.0",
+	 "result" =>
+	   %{
+	     "eth" => "1.0",
+	     "net" => "1.0",
+	     "rpc" => "1.0",
+	     "web3" => "1.0"
+	   }
+       }
+      } = result
+    end
+  end
 end

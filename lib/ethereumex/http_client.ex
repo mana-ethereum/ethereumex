@@ -3,13 +3,14 @@ defmodule Ethereumex.HttpClient do
   import Ethereumex.Config
   @moduledoc false
 
-  @spec post_request(map()) :: {:ok | :error, any()}
+  @spec request(map()) :: {:ok | :error, any()}
   def request(payload) do
     payload
     |> encode_payload
     |> post_request
   end
 
+  @spec encode_payload(map()) :: binary()
   defp encode_payload(payload) do
     payload |> Poison.encode!
   end
