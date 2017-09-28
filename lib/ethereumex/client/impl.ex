@@ -4,31 +4,20 @@ defmodule Ethereumex.Client do
 
   alias Ethereumex.Client.Methods
 
-  defmacro __using__(_) do
+  defmacro __using__(options) do
     methods = Methods.available_methods
+    module = options[:module]
 
-    quote location: :keep, bind_quoted: [methods: methods] do
+    quote location: :keep, bind_quoted: [methods: methods, module: module] do
       @behaviour Ethereumex.Client
-      use GenServer
+      alias Ethereumex.Client.Server
 
-      def start_link(id \\ 0) when is_number(id) do
-        GenServer.start_link(__MODULE__, id, name: __MODULE__)
+      def start_link do
+        Server.start_link(module)
       end
 
       def reset_id do
-        GenServer.cast __MODULE__, :reset_id
-      end
-
-      def handle_call({:request, params}, _from, id) do
-        params  = params |> Map.put("id", id)
-
-        response = request(params)
-
-        {:reply, response, id + 1}
-      end
-
-      def handle_cast(:reset_id, _id) do
-        {:noreply, 0}
+        GenServer.cast module, :reset_id
       end
 
       methods
@@ -38,26 +27,25 @@ defmodule Ethereumex.Client do
         end
       end)
 
-      @spec send_request(binary(), [binary()] | [map()]) :: any()
+      @spec send_request(binary, [binary] | [map]) :: any
       def send_request(method_name, params \\ []) when is_list(params) do
         params = params |> add_method_info(method_name)
 
-        GenServer.call __MODULE__, {:request, params}
+        server_request(params)
       end
 
-      @spec request(map()) :: any()
-      def request(_payload) do
+      @spec server_request(map) :: any
+      defp server_request(params) do
+        GenSenver.call module, {:request, params}
       end
 
-      @spec add_method_info([binary()] | [map()], binary()) :: map()
+      @spec add_method_info([binary] | [map], binary) :: map
       defp add_method_info(params, method_name) do
         %{}
         |> Map.put("method", method_name)
         |> Map.put("jsonrpc", "2.0")
         |> Map.put("params", params)
       end
-
-      defoverridable [request: 1]
     end
   end
 end

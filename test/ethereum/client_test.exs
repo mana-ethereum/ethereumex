@@ -1,7 +1,7 @@
 defmodule Ethereumex.ClientTest do
   use ExUnit.Case
 
-  import Ethereumex.Client.Utils
+  import Ethereumex.Client.Methods
   alias Ethereumex.TestModule
 
   setup_all do
