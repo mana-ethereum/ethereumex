@@ -1,12 +1,42 @@
 defmodule Ethereumex.Client.Methods do
   @moduledoc false
 
-  @spec available_methods() :: [{binary(), atom()}]
-  def available_methods do
-    read_methods() |> Enum.map(&format_name/1)
+  @spec methods_with_params() :: [{binary, atom}]
+  def methods_with_params do
+    all_methods()
+    |> Enum.filter(fn(%{"params" => value}) ->
+      value == true
+    end)
+    |> Enum.map(fn(%{"name" => name}) ->
+      name |> format_name
+    end)
   end
 
-  @spec format_name(binary()) :: {binary(), atom()}
+  @spec methods_without_params() :: [{binary, atom}]
+  def methods_without_params do
+    all_methods()
+    |> Enum.filter(fn(%{"params" => value}) ->
+      value == false
+    end)
+    |> Enum.map(fn(%{"name" => name}) ->
+      name |> format_name
+    end)
+  end
+
+  @spec all_methods() :: map
+  defp all_methods do
+    {:ok, raw_methods} =
+      File.cwd!
+      |> List.wrap
+      |> Kernel.++(["lib", "ethereumex", "client", "methods.json"])
+      |> Path.join
+      |> File.read
+    %{"methods" => methods} = raw_methods |> Poison.decode!
+
+    methods
+  end
+
+  @spec format_name(binary) :: {binary, atom}
   defp format_name(original_name) do
     [scope, name_without_scope] = original_name |> String.split("_")
 
@@ -18,17 +48,5 @@ defmodule Ethereumex.Client.Methods do
       |> String.to_atom
 
     {original_name, formatted_name}
-  end
-
-  @spec read_methods() :: [binary()]
-  defp read_methods do
-    {:ok, methods} =
-      File.cwd!
-      |> List.wrap
-      |> Kernel.++(["lib", "ethereumex", "client", "methods"])
-      |> Path.join
-      |> File.read
-
-    methods |> String.split("\n")
   end
 end

@@ -1,13 +1,16 @@
 defmodule Ethereumex.Client.Macro do
   @callback request(map) :: {:ok, any} | {:error, any}
   @moduledoc false
-
   alias Ethereumex.Client.Methods
 
   defmacro __using__(_) do
-    methods = Methods.available_methods
+    methods_with_params = Methods.methods_with_params
+    methods_without_params = Methods.methods_without_params
 
-    quote location: :keep, bind_quoted: [methods: methods] do
+    quote location: :keep,
+      bind_quoted: [
+        methods_with_params: methods_with_params,
+        methods_without_params: methods_without_params] do
       @behaviour Ethereumex.Client.Macro
       alias Ethereumex.Client.Server
 
@@ -19,9 +22,16 @@ defmodule Ethereumex.Client.Macro do
         GenServer.cast __MODULE__, :reset_id
       end
 
-      methods
+      methods_without_params
       |> Enum.each(fn({original_name, formatted_name}) ->
-        def unquote(formatted_name)(params \\ []) when is_list(params) do
+        def unquote(formatted_name)() do
+          send_request(unquote(original_name), [])
+        end
+      end)
+
+      methods_with_params
+      |> Enum.each(fn({original_name, formatted_name}) ->
+        def unquote(formatted_name)(params) when is_list(params) do
           send_request(unquote(original_name), params)
         end
       end)

@@ -18,13 +18,19 @@ defmodule Ethereumex.Client.MacroTest do
   end
 
   test "generates json-rpc api methods" do
-    methods = available_methods()
+    last_request_id =
+      methods_with_params()
+      |> Enum.reduce(0, fn({original_name, formatted_name}, id_number) ->
+        {^id_number, ^original_name} = apply(TestModule, formatted_name, [[]])
 
-    methods
-    |> Enum.reduce(0, fn({original_name, formatted_name}, id_number) ->
-      {^id_number, ^original_name} = apply(TestModule, formatted_name, [])
+        id_number + 1
+      end)
 
-      id_number + 1
-    end)
+    methods_without_params()
+    |> Enum.reduce(last_request_id, fn({original_name, formatted_name}, id_number) ->
+        {^id_number, ^original_name} = apply(TestModule, formatted_name, [])
+
+        id_number + 1
+      end)
   end
 end
