@@ -1,23 +1,22 @@
-defmodule Ethereumex.Client do
-  @callback request(map()) :: any()
+defmodule Ethereumex.Client.Macro do
+  @callback request(map) :: {:ok, any} | {:error, any}
   @moduledoc false
 
   alias Ethereumex.Client.Methods
 
-  defmacro __using__(options) do
+  defmacro __using__(_) do
     methods = Methods.available_methods
-    module = options[:module]
 
-    quote location: :keep, bind_quoted: [methods: methods, module: module] do
-      @behaviour Ethereumex.Client
+    quote location: :keep, bind_quoted: [methods: methods] do
+      @behaviour Ethereumex.Client.Macro
       alias Ethereumex.Client.Server
 
       def start_link do
-        Server.start_link(module)
+        Server.start_link(__MODULE__)
       end
 
       def reset_id do
-        GenServer.cast module, :reset_id
+        GenServer.cast __MODULE__, :reset_id
       end
 
       methods
@@ -34,9 +33,14 @@ defmodule Ethereumex.Client do
         server_request(params)
       end
 
-      @spec server_request(map) :: any
+      @spec request(map) :: {:ok, any} | {:error, any}
+      def request(params) do
+        {:error, :not_implemented}
+      end
+
+      @spec server_request(map) :: {:ok, any} | {:error, any}
       defp server_request(params) do
-        GenSenver.call module, {:request, params}
+        GenServer.call __MODULE__, {:request, params}
       end
 
       @spec add_method_info([binary] | [map], binary) :: map
@@ -46,6 +50,8 @@ defmodule Ethereumex.Client do
         |> Map.put("jsonrpc", "2.0")
         |> Map.put("params", params)
       end
+
+      defoverridable [request: 1]
     end
   end
 end
