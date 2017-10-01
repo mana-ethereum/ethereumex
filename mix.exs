@@ -13,8 +13,7 @@ defmodule Ethereumex.Mixfile do
      ],
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps(),
-     elixirc_paths: elixirc_paths(Mix.env)]
+     deps: deps()]
   end
 
   def application do
@@ -30,7 +29,4 @@ defmodule Ethereumex.Mixfile do
      {:ex_doc, "~> 0.14", only: :dev, runtime: false},
      {:dialyxir, "~> 0.5", only: [:dev], runtime: false}]
   end
-
-  defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_), do: ["lib"]
 end

@@ -1,0 +1,253 @@
+{
+    "methods":
+    [
+        {
+            "name": "web3_clientVersion",
+            "params": false
+        },
+        {
+            "name": "web3_sha3",
+            "params": true
+        },
+        {
+            "name": "net_version",
+            "params": false
+        },
+        {
+            "name": "net_peerCount",
+            "params": false
+        },
+        {
+            "name": "net_listening",
+            "params": false
+        },
+        {
+            "name": "eth_protocolVersion",
+            "params": false
+        },
+        {
+            "name": "eth_syncing",
+            "params": false
+        },
+        {
+            "name": "eth_coinbase",
+            "params": false
+        },
+        {
+            "name": "eth_mining",
+            "params": false
+        },
+        {
+            "name": "eth_hashrate",
+            "params": false
+        },
+        {
+            "name": "eth_gasPrice",
+            "params": false
+        },
+        {
+            "name": "eth_accounts",
+            "params": false
+        },
+        {
+            "name": "eth_blockNumber",
+            "params": false
+        },
+        {
+            "name": "eth_getBalance",
+            "params": true
+        },
+        {
+            "name": "eth_getStorageAt",
+            "params": true
+        },
+        {
+            "name": "eth_getTransactionCount",
+            "params": true
+        },
+        {
+            "name": "eth_getBlockTransactionCountByHash",
+            "params": true
+        },
+        {
+            "name": "eth_getBlockTransactionCountByNumber",
+            "params": true
+        },
+        {
+            "name": "eth_getUncleCountByBlockHash",
+            "params": true
+        },
+        {
+            "name": "eth_getUncleCountByBlockNumber",
+            "params": true
+        },
+        {
+            "name": "eth_getCode",
+            "params": true
+        },
+        {
+            "name": "eth_sign",
+            "params": true
+        },
+        {
+            "name": "eth_sendTransaction",
+            "params": true
+        },
+        {
+            "name": "eth_sendRawTransaction",
+            "params": true
+        },
+        {
+            "name": "eth_call",
+            "params": true
+        },
+        {
+            "name": "eth_estimateGas",
+            "params": true
+        },
+        {
+            "name": "eth_getBlockByHash",
+            "params": true
+        },
+        {
+            "name": "eth_getBlockByNumber",
+            "params": true
+        },
+        {
+            "name": "eth_getTransactionByHash",
+            "params": true
+        },
+        {
+            "name": "eth_getTransactionByBlockHashAndIndex",
+            "params": true
+        },
+        {
+            "name": "eth_getTransactionByBlockNumberAndIndex",
+            "params": true
+        },
+        {
+            "name": "eth_getTransactionReceipt",
+            "params": true
+        },
+        {
+            "name": "eth_getUncleByBlockHashAndIndex",
+            "params": true
+        },
+        {
+            "name": "eth_getUncleByBlockNumberAndIndex",
+            "params": true
+        },
+        {
+            "name": "eth_getCompilers",
+            "params": false
+        },
+        {
+            "name": "eth_compileLLL",
+            "params": true
+        },
+        {
+            "name": "eth_compileSolidity",
+            "params": true
+        },
+        {
+            "name": "eth_compileSerpent",
+            "params": true
+        },
+        {
+            "name": "eth_newFilter",
+            "params": true
+        },
+        {
+            "name": "eth_newBlockFilter",
+            "params": false
+        },
+        {
+            "name": "eth_newPendingTransactionFilter",
+            "params": false
+        },
+        {
+            "name": "eth_uninstallFilter",
+            "params": true
+        },
+        {
+            "name": "eth_getFilterChanges",
+            "params": false
+        },
+        {
+            "name": "eth_getFilterLogs",
+            "params": true
+        },
+        {
+            "name": "eth_getLogs",
+            "params": true
+        },
+        {
+            "name": "eth_getWork",
+            "params": false
+        },
+        {
+            "name": "eth_submitWork",
+            "params": true
+        },
+        {
+            "name": "eth_submitHashrate",
+            "params": true
+        },
+        {
+            "name": "db_putString",
+            "params": true
+        },
+        {
+            "name": "db_getString",
+            "params": true
+        },
+        {
+            "name": "db_putHex",
+            "params": true
+        },
+        {
+            "name": "db_getHex",
+            "params": true
+        },
+        {
+            "name": "shh_post",
+            "params": true
+        },
+        {
+            "name": "shh_version",
+            "params": false
+        },
+        {
+            "name": "shh_newIdentity",
+            "params": false
+        },
+        {
+            "name": "shh_hasIdentity",
+            "params": true
+        },
+        {
+            "name": "shh_newGroup",
+            "params": false
+        },
+        {
+            "name": "shh_addToGroup",
+            "params": true
+        },
+        {
+            "name": "shh_newFilter",
+            "params": true
+        },
+        {
+            "name": "shh_uninstallFilter",
+            "params": true
+        },
+        {
+            "name": "shh_getFilterChanges",
+            "params": true
+        },
+        {
+            "name": "shh_getMessages",
+            "params": true
+        }
+    ]
+}
