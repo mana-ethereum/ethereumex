@@ -43,7 +43,7 @@ defmodule Ethereumex.Client.Macro do
         server_request(params)
       end
 
-      @spec request(map) :: {:ok, any} | {:error, any}
+
       def request(params) do
         {:error, :not_implemented}
       end
