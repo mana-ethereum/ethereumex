@@ -1,11 +1,18 @@
 defmodule Ethereumex.SmartContracts do
-  alias Ethereumex.HttpClient
+  @moduledoc """
+  A module that contains functionality for working with smart contracts.
+  """
 
-  @spec compile(binary, atom) :: {:ok | :error, any}
+  alias Ethereumex.HttpClient
+  alias Ethereumex.SmartContracts.Compile
+
+  @doc """
+  Compiles smart contract written in solidity or serpent.
+  """
+
+  @spec compile(binary, atom) :: {:ok, binary} | {:error, any}
   def compile(contract_path, language \\ :solidity) do
-    contract_path
-    |> read_file
-    |> compile_request(language)
+    Compile.execute(contract_path, language)
   end
 
   @spec deploy(binary, keyword) :: binary
@@ -17,7 +24,7 @@ defmodule Ethereumex.SmartContracts do
         opts[:gas]
       end
 
-    {:ok, %{result: result}} =
+    {:ok, %{"result" => result}} =
       [%{from: from, gas: gas, data: compiled_contract}]
       |> HttpClient.eth_send_transaction()
 
@@ -38,22 +45,5 @@ defmodule Ethereumex.SmartContracts do
       |> HttpClient.eth_estimate_gas
 
     result
-  end
-
-  @spec read_file(path :: binary) :: binary
-  defp read_file(path) do
-    {:ok, contract_string} = path |> File.read
-
-    contract_string
-  end
-
-  @spec compile_request(binary, :solidity) :: {:ok | :error, any}
-  defp compile_request(contract_string, :solidity) do
-    HttpClient.eth_compile_solidity([contract_string])
-  end
-
-  @spec compile_request(binary, :serpent) :: {:ok | :error, any}
-  defp compile_request(contract_string, :serpent) do
-    HttpClient.eth_compile_serpent([contract_string])
   end
 end
