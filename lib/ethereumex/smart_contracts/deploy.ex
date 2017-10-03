@@ -3,6 +3,10 @@ defmodule Ethereumex.SmartContracts.Deploy do
 
   alias Ethereumex.HttpClient
 
+  defmodule Error do
+    defexception message: nil, value: nil
+  end
+
   @spec execute(binary, keyword) :: binary
   def execute(compiled_contract, opts \\ []) do
     from = opts[:from] |> prepare_from_value
@@ -13,11 +17,16 @@ defmodule Ethereumex.SmartContracts.Deploy do
 
   @spec send_transaction(binary, binary, binary) :: binary
   defp send_transaction(compiled_contract, from, gas) do
-    {:ok, %{"result" => result}} =
+    response =
       [%{from: from, gas: gas, data: compiled_contract}]
       |> HttpClient.eth_send_transaction()
 
-    result
+    case response do
+      {:ok, %{"result" => result}} -> result
+      other ->
+        raise Error, value: other,
+          message: "Could not eth_send_transaction request"
+    end
   end
 
   @spec prepare_from_value(binary) :: binary
@@ -38,17 +47,25 @@ defmodule Ethereumex.SmartContracts.Deploy do
 
   @spec coinbase() :: binary
   defp coinbase do
-    {:ok, %{"result" => result}} = HttpClient.eth_coinbase
-
-    result
+    case HttpClient.eth_coinbase do
+      {:ok, %{"result" => result}} -> result
+      other ->
+        raise Error, value: other,
+              message: "Could not send coinbase request"
+    end
   end
 
   @spec estimated_gas(binary, binary) :: binary
   defp estimated_gas(compiled_contract, from) do
-    {:ok, %{"result" => result}} =
+    response =
       [%{from: from, data: compiled_contract}]
       |> HttpClient.eth_estimate_gas
 
-    result
+    case response do
+      {:ok, %{"result" => result}} -> result
+      other ->
+        raise Error, value: other,
+          message: "Could not send eth_estimate_gas request"
+    end
   end
 end

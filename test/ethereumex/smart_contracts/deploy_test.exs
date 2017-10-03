@@ -3,6 +3,7 @@ defmodule Ethereumex.SmartContracts.DeployTest do
   use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
 
   alias Ethereumex.SmartContracts.Deploy
+  alias Ethereumex.SmartContracts.Deploy.Error
   alias Ethereumex.HttpClient
 
   setup_all do
@@ -28,5 +29,17 @@ defmodule Ethereumex.SmartContracts.DeployTest do
 
       assert "0x187b2" == result
     end
+  end
+
+  test "failes to deploy contract due to network error" do
+    compiled_contract = "2 + 2"
+
+    %Error{
+      message: "Could not send coinbase request",
+      value: {:error, :econnrefused}
+    } =
+      assert_raise Ethereumex.SmartContracts.Deploy.Error, fn ->
+        Deploy.execute(compiled_contract)
+      end
   end
 end
