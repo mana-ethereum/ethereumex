@@ -8,6 +8,7 @@ defmodule Ethereumex.SmartContracts.Compile do
     contract_path
     |> read_file
     |> compile_request(language)
+    |> handle_compilation_response
   end
 
   @spec read_file(path :: binary) :: {:ok, binary} | {:error, atom}
@@ -20,7 +21,6 @@ defmodule Ethereumex.SmartContracts.Compile do
   defp compile_request({:ok, contract_string}, :solidity) do
     [contract_string]
     |> HttpClient.eth_compile_solidity()
-    |> handle_compilation_response
   end
 
   @spec compile_request({:ok, binary}, :serpent)
@@ -28,7 +28,6 @@ defmodule Ethereumex.SmartContracts.Compile do
   defp compile_request({:ok, contract_string}, :serpent) do
     [contract_string]
     |> HttpClient.eth_compile_serpent()
-    |> handle_compilation_response
   end
 
   @spec compile_request({:error, any}, atom) :: {:error, any}

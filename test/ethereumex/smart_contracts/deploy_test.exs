@@ -32,14 +32,16 @@ defmodule Ethereumex.SmartContracts.DeployTest do
   end
 
   test "failes to deploy contract due to network error" do
-    compiled_contract = "2 + 2"
+    use_cassette "smart_contracts_deploy_connection_error" do
+      compiled_contract = "2 + 2"
 
-    %Error{
-      message: "Could not send coinbase request",
-      value: {:error, :econnrefused}
-    } =
-      assert_raise Ethereumex.SmartContracts.Deploy.Error, fn ->
-        Deploy.execute(compiled_contract)
-      end
+      %Error{
+        message: "Could not send coinbase request",
+        value: {:error, "econnrefused"}
+      } =
+          assert_raise Ethereumex.SmartContracts.Deploy.Error, fn ->
+          Deploy.execute(compiled_contract)
+        end
+    end
   end
 end

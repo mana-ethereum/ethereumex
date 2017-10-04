@@ -25,12 +25,12 @@ defmodule Ethereumex.SmartContracts.Deploy do
       {:ok, %{"result" => result}} -> result
       other ->
         raise Error, value: other,
-          message: "Could not eth_send_transaction request"
+          message: "Could not send eth_send_transaction request"
     end
   end
 
   @spec prepare_from_value(binary) :: binary
-  def prepare_from_value(from) do
+  defp prepare_from_value(from) do
     case from do
       nil        -> coinbase()
       from_value -> from_value
