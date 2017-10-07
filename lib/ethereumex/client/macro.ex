@@ -31,6 +31,64 @@ defmodule Ethereumex.Client.Macro do
         "eth_protocolVersion" |> request([], opts)
       end
 
+      def eth_syncing(opts \\ []) do
+        "eth_syncing" |> request([], opts)
+      end
+
+      def eth_coinbase(opts \\ []) do
+        "eth_coinbase" |> request([], opts)
+      end
+
+      def eth_mining(opts \\ []) do
+        "eth_mining" |> request([], opts)
+      end
+
+      def eth_hashrate(opts \\ []) do
+        "eth_hashrate" |> request([], opts)
+      end
+
+      def eth_gas_price(opts \\ []) do
+        "eth_gasPrice" |> request([], opts)
+      end
+
+      def eth_accounts(opts \\ []) do
+        "eth_accounts" |> request([], opts)
+      end
+
+      def eth_block_number(opts \\ []) do
+        "eth_blockNumber" |> request([], opts)
+      end
+
+      def eth_get_balance(address, block \\ "latest", opts \\ []) do
+        params = [address, block]
+
+        "eth_getBalance" |> request(params, opts)
+      end
+
+      def eth_get_storage_at(address, position, block \\ "latest", opts \\ []) do
+        params = [address, position, block]
+
+        "eth_getStorageAt" |> request(params, opts)
+      end
+
+      def eth_get_transaction_count(address, block \\ "latest", opts \\ []) do
+        params = [address, block]
+
+        "eth_getTransactionCount" |> request(params, opts)
+      end
+
+      def eth_get_block_transaction_count_by_hash(hash, opts \\ []) do
+        params = [hash]
+
+        "eth_getBlockTransactionCountByHash" |> request(params, opts)
+      end
+
+      def eth_get_block_transaction_count_by_number(block \\ "latest", opts \\ []) do
+        params = [block]
+
+        "eth_getBlockTransactionCountByNumber" |> request(params, opts)
+      end
+
       @spec add_request_info([binary] | [map], binary) :: map
       defp add_request_info(method_name, params \\ []) do
         %{}

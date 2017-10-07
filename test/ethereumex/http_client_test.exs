@@ -98,6 +98,179 @@ defmodule Ethereumex.HttpClientTest do
     end
   end
 
+  describe "HttpClient.eth_syncing/1" do
+    test "checks sync status" do
+      result = HttpClient.eth_syncing
+      {
+        :ok,
+        %{
+          "id" => _,
+          "jsonrpc" => "2.0",
+          "result" => _
+        }
+      } = result
+    end
+  end
+
+  describe "HttpClient.eth_coinbase/1" do
+    test "returns coinbase address" do
+      result = HttpClient.eth_coinbase
+      {
+        :ok,
+        %{
+          "id" => _,
+          "jsonrpc" => "2.0",
+          "result" => _
+        }
+      } = result
+    end
+  end
+
+  describe "HttpClient.eth_mining/1" do
+    test "checks mining status" do
+      result = HttpClient.eth_mining
+      {
+        :ok,
+        %{
+          "id" => _,
+          "jsonrpc" => "2.0",
+          "result" => _
+        }
+      } = result
+    end
+  end
+
+  describe "HttpClient.eth_hashrate/1" do
+    test "returns hashrate" do
+      result = HttpClient.eth_hashrate
+      {
+        :ok,
+        %{
+          "id" => _,
+          "jsonrpc" => "2.0",
+          "result" => _
+        }
+      } = result
+    end
+  end
+
+  describe "HttpClient.eth_gas_price/1" do
+    test "returns current price per gas" do
+      result = HttpClient.eth_gas_price
+      {
+        :ok,
+        %{
+          "id" => _,
+          "jsonrpc" => "2.0",
+          "result" => _
+        }
+      } = result
+    end
+  end
+
+  describe "HttpClient.eth_accounts/1" do
+    test "returns addresses owned by client" do
+      result = HttpClient.eth_accounts
+      {
+        :ok,
+        %{
+          "id" => _,
+          "jsonrpc" => "2.0",
+          "result" => [_]
+        }
+      } = result
+    end
+  end
+
+  describe "HttpClient.eth_block_number/1" do
+    test "returns number of most recent block" do
+      result = HttpClient.eth_block_number
+      {
+        :ok,
+        %{
+          "id" => _,
+          "jsonrpc" => "2.0",
+          "result" => _
+        }
+      } = result
+    end
+  end
+
+  describe "HttpClient.eth_get_balance/3" do
+    test "returns balance of given account" do
+      result = HttpClient.eth_get_balance("0x001bdcde60cb916377a3a3bf4e8054051a4d02e7")
+      {
+        :ok,
+        %{
+          "id" => _,
+          "jsonrpc" => "2.0",
+          "result" => _
+        }
+      } = result
+    end
+  end
+
+  describe "HttpClient.eth_get_storage_at/4" do
+    test "returns value from a storage position at a given address." do
+      result = HttpClient.eth_get_balance(
+        "0x001bdcde60cb916377a3a3bf4e8054051a4d02e7",
+        "0x0"
+      )
+      {
+        :ok,
+        %{
+          "id" => _,
+          "jsonrpc" => "2.0",
+          "result" => _
+        }
+      } = result
+    end
+  end
+
+  describe "HttpClient.eth_get_transaction_count/3" do
+    test "returns number of transactions sent from an address." do
+      result = HttpClient.eth_get_transaction_count("0x001bdcde60cb916377a3a3bf4e8054051a4d02e7")
+
+      {
+        :ok,
+        %{
+          "id" => _,
+          "jsonrpc" => "2.0",
+          "result" => _
+        }
+      } = result
+    end
+  end
+
+  describe "HttpClient.eth_get_block_transaction_count_by_hash/2" do
+    test "number of transactions in a block from a block matching the given block hash" do
+      result = HttpClient.eth_get_block_transaction_count_by_hash("0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238")
+
+      {
+        :ok,
+        %{
+          "id" => _,
+          "jsonrpc" => "2.0",
+          "result" => _
+        }
+      } = result
+    end
+  end
+
+  describe "HttpClient.eth_get_block_transaction_count_by_number/2" do
+    test "returns number of transactions in a block from a block matching the given block number" do
+      result = HttpClient.eth_get_block_transaction_count_by_number()
+      {
+        :ok,
+        %{
+          "id" => _,
+          "jsonrpc" => "2.0",
+          "result" => _
+        }
+      } = result
+    end
+  end
+
   describe "HttpClient.batch_request/1" do
     test "sends batch request" do
       requests = [

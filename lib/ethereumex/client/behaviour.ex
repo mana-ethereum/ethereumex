@@ -4,24 +4,24 @@ defmodule Ethereumex.Client.Behaviour do
 
   # API methods
 
-  @callback web3_client_version() :: return_type
-  @callback web3_sha3(param) :: return_type
-  @callback net_version() :: return_type
-  @callback net_peer_count() :: return_type
-  @callback net_listening() :: return_type
-  @callback eth_protocol_version() :: return_type
-  # @callback eth_syncing() :: return_type
-  # @callback eth_coinbase() :: return_type
-  # @callback eth_mining() :: return_type
-  # @callback eth_hashrate() :: return_type
-  # @callback eth_gas_price() :: return_type
-  # @callback eth_accounts() :: return_type
-  # @callback eth_block_number() :: return_type
-  # @callback eth_get_balance(string, string) :: return_type
-  # @callback eth_get_storage_at(string, binary(), binary()) :: return_type
-  # @callback eth_get_transaction_count(binary(), binary()) :: return_type
-  # @callback eth_get_block_transaction_count_by_hash(binary()) :: return_type
-  # @callback eth_get_block_transaction_count_by_number(binary()) :: return_type
+  @callback web3_client_version(keyword()) :: return_type
+  @callback web3_sha3(param, keyword()) :: return_type
+  @callback net_version(keyword()) :: return_type
+  @callback net_peer_count(keyword()) :: return_type
+  @callback net_listening(keyword()) :: return_type
+  @callback eth_protocol_version(keyword()) :: return_type
+  @callback eth_syncing(keyword()) :: return_type
+  @callback eth_coinbase(keyword()) :: return_type
+  @callback eth_mining(keyword()) :: return_type
+  @callback eth_hashrate(keyword()) :: return_type
+  @callback eth_gas_price(keyword()) :: return_type
+  @callback eth_accounts(keyword()) :: return_type
+  @callback eth_block_number(keyword()) :: return_type
+  @callback eth_get_balance(param, param, keyword()) :: return_type
+  @callback eth_get_storage_at(param, param, param, keyword()) :: return_type
+  @callback eth_get_transaction_count(param, param, keyword()) :: return_type
+  @callback eth_get_block_transaction_count_by_hash(param, keyword()) :: return_type
+  @callback eth_get_block_transaction_count_by_number(param, keyword()) :: return_type
   # @callback eth_get_uncle_count_by_block_hash(binary()) :: return_type
   # @callback eth_get_uncle_count_by_block_number(binary()) :: return_type
   # @callback eth_get_code(binary(), binary()) :: return_type
