@@ -1,8 +1,8 @@
 defmodule Ethereumex.HttpClientTest do
   use ExUnit.Case
-  use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
-
   alias Ethereumex.HttpClient
+
+  @moduletag :http
 
   setup_all do
     HttpClient.start_link
@@ -10,70 +10,90 @@ defmodule Ethereumex.HttpClientTest do
     :ok
   end
 
-  test "sends successfull request" do
-    use_cassette "http_client_request" do
+  describe "HttpClient.web3_client_version/0" do
+    test "returns client version" do
       result = HttpClient.web3_client_version
 
       {
         :ok,
         %{
-          "id" => 0,
+          "id" => _,
           "jsonrpc" => "2.0",
-          "result" => "Geth/v1.6.5-stable-cf87713d/darwin-amd64/go1.8.3"
+          "result" => _
         }
       } = result
     end
   end
 
-  test "sends failed request" do
-    use_cassette "http_client_failed_request" do
-      result = HttpClient.eth_coinbase
+  describe "HttpClient.web3_sha3/1" do
+    test "returns sha3 of the given data" do
+      result = HttpClient.web3_sha3("0x68656c6c6f20776f726c64")
 
       {
-        :error,
+        :ok,
         %{
-          "code" => -32000,
-          "message" => "etherbase address must be explicitly specified"
+          "id" => _,
+          "jsonrpc" => "2.0",
+          "result" => "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad"
         }
       } = result
     end
   end
 
-  test "sends request with map as params" do
-    use_cassette "http_client_request_with_map_params" do
-      params = [%{"data" => "0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675",
-                  "from" => "0xc2b7b953C339c6ec4Bb88fAB5a4d19A033e6c4b1", "gas" => "0x76c0",
-                  "gasPrice" => "0x9184e72a000",
-                  "to" => "0xc2b7b953C339c6ec4Bb88fAB5a4d19A033e6c4b1",
-                  "value" => "0x9184e72a"}]
-
-      result = HttpClient.eth_send_transaction(params)
+  describe "HttpClient.net_version/0" do
+    test "returns network id" do
+      result = HttpClient.net_version
 
       {
-        :error,
+        :ok,
         %{
-          "code" => -32000,
-          "message" => "unknown account"
+          "id" => _,
+          "jsonrpc" => "2.0",
+          "result" => _
         }
       } = result
     end
   end
 
-  test "sends custom geth request" do
-    use_cassette "http_client_custom_request" do
-      result = HttpClient.send_request("rpc_modules")
+  describe "HttpClient.net_peer_count/0" do
+    test "returns number of peers currently connected to the client" do
+      result = HttpClient.net_peer_count
+      {
+        :ok,
+        %{
+          "id" => _,
+          "jsonrpc" => "2.0",
+          "result" => _
+        }
+      } = result
+    end
+  end
 
-      {:ok,
-       %{"id" => 3,
-	 "jsonrpc" => "2.0",
-	 "result" =>
-	   %{
-	     "eth" => "1.0",
-	     "net" => "1.0",
-	     "rpc" => "1.0",
-	     "web3" => "1.0"
-	   }
-       }
+  describe "HttpClient.net_listening/0" do
+    test "returns true" do
+      result = HttpClient.net_listening
+      {
+        :ok,
+        %{
+          "id" => _,
+          "jsonrpc" => "2.0",
+          "result" => true
+        }
+      } = result
+    end
+  end
+
+
+  describe "HttpClient.eth_protocol_version/0" do
+    test "returns true" do
+      result = HttpClient.eth_protocol_version
+      {
+        :ok,
+        %{
+          "id" => _,
+          "jsonrpc" => "2.0",
+          "result" => _
+        }
       } = result
     end
   end
