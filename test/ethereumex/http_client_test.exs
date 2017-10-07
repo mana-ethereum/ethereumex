@@ -97,4 +97,26 @@ defmodule Ethereumex.HttpClientTest do
       } = result
     end
   end
+
+  describe "HttpClient.batch_request/1" do
+    test "sends batch request" do
+      requests = [
+        {:web3_client_version, []},
+        {:net_version, []},
+        {:web3_sha3, ["0x68656c6c6f20776f726c64"]}
+      ]
+      result = HttpClient.batch_request(requests)
+
+      {
+        :ok,
+        [
+          %{"id" => id1, "jsonrpc" => "2.0", "result" => _},
+          %{"id" => id2, "jsonrpc" => "2.0", "result" => _},
+          %{"id" => id3, "jsonrpc" => "2.0", "result" => "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad"}
+        ]
+      } = result
+
+      assert (id1 + 1 == id2) && (id2 + 1 == id3)
+    end
+  end
 end

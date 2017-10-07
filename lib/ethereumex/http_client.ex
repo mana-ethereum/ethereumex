@@ -3,8 +3,8 @@ defmodule Ethereumex.HttpClient do
   import Ethereumex.Config
   @moduledoc false
 
-  @spec request(map()) :: {:ok | :error, any()}
-  def request(payload) do
+  @spec single_request(map()) :: {:ok | :error, any()}
+  def single_request(payload) do
     payload
     |> encode_payload
     |> post_request

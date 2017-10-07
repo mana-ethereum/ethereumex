@@ -67,7 +67,9 @@ defmodule Ethereumex.Client.Behaviour do
   # @callback shh_get_filter_changes(string) :: return_type
   # @callback shh_get_messages(string) :: return_type
 
-  # actual request
+  # actual request methods
 
-  @callback request(map()) :: return_type
+  @callback request(param, list(param), boolean()) :: return_type
+  @callback single_request(map()) :: return_type
+  @callback batch_request([{atom(), list(param)}]) :: return_type
 end
