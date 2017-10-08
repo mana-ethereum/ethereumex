@@ -32,9 +32,21 @@ defmodule Ethereumex.HttpClient do
     decoded_body = body |> Poison.decode!
 
     case {code, decoded_body} do
-      {200, %{"error" => error}} -> {:error, error}
-      {200, _}                   -> {:ok, decoded_body}
-      _                          -> {:error, decoded_body}
+      {200, %{"error" => error}}   -> {:error, error}
+      {200, result = [%{}|_]}      -> {:ok, format_batch(result)}
+      {200, %{"result" => result}} -> {:ok, result}
+      _                            -> {:error, decoded_body}
     end
+  end
+
+  @spec format_batch([map()]) :: [map() | nil | binary()]
+  defp format_batch(list) do
+    list
+    |> Enum.sort(fn(%{"id" => id1}, %{"id" => id2}) ->
+      id1 <= id2
+    end)
+    |> Enum.map(fn(%{"result" => result}) ->
+      result
+    end)
   end
 end

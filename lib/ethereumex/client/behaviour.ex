@@ -1,5 +1,5 @@
 defmodule Ethereumex.Client.Behaviour do
-  @type return_type :: {:ok, map()} | {:error, map()} | {:error, atom()}
+  @type return_type :: map() | String.t | nil
   @type param :: String.t
 
   # API methods
@@ -22,12 +22,12 @@ defmodule Ethereumex.Client.Behaviour do
   @callback eth_get_transaction_count(param, param, keyword()) :: return_type
   @callback eth_get_block_transaction_count_by_hash(param, keyword()) :: return_type
   @callback eth_get_block_transaction_count_by_number(param, keyword()) :: return_type
-  # @callback eth_get_uncle_count_by_block_hash(binary()) :: return_type
-  # @callback eth_get_uncle_count_by_block_number(binary()) :: return_type
-  # @callback eth_get_code(binary(), binary()) :: return_type
-  # @callback eth_sign(binary(), binary()) :: return_type
-  # @callback eth_send_transaction(binary(), binary(), keyword()) :: return_type
-  # @callback eth_send_raw_transaction(binary()) :: return_type
+  @callback eth_get_uncle_count_by_block_hash(param, keyword()) :: return_type
+  @callback eth_get_uncle_count_by_block_number(param, keyword()) :: return_type
+  @callback eth_get_code(param, param, keyword()) :: return_type
+  @callback eth_sign(param, param, keyword()) :: return_type
+  # @callback eth_send_transaction(map(), keyword()) :: return_type
+  # @callback eth_send_raw_transaction(param) :: return_type
   # @callback eth_call(string, string, keyword()) :: return_type
   # @callback eth_estimate_gas(string) :: return_type
   # @callback eth_get_block_by_hash(string, boolean()) :: return_type

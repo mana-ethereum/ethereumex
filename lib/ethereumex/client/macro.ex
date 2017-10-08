@@ -89,6 +89,42 @@ defmodule Ethereumex.Client.Macro do
         "eth_getBlockTransactionCountByNumber" |> request(params, opts)
       end
 
+      def eth_get_uncle_count_by_block_hash(hash, opts \\ []) do
+        params = [hash]
+
+        "eth_getUncleCountByBlockHash" |> request(params, opts)
+      end
+
+      def eth_get_uncle_count_by_block_number(block \\ "latest", opts \\ []) do
+        params = [block]
+
+        "eth_getUncleCountByBlockNumber" |> request(params, opts)
+      end
+
+      def eth_get_code(address, block \\ "latest", opts \\ []) do
+        params = [address, block]
+
+        "eth_getCode" |> request(params, opts)
+      end
+
+      def eth_sign(address, message, opts \\ []) do
+        params = [address, message]
+
+        "eth_sign" |> request(params, opts)
+      end
+
+      def eth_send_transaction(transaction, opts \\ []) do
+        params = [transaction, opts]
+
+        "eth_sendTransaction" |> request(params, opts)
+      end
+
+      def eth_send_raw_transaction(data, opts \\ []) do
+        params = [data]
+
+        "eth_sendRawTransaction" |> request(params, opts)
+      end
+
       @spec add_request_info([binary] | [map], binary) :: map
       defp add_request_info(method_name, params \\ []) do
         %{}
