@@ -222,6 +222,99 @@ defmodule Ethereumex.HttpClientTest do
   #   end
   # end
 
+  describe "HttpClient.eth_estimate_gas/3" do
+    test "estimates gas" do
+      data = "0x6060604052341561" <>
+         "000f57600080fd5b60b38061001d6000396000f3006060604052" <>
+         "63ffffffff7c0100000000000000000000000000000000000000" <>
+         "00000000000000000060003504166360fe47b181146045578063" <>
+         "6d4ce63c14605a57600080fd5b3415604f57600080fd5b605860" <>
+         "0435607c565b005b3415606457600080fd5b606a6081565b6040" <>
+         "5190815260200160405180910390f35b600055565b6000549056" <>
+         "00a165627a7a7230582033edcee10845eead909dccb4e95bb7e4" <>
+         "062e92234bf3cfaf804edbd265e599800029"
+      from = "0x001bdcde60cb916377a3a3bf4e8054051a4d02e7"
+      transaction = %{data: data, from: from}
+
+      result = HttpClient.eth_estimate_gas(transaction)
+
+      {:ok, <<_::binary>>} = result
+    end
+  end
+
+  describe "HttpClient.eth_get_block_by_hash/3" do
+    test "returns information about a block by hash" do
+      result = HttpClient.eth_get_block_by_hash("0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238", true)
+
+      {:ok, nil} = result
+    end
+  end
+
+  describe "HttpClient.eth_get_block_by_number/3" do
+    test "returns information about a block by number" do
+      result = HttpClient.eth_get_block_by_number("0x1b4", true)
+
+      {:ok, %{}} = result
+    end
+  end
+
+  describe "HttpClient.eth_get_transaction_by_hash/2" do
+    test "returns the information about a transaction by its hash" do
+      result = HttpClient.eth_get_transaction_by_hash("0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238")
+
+      {:ok, nil} = result
+    end
+  end
+
+  describe "HttpClient.eth_get_transaction_by_block_hash_and_index/3" do
+    test "returns the information about a transaction by block hash and index" do
+      result = HttpClient.eth_get_transaction_by_block_hash_and_index("0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238", "0x0")
+
+      {:ok, nil} = result
+    end
+  end
+
+  describe "HttpClient.eth_get_transaction_by_block_number_and_index/3" do
+    test "returns the information about a transaction by block number and index" do
+      result = HttpClient.eth_get_transaction_by_block_number_and_index("earliest", "0x0")
+
+      {:ok, nil} = result
+    end
+  end
+
+  describe "HttpClient.eth_get_transaction_receipt/2" do
+    test "returns the receipt of a transaction by transaction hash" do
+      result = HttpClient.eth_get_transaction_receipt("0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238")
+
+      {:ok, nil} = result
+    end
+  end
+
+  describe "HttpClient.eth_get_uncle_by_block_hash_and_index/3" do
+    test "returns information about a uncle of a block by hash and uncle index position" do
+      result = HttpClient.eth_get_uncle_by_block_hash_and_index("0xc6ef2fc5426d6ad6fd9e2a26abeab0aa2411b7ab17f30a99d3cb96aed1d1055b", "0x0")
+
+      {:ok, nil} = result
+    end
+  end
+
+  describe "HttpClient.eth_get_uncle_by_block_number_and_index/3" do
+    test "returns information about a uncle of a block by number and uncle index position" do
+      result = HttpClient.eth_get_uncle_by_block_number_and_index("0x29c", "0x0")
+
+      {:ok, nil} = result
+    end
+  end
+
+  describe "HttpClient.eth_get_compilers/1" do
+    test "returns a list of available compilers in the client" do
+      result = HttpClient.eth_get_compilers
+
+      {:ok, _} = result
+    end
+  end
+
+
   describe "HttpClient.batch_request/1" do
     test "sends batch request" do
       requests = [

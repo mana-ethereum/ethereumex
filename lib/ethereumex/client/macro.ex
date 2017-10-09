@@ -125,6 +125,64 @@ defmodule Ethereumex.Client.Macro do
         "eth_sendRawTransaction" |> request(params, opts)
       end
 
+      def eth_estimate_gas(transaction, block \\ "latest", opts \\ []) do
+        params = [transaction, block]
+
+        "eth_estimateGas" |> request(params, opts)
+      end
+
+      def eth_get_block_by_hash(hash, full, opts \\ []) do
+        params = [hash, full]
+
+        "eth_getBlockByHash" |> request(params, opts)
+      end
+
+      def eth_get_block_by_number(number, full, opts \\ []) do
+        params = [number, full]
+
+        "eth_getBlockByNumber" |> request(params, opts)
+      end
+
+      def eth_get_transaction_by_hash(hash, opts \\ []) do
+        params = [hash]
+
+        "eth_getTransactionByHash" |> request(params, opts)
+      end
+
+      def eth_get_transaction_by_block_hash_and_index(hash, index, opts \\ []) do
+        params = [hash, index]
+
+        "eth_getTransactionByBlockHashAndIndex" |> request(params, opts)
+      end
+
+      def eth_get_transaction_by_block_number_and_index(block, index, opts \\ []) do
+        params = [block, index]
+
+        "eth_getTransactionByBlockNumberAndIndex" |> request(params, opts)
+      end
+
+      def eth_get_transaction_receipt(hash, opts \\ []) do
+        params = [hash]
+
+        "eth_getTransactionReceipt" |> request(params, opts)
+      end
+
+      def eth_get_uncle_by_block_hash_and_index(hash, index, opts \\ []) do
+        params = [hash, index]
+
+        "eth_getUncleByBlockHashAndIndex" |> request(params, opts)
+      end
+
+      def eth_get_uncle_by_block_number_and_index(block, index, opts \\ []) do
+        params = [block, index]
+
+        "eth_getUncleByBlockNumberAndIndex" |> request(params, opts)
+      end
+
+      def eth_get_compilers(opts \\ []) do
+        "eth_getCompilers" |> request([], opts)
+      end
+
       @spec add_request_info([binary] | [map], binary) :: map
       defp add_request_info(method_name, params \\ []) do
         %{}
