@@ -183,6 +183,39 @@ defmodule Ethereumex.Client.Macro do
         "eth_getCompilers" |> request([], opts)
       end
 
+      def eth_new_filter(data, opts \\ []) do
+        params = [data]
+
+        "eth_newFilter" |> request(params, opts)
+      end
+
+      def eth_new_block_filter(opts \\ []) do
+        "eth_newBlockFilter" |> request([], opts)
+      end
+
+      def eth_new_pending_transaction_filter(opts \\ []) do
+        "eth_newPendingTransactionFilter" |> request([], opts)
+      end
+
+      def eth_uninstall_filter(id, opts \\ []) do
+        params = [id]
+
+        "eth_uninstallFilter" |> request(params, opts)
+      end
+
+      def eth_get_filter_changes(id, opts \\ []) do
+        params = [id]
+
+        "eth_getFilterChanges" |> request(params, opts)
+      end
+
+
+      def eth_get_filter_logs(id, opts \\ []) do
+        params = [id]
+
+        "eth_getFilterLogs" |> request(params, opts)
+      end
+
       @spec add_request_info([binary] | [map], binary) :: map
       defp add_request_info(method_name, params \\ []) do
         %{}

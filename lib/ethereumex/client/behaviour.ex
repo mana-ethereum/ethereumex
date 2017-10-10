@@ -39,16 +39,16 @@ defmodule Ethereumex.Client.Behaviour do
   @callback eth_get_uncle_by_block_hash_and_index(param, param, keyword()) :: return_type
   @callback eth_get_uncle_by_block_number_and_index(param, param, keyword()) :: return_type
   @callback eth_get_compilers() :: return_type
-  @callback eth_compile_lll(string) :: return_type
+  # @callback eth_compile_lll(string) :: return_type
   # @callback eth_compile_solidity(string) :: return_type
   # @callback eth_compile_serpent(string) :: return_type
-  # @callback eth_new_filter(keyword()) :: return_type
-  # @callback eth_new_block_filter() :: return_type
-  # @callback eth_new_pending_transaction_filter() :: return_type
-  # @callback eth_uninstall_filter(string) :: return_type
-  # @callback eth_get_filter_changes(string) :: return_type
-  # @callback eth_get_filter_logs(string) :: return_type
-  # @callback eth_get_logs([string]) :: return_type
+  @callback eth_new_filter(map(), keyword()) :: return_type
+  @callback eth_new_block_filter(keyword()) :: return_type
+  @callback eth_new_pending_transaction_filter(keyword()) :: return_type
+  @callback eth_uninstall_filter(param, keyword()) :: return_type
+  @callback eth_get_filter_changes(param, keyword()) :: return_type
+  @callback eth_get_filter_logs(param, keyword()) :: return_type
+  @callback eth_get_logs(map(), keyword()) :: return_type
   # @callback eth_get_work([{string, string, string}]) :: return_type
   # @callback eth_submit_work([{string, string, string}]) :: return_type
   # @callback eth_submit_hashrate(string, string) :: return_type
@@ -69,7 +69,7 @@ defmodule Ethereumex.Client.Behaviour do
 
   # actual request methods
 
-  @callback request(param, list(param), boolean()) :: return_type
+  @callback request(param, list(param), keyword()) :: return_type
   @callback single_request(map()) :: return_type
   @callback batch_request([{atom(), list(param)}]) :: return_type
 end

@@ -306,6 +306,14 @@ defmodule Ethereumex.HttpClientTest do
     end
   end
 
+  # describe "HttpClient.eth_get_compilers/1" do
+  #   test "returns a list of available compilers in the client" do
+  #     result = HttpClient.eth_get_compilers
+
+  #     {:ok, _} = result
+  #   end
+  # end
+
   describe "HttpClient.eth_get_compilers/1" do
     test "returns a list of available compilers in the client" do
       result = HttpClient.eth_get_compilers
@@ -314,6 +322,89 @@ defmodule Ethereumex.HttpClientTest do
     end
   end
 
+  describe "HttpClient.eth_new_filter/2" do
+    test "creates a filter object" do
+      filter = %{
+        fromBlock: "0x1",
+        toBlock: "0x2",
+        address: "0x8888f1f195afa192cfee860698584c030f4c9db1",
+        topics: [
+          "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+          nil,
+          [
+            "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "0x0000000000000000000000000aff3454fce5edbc8cca8697c15331677e6ebccc"
+          ]
+        ]
+      }
+
+      result = HttpClient.eth_new_filter(filter)
+
+      {:ok, <<_::binary>>} = result
+    end
+  end
+
+  describe "HttpClient.eth_new_12" do
+    test "creates a filter object" do
+      filter = %{
+        fromBlock: "0x1",
+        toBlock: "0x2",
+        address: "0x8888f1f195afa192cfee860698584c030f4c9db1",
+        topics: [
+          "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+          nil,
+          [
+            "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "0x0000000000000000000000000aff3454fce5edbc8cca8697c15331677e6ebccc"
+          ]
+        ]
+      }
+
+      result = HttpClient.eth_new_filter(filter)
+
+      {:ok, <<_::binary>>} = result
+    end
+  end
+
+  describe "HttpClient.eth_new_block_filter/1" do
+    test "creates new block filter" do
+      result = HttpClient.eth_new_block_filter
+
+      {:ok, <<_::binary>>} = result
+    end
+  end
+
+  describe "HttpClient.eth_new_pending_transaction_filter/1" do
+    test "creates new pending transaction filter" do
+      result = HttpClient.eth_new_pending_transaction_filter
+
+      {:ok, <<_::binary>>} = result
+    end
+  end
+
+  describe "HttpClient.eth_uninstall_filter/2" do
+    test "uninstalls a filter with given id" do
+      result = HttpClient.eth_uninstall_filter("0xb")
+
+      {:ok, false} = result
+    end
+  end
+
+  describe "HttpClient.eth_get_filter_changes/2" do
+    test "returns an array of logs which occurred since last poll" do
+      result = HttpClient.eth_get_filter_changes("0x16")
+
+      {:ok, []} = result
+    end
+  end
+
+  describe "HttpClient.eth_get_filter_logs/2" do
+    test "returns an array of all logs matching filter with given id" do
+      result = HttpClient.eth_get_filter_logs("0x16")
+
+      {:ok, []} = result
+    end
+  end
 
   describe "HttpClient.batch_request/1" do
     test "sends batch request" do
