@@ -209,11 +209,44 @@ defmodule Ethereumex.Client.Macro do
         "eth_getFilterChanges" |> request(params, opts)
       end
 
-
       def eth_get_filter_logs(id, opts \\ []) do
         params = [id]
 
         "eth_getFilterLogs" |> request(params, opts)
+      end
+
+      def eth_get_logs(filter, opts \\ []) do
+        params = [filter]
+
+        "eth_getLogs" |> request(params, filter)
+      end
+
+      def eth_get_work(opts \\ []) do
+        "eth_getWork" |> request([], opts)
+      end
+
+      def eth_submit_work(nonce, header, digest, opts \\ []) do
+        params = [nonce, header, digest]
+
+        "eth_submitWork" |> request(params, opts)
+      end
+
+      def eth_submit_hashrate(hashrate, id, opts \\ []) do
+        params = [hashrate, id]
+
+        "eth_submitHashrate" |> request(params, opts)
+      end
+
+      def db_put_string(db, key, value, opts \\ []) do
+        params = [db, key, value]
+
+        "db_putString" |> request(params, opts)
+      end
+
+      def db_get_string(db, key, opts \\ []) do
+        params = [db, key]
+
+        "db_getString" |> request(params, opts)
       end
 
       @spec add_request_info([binary] | [map], binary) :: map

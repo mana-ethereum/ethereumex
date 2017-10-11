@@ -406,6 +406,69 @@ defmodule Ethereumex.HttpClientTest do
     end
   end
 
+  describe "HttpClient.eth_get_logs/2" do
+    test "returns an array of all logs matching a given filter object" do
+      filter =
+        %{
+          topics: ["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b"]
+         }
+      result = HttpClient.eth_get_logs(filter)
+
+      {:ok, []} = result
+    end
+  end
+
+  describe "HttpClient.eth_submit_work/4" do
+    @tag :skip
+    test "validates solution" do
+      result = HttpClient.eth_submit_work(
+        "0x0000000000000001",
+        "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+        "0xD1FE5700000000000000000000000000D1FE5700000000000000000000000000"
+      )
+
+      {:ok, false} = result
+    end
+  end
+
+  describe "HttpClient.eth_get_work/1" do
+    @tag :skip
+    test "returns the hash of the current block, the seedHash, and the boundary condition to be met " do
+      result = HttpClient.eth_get_work
+
+      {:ok, [<<_::binary>>, <<_::binary>>, <<_::binary>>]} = result
+    end
+  end
+
+  describe "HttpClient.eth_submit_hashrate/3" do
+    test "submits mining hashrate" do
+      result = HttpClient.eth_submit_hashrate(
+          "0x0000000000000000000000000000000000000000000000000000000000500000",
+          "0x59daa26581d0acd1fce254fb7e85952f4c09d0915afd33d3886cd914bc7d283c"
+        )
+
+      {:ok, true} = result
+    end
+  end
+
+  describe "HttpClient.db_put_string/4" do
+    @tag :skip
+    test "stores a string in the local database" do
+      result = HttpClient.db_put_string("testDB", "myKey", "myString")
+
+      {:ok, true} = result
+    end
+  end
+
+  describe "HttpClient.db_get_string/3" do
+    @tag :skip
+    test "returns string from the local database" do
+      result = HttpClient.db_get_string("db", "key")
+
+      {:ok, nil} = result
+    end
+  end
+
   describe "HttpClient.batch_request/1" do
     test "sends batch request" do
       requests = [

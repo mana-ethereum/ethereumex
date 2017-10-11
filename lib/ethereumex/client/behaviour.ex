@@ -49,11 +49,11 @@ defmodule Ethereumex.Client.Behaviour do
   @callback eth_get_filter_changes(param, keyword()) :: return_type
   @callback eth_get_filter_logs(param, keyword()) :: return_type
   @callback eth_get_logs(map(), keyword()) :: return_type
-  # @callback eth_get_work([{string, string, string}]) :: return_type
-  # @callback eth_submit_work([{string, string, string}]) :: return_type
-  # @callback eth_submit_hashrate(string, string) :: return_type
-  # @callback db_put_string(string, string, string) :: return_type
-  # @callback db_get_string(string, string) :: return_type
+  @callback eth_get_work(keyword()) :: return_type
+  @callback eth_submit_work(param, param, param, keyword()) :: return_type
+  @callback eth_submit_hashrate(param, param, keyword()) :: return_type
+  @callback db_put_string(param, param, param, keyword()) :: return_type
+  @callback db_get_string(param, param, keyword()) :: return_type
   # @callback db_put_hex(string, string, string) :: return_type
   # @callback db_get_hex(string, string) :: return_type
   # @callback shh_post(string, string, [string], string, string) :: return_type
