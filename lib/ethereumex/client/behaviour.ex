@@ -54,8 +54,8 @@ defmodule Ethereumex.Client.Behaviour do
   @callback eth_submit_hashrate(param, param, keyword()) :: return_type
   @callback db_put_string(param, param, param, keyword()) :: return_type
   @callback db_get_string(param, param, keyword()) :: return_type
-  # @callback db_put_hex(string, string, string) :: return_type
-  # @callback db_get_hex(string, string) :: return_type
+  @callback db_put_hex(param, param, param, keyword()) :: return_type
+  @callback db_get_hex(param, param, keyword()) :: return_type
   # @callback shh_post(string, string, [string], string, string) :: return_type
   # @callback shh_version() :: return_type
   # @callback shh_new_identity() :: return_type

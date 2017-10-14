@@ -249,6 +249,18 @@ defmodule Ethereumex.Client.Macro do
         "db_getString" |> request(params, opts)
       end
 
+      def db_put_hex(db, key, data, opts \\ []) do
+        params = [db, key, data]
+
+        "db_putHex" |> request(params, opts)
+      end
+
+      def db_get_hex(db, key, opts \\ []) do
+        param = [db, key]
+
+        "db_getHex" |> request(param, opts)
+      end
+
       @spec add_request_info([binary] | [map], binary) :: map
       defp add_request_info(method_name, params \\ []) do
         %{}
