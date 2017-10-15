@@ -1,4 +1,4 @@
-# Ethereumex [![Build Status](https://semaphoreci.com/api/v1/ayrat555/ethereumex/branches/master/badge.svg)](https://semaphoreci.com/ayrat555/ethereumex)
+# Ethereumex [![CircleCI](https://circleci.com/gh/exthereum/ethereumex.svg?style=svg)](https://circleci.com/gh/exthereum/ethereumex)
 
 Elixir JSON-RPC client for the Ethereum blockchain
 
