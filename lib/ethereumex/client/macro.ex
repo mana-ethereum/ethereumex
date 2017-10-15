@@ -125,6 +125,12 @@ defmodule Ethereumex.Client.Macro do
         "eth_sendRawTransaction" |> request(params, opts)
       end
 
+      def eth_call(transaction, block \\ "latest", opts \\ []) do
+        params = [transaction, block]
+
+        "eth_call" |> request(params, opts)
+      end
+
       def eth_estimate_gas(transaction, block \\ "latest", opts \\ []) do
         params = [transaction, block]
 
@@ -181,6 +187,24 @@ defmodule Ethereumex.Client.Macro do
 
       def eth_get_compilers(opts \\ []) do
         "eth_getCompilers" |> request([], opts)
+      end
+
+      def eth_compile_lll(data, opts \\ []) do
+        params = [data]
+
+        "eth_compileLLL" |> request(params, opts)
+      end
+
+      def eth_compile_solidity(data, opts \\ []) do
+        params = [data]
+
+        "eth_compileSolidity" |> request(params, opts)
+      end
+
+      def eth_compile_serpent(data, opts \\ []) do
+        params = [data]
+
+        "eth_compileSerpent" |> request(params, opts)
       end
 
       def eth_new_filter(data, opts \\ []) do

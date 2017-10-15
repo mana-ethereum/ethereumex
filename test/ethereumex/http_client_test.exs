@@ -212,35 +212,6 @@ defmodule Ethereumex.HttpClientTest do
     end
   end
 
-  # describe "HttpClient.eth_send_transaction/2" do
-  #   test "sends transaction" do
-  #     transaction =
-  #       %{
-  #         "from" => "0x001bdcde60cb916377a3a3bf4e8054051a4d02e7",
-  #         "data" => ""
-  #       }
-  #     result = HttpClient.eth_send_transaction(transaction)
-
-  #     {:ok, <<_::binary>>} = result
-  #   end
-  # end
-
-  # describe "HttpClient.eth_send_raw_transaction/2" do
-  #   test "sends transaction" do
-  #     data = "0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675"
-  #     result = HttpClient.eth_send_raw_transaction(data)
-
-  #     {
-  #       :ok,
-  #       %{
-  #         "id" => _,
-  #         "jsonrpc" => "2.0",
-  #         "result" => _
-  #       }
-  #     } = result
-  #   end
-  # end
-
   @tag :eth
   describe "HttpClient.eth_estimate_gas/3" do
     test "estimates gas" do
@@ -333,14 +304,6 @@ defmodule Ethereumex.HttpClientTest do
       {:ok, nil} = result
     end
   end
-
-  # describe "HttpClient.eth_get_compilers/1" do
-  #   test "returns a list of available compilers in the client" do
-  #     result = HttpClient.eth_get_compilers
-
-  #     {:ok, _} = result
-  #   end
-  # end
 
   @tag :eth_compile
   describe "HttpClient.eth_get_compilers/1" do

@@ -26,9 +26,9 @@ defmodule Ethereumex.Client.Behaviour do
   @callback eth_get_uncle_count_by_block_number(param, keyword()) :: return_type
   @callback eth_get_code(param, param, keyword()) :: return_type
   @callback eth_sign(param, param, keyword()) :: return_type
-  # @callback eth_send_transaction(map(), keyword()) :: return_type
-  # @callback eth_send_raw_transaction(param) :: return_type
-  # @callback eth_call(string, string, keyword()) :: return_type
+  @callback eth_send_transaction(map(), keyword()) :: return_type
+  @callback eth_send_raw_transaction(param, keyword()) :: return_type
+  @callback eth_call(map, param, keyword()) :: return_type
   @callback eth_estimate_gas(map(), param, keyword()) :: return_type
   @callback eth_get_block_by_hash(param, boolean(), keyword()) :: return_type
   @callback eth_get_block_by_number(param, boolean(), keyword()) :: return_type
@@ -38,10 +38,10 @@ defmodule Ethereumex.Client.Behaviour do
   @callback eth_get_transaction_receipt(param, keyword()) :: return_type
   @callback eth_get_uncle_by_block_hash_and_index(param, param, keyword()) :: return_type
   @callback eth_get_uncle_by_block_number_and_index(param, param, keyword()) :: return_type
-  @callback eth_get_compilers() :: return_type
-  # @callback eth_compile_lll(string) :: return_type
-  # @callback eth_compile_solidity(string) :: return_type
-  # @callback eth_compile_serpent(string) :: return_type
+  @callback eth_get_compilers(keyword()) :: return_type
+  @callback eth_compile_lll(param, keyword()) :: return_type
+  @callback eth_compile_solidity(param, keyword()) :: return_type
+  @callback eth_compile_serpent(param, keyword()) :: return_type
   @callback eth_new_filter(map(), keyword()) :: return_type
   @callback eth_new_block_filter(keyword()) :: return_type
   @callback eth_new_pending_transaction_filter(keyword()) :: return_type
