@@ -3,7 +3,7 @@ jobs:
     working_directory: ~/ethereumex
     docker:
       - image: elixir:latest
-      - image: parity/parity:latest
+      - image: parity/parity:v1.7.2
         command: [
           parity, --chain=kovan
           --jsonrpc-apis net,parity,parity_accounts,eth,web3
