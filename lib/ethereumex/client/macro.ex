@@ -256,9 +256,63 @@ defmodule Ethereumex.Client.Macro do
       end
 
       def db_get_hex(db, key, opts \\ []) do
-        param = [db, key]
+        params = [db, key]
 
-        "db_getHex" |> request(param, opts)
+        "db_getHex" |> request(params, opts)
+      end
+
+      def shh_post(whisper, opts \\ []) do
+        params = [whisper]
+
+        "shh_post" |> request(params, opts)
+      end
+
+      def shh_version(opts \\ []) do
+        "shh_version" |> request([], opts)
+      end
+
+      def shh_new_identity(opts \\ []) do
+        "shh_newIdentity" |> request([], opts)
+      end
+
+      def shh_has_identity(address, opts \\ []) do
+        params = [address]
+
+        "shh_hasIdentity" |> request(params, opts)
+      end
+
+      def shh_new_group(opts \\ []) do
+        "shh_newGroup" |> request([], opts)
+      end
+
+      def shh_add_to_group(address, opts \\ []) do
+        params = [address]
+
+        "shh_addToGroup" |> request(params, opts)
+      end
+
+      def shh_new_filter(filter_options, opts \\ []) do
+        params = [filter_options]
+
+        "shh_addToGroup" |> request(filter_options, opts)
+      end
+
+      def shh_uninstall_filter(filter_id, opts \\ []) do
+        params = [filter_id]
+
+        "shh_uninstallFilter" |> request(params, opts)
+      end
+
+      def shh_get_filter_changes(filter_id, opts \\ []) do
+        params = [filter_id]
+
+        "shh_getFilterChanges" |> request(params, opts)
+      end
+
+      def shh_get_messages(filter_id, opts \\ []) do
+        params = [filter_id]
+
+        "shh_getMessages" |> request(params, opts)
       end
 
       @spec add_request_info([binary] | [map], binary) :: map

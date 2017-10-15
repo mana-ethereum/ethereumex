@@ -56,16 +56,16 @@ defmodule Ethereumex.Client.Behaviour do
   @callback db_get_string(param, param, keyword()) :: return_type
   @callback db_put_hex(param, param, param, keyword()) :: return_type
   @callback db_get_hex(param, param, keyword()) :: return_type
-  # @callback shh_post(string, string, [string], string, string) :: return_type
-  # @callback shh_version() :: return_type
-  # @callback shh_new_identity() :: return_type
-  # @callback shh_has_identity(string) :: return_type
-  # @callback shh_new_group(string) :: return_type
-  # @callback shh_add_to_group(string) :: return_type
-  # @callback shh_new_filter(string, [string]) :: return_type
-  # @callback shh_uninstall_filter(string) :: return_type
-  # @callback shh_get_filter_changes(string) :: return_type
-  # @callback shh_get_messages(string) :: return_type
+  @callback shh_post(map(), keyword()) :: return_type
+  @callback shh_version(keyword()) :: return_type
+  @callback shh_new_identity(keyword()) :: return_type
+  @callback shh_has_identity(param, keyword()) :: return_type
+  @callback shh_new_group(keyword()) :: return_type
+  @callback shh_add_to_group(param, keyword()) :: return_type
+  @callback shh_new_filter(map(), keyword()) :: return_type
+  @callback shh_uninstall_filter(param, keyword()) :: return_type
+  @callback shh_get_filter_changes(param, keyword()) :: return_type
+  @callback shh_get_messages(param, keyword()) :: return_type
 
   # actual request methods
 

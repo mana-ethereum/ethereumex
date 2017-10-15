@@ -526,6 +526,110 @@ defmodule Ethereumex.HttpClientTest do
     end
   end
 
+  @tag :shh
+  describe "HttpClient.shh_post/2" do
+    test "sends a whisper message" do
+      whisper = %{
+        from: "0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1",
+        to: "0x3e245533f97284d442460f2998cd41858798ddf04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a0d4d661997d3940272b717b1",
+        topics: ["0x776869737065722d636861742d636c69656e74", "0x4d5a695276454c39425154466b61693532"],
+        payload: "0x7b2274797065223a226d6",
+        priority: "0x64",
+        ttl: "0x64"
+      }
+
+      result = HttpClient.shh_post(whisper)
+
+      {:ok, true} = result
+    end
+  end
+
+  @tag :shh
+  describe "HttpClient.shh_version/1" do
+    test "returns the current whisper protocol version" do
+      result = HttpClient.shh_version()
+
+      {:ok, <<_::binary>>} = result
+    end
+  end
+
+  @tag :shh
+  describe "HttpClient.shh_new_identity/1" do
+    test "creates new whisper identity in the client" do
+      result = HttpClient.shh_new_identity()
+
+      {:ok, <<_::binary>>} = result
+    end
+  end
+
+  @tag :shh
+  describe "HttpClient.shh_has_entity/2" do
+    test "creates new whisper identity in the client" do
+      result = HttpClient.shh_has_identity("0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1")
+
+      {:ok, false} = result
+    end
+  end
+
+  @tag :shh
+  describe "HttpClient.shh_add_to_group/2" do
+    test "adds adress to group" do
+      result = HttpClient.shh_add_to_group("0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1")
+
+      {:ok, false} = result
+    end
+  end
+
+  @tag :shh
+  describe "HttpClient.shh_new_group/1" do
+    test "creates new group" do
+      result = HttpClient.shh_new_group()
+
+      {:ok, <<_::binary>>} = result
+    end
+  end
+
+  @tag :shh
+  describe "HttpClient.shh_new_filter/2" do
+    test "creates filter to notify, when client receives whisper message matching the filter options" do
+      filter_options = %{
+        "topics": ['0x12341234bf4b564f'],
+        "to": "0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1"
+      }
+      result = HttpClient.shh_new_filter(filter_options)
+
+
+      {:ok, <<_::binary>>} = result
+    end
+  end
+
+  @tag :shh
+  describe "HttpClient.shh_uninstall_filter/2" do
+    test "uninstalls a filter with given id" do
+      result = HttpClient.shh_uninstall_filter("0x7")
+
+      {:ok, false} = result
+    end
+  end
+
+  @tag :shh
+  describe "HttpClient.shh_get_filter_changes/2" do
+    test "polls filter chages" do
+      result = HttpClient.shh_get_filter_changes("0x7")
+
+      {:ok, []} = result
+    end
+  end
+
+  @tag :shh
+  describe "HttpClient.shh_get_messages/2" do
+    test "returns all messages matching a filter" do
+      result = HttpClient.shh_get_messages("0x7")
+
+      {:ok, []} = result
+    end
+  end
+
   describe "HttpClient.batch_request/1" do
     test "sends batch request" do
       requests = [
