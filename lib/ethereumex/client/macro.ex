@@ -38,7 +38,7 @@ defmodule Ethereumex.Client.Macro do
         "eth_protocolVersion" |> request([], opts)
       end
 
-      @spec eth_syncing(keyword()) :: {:ok, map()} | error
+      @spec eth_syncing(keyword()) :: {:ok, map() | true} | error
       def eth_syncing(opts \\ []) do
         "eth_syncing" |> request([], opts)
       end

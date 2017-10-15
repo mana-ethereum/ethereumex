@@ -68,9 +68,9 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_syncing/1" do
     test "checks sync status" do
-      result = HttpClient.eth_syncing
+      {:ok, result} = HttpClient.eth_syncing
 
-      {:ok, %{}} = result
+      assert is_map(result) || is_boolean(result)
     end
   end
 
@@ -113,9 +113,9 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_accounts/1" do
     test "returns addresses owned by client" do
-      result = HttpClient.eth_accounts
+      {:ok, result} = HttpClient.eth_accounts
 
-      {:ok, [_]} = result
+      assert result |> is_list
     end
   end
 
@@ -206,7 +206,7 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_sign/3" do
     test "returns signature" do
-      result = HttpClient.eth_sign("0x001bdcde60cb916377a3a3bf4e8054051a4d02e7", "0xdeadbeaf")
+      result = HttpClient.eth_sign("0x71cf0b576a95c347078ec2339303d13024a26910", "0xdeadbeaf")
 
       {:ok, <<_::binary>>} = result
     end
@@ -245,9 +245,9 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_get_block_by_number/3" do
     test "returns information about a block by number" do
-      result = HttpClient.eth_get_block_by_number("0x1b4", true)
+      {:ok, result} = HttpClient.eth_get_block_by_number("0x1b4", true)
 
-      {:ok, %{}} = result
+      assert is_nil(result) || is_map(result)
     end
   end
 
@@ -381,9 +381,9 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_uninstall_filter/2" do
     test "uninstalls a filter with given id" do
-      result = HttpClient.eth_uninstall_filter("0xb")
+      {:ok, result} = HttpClient.eth_uninstall_filter("0xb")
 
-      {:ok, false} = result
+      assert is_boolean(result)
     end
   end
 
@@ -593,6 +593,7 @@ defmodule Ethereumex.HttpClientTest do
     end
   end
 
+  @tag :batch
   describe "HttpClient.batch_request/1" do
     test "sends batch request" do
       requests = [

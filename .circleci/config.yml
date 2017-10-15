@@ -1,0 +1,26 @@
+jobs:
+  build:
+    working_directory: ~/ethereumex
+    docker:
+      - image: elixir:latest
+      - image: parity/parity:latest
+        command: [
+          parity, --chain=kovan
+          --jsonrpc-apis net,parity,parity_accounts,eth,web3
+          --unlock 0x71cf0b576a95c347078ec2339303d13024a26910
+          --password ~/ethereumex/.circleci/password.txt
+          --warp
+          --pruning=archive
+        ]
+    steps:
+      - checkout
+      - restore_cache:
+          key: _build
+      - run: mix local.hex --force
+      - run: mix deps.get
+      - run: mix test --include eth --include batch
+      - run: mix dialyzer
+      - save_cache:
+          key: _build
+          paths:
+            - _build
