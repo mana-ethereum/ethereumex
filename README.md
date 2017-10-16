@@ -8,7 +8,7 @@ Add Ethereumex to your `mix.exs` dependencies:
 1. Add `ethereumex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
-  [{:ethereumex, "~> 0.1.2"}]
+  [{:ethereumex, "~> 0.2.0"}]
 end
 ```
 
@@ -102,31 +102,46 @@ config :ethereumex,
 
 ```elixir
 iex> Ethereumex.HttpClient.web3_client_version
-{:ok,
- %{"id" => 0, "jsonrpc" => "2.0",
-   "result" => "Geth/v1.6.5-stable-cf87713d/darwin-amd64/go1.8.3"}}
+{:ok, "Parity//v1.7.2-beta-9f47909-20170918/x86_64-macos/rustc1.19.0"}
 
-iex> Ethereumex.HttpClient.web3_sha3(["wrong_param"])
-{:error,
- %{"code" => -32602,
-   "message" => "invalid argument 0: missing 0x prefix for hex data"}}
+iex> Ethereumex.HttpClient.web3_sha3("wrong_param")
+{:error, %{"code" => -32602, "message" => "Invalid params: invalid format."}}
 
-iex> Ethereumex.HttpClient.eth_get_balance(["0x407d73d8a49eeb85d32cf465507dd71d507100c1", "latest"])
-{:ok, %{"id" => 2, "jsonrpc" => "2.0", "result" => "0x0"}}
+iex> Ethereumex.HttpClient.eth_get_balance("0x407d73d8a49eeb85d32cf465507dd71d507100c1")
+{:ok, "0x0"}
 ```
-Note that all method names are snakecases, so, for example, shh_getMessages method has corresponding Ethereumex.HttpClient.shh_get_messages/1 method
+Note that all method names are snakecases, so, for example, shh_getMessages method has corresponding Ethereumex.HttpClient.shh_get_messages/1 method. Signatures can be found in Ethereumex.Client.Behaviour. There are more examples in tests.
 
 ### Custom requests
-Many Ethereum protocol implementations support additional JSON-RPC API methods. To use them, you should call Ethereumex.HttpClient.send_request/2 method.
+Many Ethereum protocol implementations support additional JSON-RPC API methods. To use them, you should call Ethereumex.HttpClient.request/3 method.
 
-For example, let's call geth's rpc_modules method.
+For example, let's call parity's personal_listAccounts method.
 
 ```elixir
-iex> Ethereumex.HttpClient.send_request("rpc_modules")
+iex> Ethereumex.HttpClient.request("personal_listAccounts", [], [])
 {:ok,
- %{"id" => 5, "jsonrpc" => "2.0",
-   "result" => %{"eth" => "1.0", "net" => "1.0", "rpc" => "1.0",
-     "web3" => "1.0"}}}
+ ["0x71cf0b576a95c347078ec2339303d13024a26910",
+  "0x7c12323a4fff6df1a25d38319d5692982f48ec2e"]}
+```
+
+### Batch requests
+To send batch requests use Ethereumex.HttpClient.batch_request/1 method.
+
+```elixir
+requests = [
+   {:web3_client_version, []},
+   {:net_version, []},
+   {:web3_sha3, ["0x68656c6c6f20776f726c64"]}
+ ]
+ Ethereumex.HttpClient.batch_request(requests)
+ {
+   :ok,
+   [
+     "Parity//v1.7.2-beta-9f47909-20170918/x86_64-macos/rustc1.19.0",
+     "42",
+     "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad"
+   ]
+ }
 ```
 
 ## Contributing

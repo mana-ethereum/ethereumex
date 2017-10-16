@@ -1,4 +1,5 @@
 defmodule Ethereumex.Client.Behaviour do
+  @moduledoc false
   @type error :: {:error, map() | binary() | atom()}
 
   # API methods

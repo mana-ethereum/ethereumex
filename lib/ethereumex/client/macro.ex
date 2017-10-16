@@ -1,5 +1,6 @@
 defmodule Ethereumex.Client.Macro do
   alias Ethereumex.Client.{Server, Behaviour}
+  @moduledoc false
 
   defmacro __using__(_) do
     quote location: :keep do
