@@ -203,7 +203,7 @@ defmodule Ethereumex.HttpClientTest do
     end
   end
 
-  @tag :eth
+  @tag :eth_sign
   describe "HttpClient.eth_sign/3" do
     test "returns signature" do
       result = HttpClient.eth_sign("0x71cf0b576a95c347078ec2339303d13024a26910", "0xdeadbeaf")
