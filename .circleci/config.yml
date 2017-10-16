@@ -13,6 +13,7 @@ jobs:
       - run: mix local.hex --force
       - run: mix deps.get
       - run: mix dialyzer
+      - run: mix credo
       - run: mix test --include eth --include batch
       - save_cache:
           key: _build
