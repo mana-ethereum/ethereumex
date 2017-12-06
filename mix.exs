@@ -22,7 +22,7 @@ defmodule Ethereumex.Mixfile do
   end
 
   defp deps do
-    [{:httpoison, "~> 0.11.1"},
+    [{:httpoison, "~> 0.13.0"},
      {:poison, "~> 3.1.0"},
      {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
      {:ex_doc, "~> 0.14", only: :dev, runtime: false},
