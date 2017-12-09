@@ -21,6 +21,11 @@ defmodule Ethereumex.Config do
     env_var!(:port)
   end
 
+  @spec http_options() :: keyword()
+  def http_options do
+    Application.get_env(:ethereumex, :http_options, [])
+  end
+
   @spec env_var!(atom()) :: binary() | integer()
   defp env_var!(var) do
     value = Application.fetch_env!(:ethereumex, var)

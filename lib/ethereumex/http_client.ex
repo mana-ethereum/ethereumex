@@ -17,7 +17,7 @@ defmodule Ethereumex.HttpClient do
 
   @spec post_request(binary()) :: {:ok | :error, any()}
   defp post_request(payload) do
-    response = rpc_url() |> HTTPoison.post(payload, [{"Content-Type", "application/json"}])
+    response = rpc_url() |> HTTPoison.post(payload, [{"Content-Type", "application/json"}], Ethereumex.Config.http_options())
 
     case response do
       {:ok, %HTTPoison.Response{body: body, status_code: code}} ->
