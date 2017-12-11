@@ -3,7 +3,11 @@ defmodule Ethereumex.Config do
 
   @spec rpc_url() :: binary()
   def rpc_url do
-    "#{scheme()}://#{host()}:#{port()}"
+    if url = Application.get_env(:ethereumex, :url) do
+      url
+    else
+      "#{scheme()}://#{host()}:#{port()}"
+    end
   end
 
   @spec scheme() :: binary()
