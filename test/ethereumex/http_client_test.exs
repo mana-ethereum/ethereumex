@@ -137,7 +137,6 @@ defmodule Ethereumex.HttpClientTest do
     end
   end
 
-  #TODO: fix this test
   @tag :eth
   describe "HttpClient.eth_get_storage_at/4" do
     test "returns value from a storage position at a given address." do
@@ -146,13 +145,7 @@ defmodule Ethereumex.HttpClientTest do
         "0x0"
       )
 
-      {
-        :error,
-        %{
-          "code" => -32000,
-          "message" => "This request is not supported because your node is running with state pruning. Run with --pruning=archive."
-        }
-      } = result
+      {:ok, <<_::binary>>} = result
     end
   end
 
