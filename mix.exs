@@ -9,7 +9,7 @@ defmodule Ethereumex.Mixfile do
      package: [
        maintainers: ["Ayrat Badykov"],
        licenses: ["MIT"],
-       links: %{"GitHub" => "https://github.com/ayrat555/ethereumex"}
+       links: %{"GitHub" => "https://github.com/exthereum/ethereumex"}
      ],
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
