@@ -137,7 +137,7 @@ defmodule Ethereumex.HttpClientTest do
     end
   end
 
-  @tag :eth
+  @tag :skip
   describe "HttpClient.eth_get_storage_at/4" do
     test "returns value from a storage position at a given address." do
       result = HttpClient.eth_get_balance(
