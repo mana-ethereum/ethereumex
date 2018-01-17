@@ -301,7 +301,7 @@ defmodule Ethereumex.HttpClientTest do
     test "returns information about a uncle of a block by number and uncle index position" do
       result = HttpClient.eth_get_uncle_by_block_number_and_index("0x29c", "0x0")
 
-      {:ok, nil} = result
+      {:ok, _} = result
     end
   end
 
