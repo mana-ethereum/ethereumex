@@ -3,7 +3,7 @@ defmodule Ethereumex.HttpClientTest do
   alias Ethereumex.HttpClient
 
   setup_all do
-    HttpClient.start_link
+    HttpClient.start_link()
 
     :ok
   end
@@ -11,7 +11,7 @@ defmodule Ethereumex.HttpClientTest do
   @tag :web3
   describe "HttpClient.web3_client_version/0" do
     test "returns client version" do
-      result = HttpClient.web3_client_version
+      result = HttpClient.web3_client_version()
 
       {:ok, <<_::binary>>} = result
     end
@@ -32,7 +32,7 @@ defmodule Ethereumex.HttpClientTest do
   @tag :net
   describe "HttpClient.net_version/0" do
     test "returns network id" do
-      result = HttpClient.net_version
+      result = HttpClient.net_version()
 
       {:ok, <<_::binary>>} = result
     end
@@ -41,7 +41,7 @@ defmodule Ethereumex.HttpClientTest do
   @tag :net
   describe "HttpClient.net_peer_count/0" do
     test "returns number of peers currently connected to the client" do
-      result = HttpClient.net_peer_count
+      result = HttpClient.net_peer_count()
 
       {:ok, <<_::binary>>} = result
     end
@@ -50,7 +50,7 @@ defmodule Ethereumex.HttpClientTest do
   @tag :net
   describe "HttpClient.net_listening/0" do
     test "returns true" do
-      result = HttpClient.net_listening
+      result = HttpClient.net_listening()
 
       {:ok, true} = result
     end
@@ -59,7 +59,7 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_protocol_version/0" do
     test "returns true" do
-      result = HttpClient.eth_protocol_version
+      result = HttpClient.eth_protocol_version()
 
       {:ok, <<_::binary>>} = result
     end
@@ -68,7 +68,7 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_syncing/1" do
     test "checks sync status" do
-      {:ok, result} = HttpClient.eth_syncing
+      {:ok, result} = HttpClient.eth_syncing()
 
       assert is_map(result) || is_boolean(result)
     end
@@ -77,7 +77,7 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_coinbase/1" do
     test "returns coinbase address" do
-      result = HttpClient.eth_coinbase
+      result = HttpClient.eth_coinbase()
 
       {:ok, <<_::binary>>} = result
     end
@@ -86,7 +86,7 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_mining/1" do
     test "checks mining status" do
-      result = HttpClient.eth_mining
+      result = HttpClient.eth_mining()
 
       {:ok, false} = result
     end
@@ -95,7 +95,7 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_hashrate/1" do
     test "returns hashrate" do
-      result = HttpClient.eth_hashrate
+      result = HttpClient.eth_hashrate()
 
       {:ok, <<_::binary>>} = result
     end
@@ -104,7 +104,7 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_gas_price/1" do
     test "returns current price per gas" do
-      result = HttpClient.eth_gas_price
+      result = HttpClient.eth_gas_price()
 
       {:ok, <<_::binary>>} = result
     end
@@ -113,7 +113,7 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_accounts/1" do
     test "returns addresses owned by client" do
-      {:ok, result} = HttpClient.eth_accounts
+      {:ok, result} = HttpClient.eth_accounts()
 
       assert result |> is_list
     end
@@ -122,7 +122,7 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_block_number/1" do
     test "returns number of most recent block" do
-      result = HttpClient.eth_block_number
+      result = HttpClient.eth_block_number()
 
       {:ok, <<_::binary>>} = result
     end
@@ -140,10 +140,11 @@ defmodule Ethereumex.HttpClientTest do
   @tag :skip
   describe "HttpClient.eth_get_storage_at/4" do
     test "returns value from a storage position at a given address." do
-      result = HttpClient.eth_get_balance(
-        "0x001bdcde60cb916377a3a3bf4e8054051a4d02e7",
-        "0x0"
-      )
+      result =
+        HttpClient.eth_get_balance(
+          "0x001bdcde60cb916377a3a3bf4e8054051a4d02e7",
+          "0x0"
+        )
 
       {:ok, <<_::binary>>} = result
     end
@@ -161,7 +162,10 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_get_block_transaction_count_by_hash/2" do
     test "number of transactions in a block from a block matching the given block hash" do
-      result = HttpClient.eth_get_block_transaction_count_by_hash("0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238")
+      result =
+        HttpClient.eth_get_block_transaction_count_by_hash(
+          "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238"
+        )
 
       {:ok, nil} = result
     end
@@ -179,7 +183,10 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_get_uncle_count_by_block_hash/2" do
     test "the number of uncles in a block from a block matching the given block hash" do
-      result = HttpClient.eth_get_uncle_count_by_block_hash("0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238")
+      result =
+        HttpClient.eth_get_uncle_count_by_block_hash(
+          "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238"
+        )
 
       {:ok, nil} = result
     end
@@ -188,7 +195,7 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_get_uncle_count_by_block_number/2" do
     test "the number of uncles in a block from a block matching the given block hash" do
-      result = HttpClient.eth_get_uncle_count_by_block_number
+      result = HttpClient.eth_get_uncle_count_by_block_number()
 
       {:ok, <<_::binary>>} = result
     end
@@ -215,15 +222,17 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_estimate_gas/3" do
     test "estimates gas" do
-      data = "0x6060604052341561" <>
-         "000f57600080fd5b60b38061001d6000396000f3006060604052" <>
-         "63ffffffff7c0100000000000000000000000000000000000000" <>
-         "00000000000000000060003504166360fe47b181146045578063" <>
-         "6d4ce63c14605a57600080fd5b3415604f57600080fd5b605860" <>
-         "0435607c565b005b3415606457600080fd5b606a6081565b6040" <>
-         "5190815260200160405180910390f35b600055565b6000549056" <>
-         "00a165627a7a7230582033edcee10845eead909dccb4e95bb7e4" <>
-         "062e92234bf3cfaf804edbd265e599800029"
+      data =
+        "0x6060604052341561" <>
+          "000f57600080fd5b60b38061001d6000396000f3006060604052" <>
+          "63ffffffff7c0100000000000000000000000000000000000000" <>
+          "00000000000000000060003504166360fe47b181146045578063" <>
+          "6d4ce63c14605a57600080fd5b3415604f57600080fd5b605860" <>
+          "0435607c565b005b3415606457600080fd5b606a6081565b6040" <>
+          "5190815260200160405180910390f35b600055565b6000549056" <>
+          "00a165627a7a7230582033edcee10845eead909dccb4e95bb7e4" <>
+          "062e92234bf3cfaf804edbd265e599800029"
+
       from = "0x001bdcde60cb916377a3a3bf4e8054051a4d02e7"
       transaction = %{data: data, from: from}
 
@@ -236,7 +245,11 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_get_block_by_hash/3" do
     test "returns information about a block by hash" do
-      result = HttpClient.eth_get_block_by_hash("0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238", true)
+      result =
+        HttpClient.eth_get_block_by_hash(
+          "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238",
+          true
+        )
 
       {:ok, nil} = result
     end
@@ -254,7 +267,10 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_get_transaction_by_hash/2" do
     test "returns the information about a transaction by its hash" do
-      result = HttpClient.eth_get_transaction_by_hash("0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238")
+      result =
+        HttpClient.eth_get_transaction_by_hash(
+          "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238"
+        )
 
       {:ok, nil} = result
     end
@@ -263,7 +279,11 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_get_transaction_by_block_hash_and_index/3" do
     test "returns the information about a transaction by block hash and index" do
-      result = HttpClient.eth_get_transaction_by_block_hash_and_index("0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238", "0x0")
+      result =
+        HttpClient.eth_get_transaction_by_block_hash_and_index(
+          "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238",
+          "0x0"
+        )
 
       {:ok, nil} = result
     end
@@ -281,7 +301,10 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_get_transaction_receipt/2" do
     test "returns the receipt of a transaction by transaction hash" do
-      result = HttpClient.eth_get_transaction_receipt("0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238")
+      result =
+        HttpClient.eth_get_transaction_receipt(
+          "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238"
+        )
 
       {:ok, nil} = result
     end
@@ -290,7 +313,11 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_get_uncle_by_block_hash_and_index/3" do
     test "returns information about a uncle of a block by hash and uncle index position" do
-      result = HttpClient.eth_get_uncle_by_block_hash_and_index("0xc6ef2fc5426d6ad6fd9e2a26abeab0aa2411b7ab17f30a99d3cb96aed1d1055b", "0x0")
+      result =
+        HttpClient.eth_get_uncle_by_block_hash_and_index(
+          "0xc6ef2fc5426d6ad6fd9e2a26abeab0aa2411b7ab17f30a99d3cb96aed1d1055b",
+          "0x0"
+        )
 
       {:ok, nil} = result
     end
@@ -308,7 +335,7 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth_compile
   describe "HttpClient.eth_get_compilers/1" do
     test "returns a list of available compilers in the client" do
-      result = HttpClient.eth_get_compilers
+      result = HttpClient.eth_get_compilers()
 
       {:ok, _} = result
     end
@@ -363,7 +390,7 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_new_block_filter/1" do
     test "creates new block filter" do
-      result = HttpClient.eth_new_block_filter
+      result = HttpClient.eth_new_block_filter()
 
       {:ok, <<_::binary>>} = result
     end
@@ -372,7 +399,7 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_new_pending_transaction_filter/1" do
     test "creates new pending transaction filter" do
-      result = HttpClient.eth_new_pending_transaction_filter
+      result = HttpClient.eth_new_pending_transaction_filter()
 
       {:ok, <<_::binary>>} = result
     end
@@ -408,10 +435,10 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_get_logs/2" do
     test "returns an array of all logs matching a given filter object" do
-      filter =
-        %{
-          topics: ["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b"]
-         }
+      filter = %{
+        topics: ["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b"]
+      }
+
       result = HttpClient.eth_get_logs(filter)
 
       {:ok, []} = result
@@ -421,11 +448,12 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth_mine
   describe "HttpClient.eth_submit_work/4" do
     test "validates solution" do
-      result = HttpClient.eth_submit_work(
-        "0x0000000000000001",
-        "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
-        "0xD1FE5700000000000000000000000000D1FE5700000000000000000000000000"
-      )
+      result =
+        HttpClient.eth_submit_work(
+          "0x0000000000000001",
+          "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+          "0xD1FE5700000000000000000000000000D1FE5700000000000000000000000000"
+        )
 
       {:ok, false} = result
     end
@@ -434,7 +462,7 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth_mine
   describe "HttpClient.eth_get_work/1" do
     test "returns the hash of the current block, the seedHash, and the boundary condition to be met " do
-      result = HttpClient.eth_get_work
+      result = HttpClient.eth_get_work()
 
       {:ok, [<<_::binary>>, <<_::binary>>, <<_::binary>>]} = result
     end
@@ -443,7 +471,8 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth_mine
   describe "HttpClient.eth_submit_hashrate/3" do
     test "submits mining hashrate" do
-      result = HttpClient.eth_submit_hashrate(
+      result =
+        HttpClient.eth_submit_hashrate(
           "0x0000000000000000000000000000000000000000000000000000000000500000",
           "0x59daa26581d0acd1fce254fb7e85952f4c09d0915afd33d3886cd914bc7d283c"
         )
@@ -454,7 +483,6 @@ defmodule Ethereumex.HttpClientTest do
 
   @tag :eth_db
   describe "HttpClient.db_put_string/4" do
-
     test "stores a string in the local database" do
       result = HttpClient.db_put_string("testDB", "myKey", "myString")
 
@@ -493,9 +521,14 @@ defmodule Ethereumex.HttpClientTest do
   describe "HttpClient.shh_post/2" do
     test "sends a whisper message" do
       whisper = %{
-        from: "0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1",
-        to: "0x3e245533f97284d442460f2998cd41858798ddf04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a0d4d661997d3940272b717b1",
-        topics: ["0x776869737065722d636861742d636c69656e74", "0x4d5a695276454c39425154466b61693532"],
+        from:
+          "0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1",
+        to:
+          "0x3e245533f97284d442460f2998cd41858798ddf04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a0d4d661997d3940272b717b1",
+        topics: [
+          "0x776869737065722d636861742d636c69656e74",
+          "0x4d5a695276454c39425154466b61693532"
+        ],
         payload: "0x7b2274797065223a226d6",
         priority: "0x64",
         ttl: "0x64"
@@ -528,7 +561,10 @@ defmodule Ethereumex.HttpClientTest do
   @tag :shh
   describe "HttpClient.shh_has_entity/2" do
     test "creates new whisper identity in the client" do
-      result = HttpClient.shh_has_identity("0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1")
+      result =
+        HttpClient.shh_has_identity(
+          "0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1"
+        )
 
       {:ok, false} = result
     end
@@ -537,7 +573,10 @@ defmodule Ethereumex.HttpClientTest do
   @tag :shh
   describe "HttpClient.shh_add_to_group/2" do
     test "adds adress to group" do
-      result = HttpClient.shh_add_to_group("0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1")
+      result =
+        HttpClient.shh_add_to_group(
+          "0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1"
+        )
 
       {:ok, false} = result
     end
@@ -556,11 +595,12 @@ defmodule Ethereumex.HttpClientTest do
   describe "HttpClient.shh_new_filter/2" do
     test "creates filter to notify, when client receives whisper message matching the filter options" do
       filter_options = %{
-        "topics": ['0x12341234bf4b564f'],
-        "to": "0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1"
+        topics: ['0x12341234bf4b564f'],
+        to:
+          "0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1"
       }
-      result = HttpClient.shh_new_filter(filter_options)
 
+      result = HttpClient.shh_new_filter(filter_options)
 
       {:ok, <<_::binary>>} = result
     end
@@ -601,6 +641,7 @@ defmodule Ethereumex.HttpClientTest do
         {:net_version, []},
         {:web3_sha3, ["0x68656c6c6f20776f726c64"]}
       ]
+
       result = HttpClient.batch_request(requests)
 
       {
