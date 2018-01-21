@@ -1,4 +1,5 @@
 use Mix.Config
+
 config :ethereumex,
   scheme: "http",
   host: "localhost",
