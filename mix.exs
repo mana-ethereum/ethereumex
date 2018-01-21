@@ -26,7 +26,7 @@ defmodule Ethereumex.Mixfile do
     [
       {:httpoison, "~> 1.0.0"},
       {:poison, "~> 3.1.0"},
-      {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
+      {:credo, "~> 0.9.0-rc1", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.14", only: :dev, runtime: false},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
     ]
