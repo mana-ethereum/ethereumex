@@ -1,0 +1,22 @@
+[
+  {
+    "request": {
+      "body": "{\"params\":[],\"method\":\"eth_coinbase\",\"jsonrpc\":\"2.0\",\"id\":2}",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "method": "post",
+      "options": {
+        "recv_timeout": "30000"
+      },
+      "request_body": "",
+      "url": "http://localhost:8545"
+    },
+    "response": {
+      "body": "econnrefused",
+      "headers": [],
+      "status_code": null,
+      "type": "error"
+    }
+  }
+]

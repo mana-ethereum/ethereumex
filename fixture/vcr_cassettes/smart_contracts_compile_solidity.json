@@ -1,0 +1,26 @@
+[
+  {
+    "request": {
+      "body": "{\"params\":[\"pragma solidity ^0.4.0;\\n\\ncontract SimpleStorage {\\n    uint storedData;\\n\\n    function set(uint x) {\\n        storedData = x;\\n    }\\n\\n    function get() constant returns (uint) {\\n        return storedData;\\n    }\\n}\\n\"],\"method\":\"eth_compileSolidity\",\"jsonrpc\":\"2.0\",\"id\":5}",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "method": "post",
+      "options": [],
+      "request_body": "",
+      "url": "http://localhost:8545"
+    },
+    "response": {
+      "body": "{\"jsonrpc\":\"2.0\",\"result\":\"0x6060604052341561000f57600080fd5b60b38061001d6000396000f300606060405263ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166360fe47b1811460455780636d4ce63c14605a57600080fd5b3415604f57600080fd5b6058600435607c565b005b3415606457600080fd5b606a6081565b60405190815260200160405180910390f35b600055565b600054905600a165627a7a7230582033edcee10845eead909dccb4e95bb7e4062e92234bf3cfaf804edbd265e599800029\",\"id\":5}\n",
+      "headers": {
+        "Content-Type": "application/json",
+        "Allow": "OPTIONS, POST",
+        "Access-Control-Allow-Headers": "origin, content-type, accept",
+        "Date": "Mon, 02 Oct 2017 06:24:14 GMT",
+        "Transfer-Encoding": "chunked"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]
