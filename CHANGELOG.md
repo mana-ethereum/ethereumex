@@ -1,3 +1,5 @@
+# 0.3.0
+* Breaking: Use `:url` config variable instead of `:host`, `:port` and `:scheme`
 # 0.2.0
 * Breaking: explicit parameters (https://github.com/exthereum/ethereumex/pull/10)
 

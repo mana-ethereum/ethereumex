@@ -1,6 +1,3 @@
 use Mix.Config
 config :ethereumex,
-  url: nil,
-  scheme: "http",
-  host: "localhost",
-  port: 8545
+  url: "http://localhost:8545"
