@@ -6,7 +6,7 @@ defmodule Ethereumex do
     import Supervisor.Spec, warn: false
 
     children = [
-      worker(Ethereumex.HttpClient, []),
+      worker(Ethereumex.HttpClient, [])
     ]
 
     opts = [strategy: :one_for_one, name: Ethereumex.Supervisor]

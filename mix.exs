@@ -4,10 +4,10 @@ defmodule Ethereumex.Mixfile do
   def project do
     [app: :ethereumex,
      version: "0.3.0",
-     elixir: "~> 1.5",
+     elixir: "~> 1.6",
      description: "Elixir JSON-RPC client for the Ethereum blockchain",
      package: [
-       maintainers: ["Ayrat Badykov"],
+       maintainers: ["Ayrat Badykov", "Izel Nakri", "Geoff Hayes"],
        licenses: ["MIT"],
        links: %{"GitHub" => "https://github.com/ayrat555/ethereumex"}
      ],
@@ -17,15 +17,16 @@ defmodule Ethereumex.Mixfile do
   end
 
   def application do
-    [extra_applications: [:logger],
-     mod: {Ethereumex, []}]
+    [extra_applications: [:logger], mod: {Ethereumex, []}]
   end
 
   defp deps do
-    [{:httpoison, "~> 0.13.0"},
-     {:poison, "~> 3.1.0"},
-     {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
-     {:ex_doc, "~> 0.14", only: :dev, runtime: false},
-     {:dialyxir, "~> 0.5", only: [:dev], runtime: false}]
+    [
+      {:httpoison, "~> 1.0.0"},
+      {:poison, "~> 3.1.0"},
+      {:credo, "~> 0.9.0-rc1", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.14", only: :dev, runtime: false},
+      {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
+    ]
   end
 end

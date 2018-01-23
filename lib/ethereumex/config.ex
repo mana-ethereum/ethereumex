@@ -13,5 +13,4 @@ defmodule Ethereumex.Config do
   def http_options do
     Application.get_env(:ethereumex, :http_options, [])
   end
-
 end

@@ -5,7 +5,7 @@ defmodule Ethereumex.Client.Macro do
   defmacro __using__(_) do
     quote location: :keep do
       @behaviour Behaviour
-      @type error :: Behaviour.error
+      @type error :: Behaviour.error()
 
       @spec web3_client_version(keyword()) :: {:ok, binary()} | error
       def web3_client_version(opts \\ []) do
@@ -39,7 +39,7 @@ defmodule Ethereumex.Client.Macro do
         "eth_protocolVersion" |> request([], opts)
       end
 
-      @spec eth_syncing(keyword()) :: {:ok, map() | true} | error
+      @spec eth_syncing(keyword()) :: {:ok, map() | boolean()} | error
       def eth_syncing(opts \\ []) do
         "eth_syncing" |> request([], opts)
       end
@@ -95,14 +95,16 @@ defmodule Ethereumex.Client.Macro do
         "eth_getTransactionCount" |> request(params, opts)
       end
 
-      @spec eth_get_block_transaction_count_by_hash(binary(), keyword()) :: {:ok, binary()} | error
+      @spec eth_get_block_transaction_count_by_hash(binary(), keyword()) ::
+              {:ok, binary()} | error
       def eth_get_block_transaction_count_by_hash(hash, opts \\ []) do
         params = [hash]
 
         "eth_getBlockTransactionCountByHash" |> request(params, opts)
       end
 
-      @spec eth_get_block_transaction_count_by_number(binary(), keyword()) :: {:ok, binary()} | error
+      @spec eth_get_block_transaction_count_by_number(binary(), keyword()) ::
+              {:ok, binary()} | error
       def eth_get_block_transaction_count_by_number(block \\ "latest", opts \\ []) do
         params = [block]
 
@@ -186,14 +188,16 @@ defmodule Ethereumex.Client.Macro do
         "eth_getTransactionByHash" |> request(params, opts)
       end
 
-      @spec eth_get_transaction_by_block_hash_and_index(binary(), binary(), keyword()) :: {:ok, map()} | error
+      @spec eth_get_transaction_by_block_hash_and_index(binary(), binary(), keyword()) ::
+              {:ok, map()} | error
       def eth_get_transaction_by_block_hash_and_index(hash, index, opts \\ []) do
         params = [hash, index]
 
         "eth_getTransactionByBlockHashAndIndex" |> request(params, opts)
       end
 
-      @spec eth_get_transaction_by_block_number_and_index(binary(), binary(), keyword()) :: {:ok, binary()} | error
+      @spec eth_get_transaction_by_block_number_and_index(binary(), binary(), keyword()) ::
+              {:ok, binary()} | error
       def eth_get_transaction_by_block_number_and_index(block, index, opts \\ []) do
         params = [block, index]
 
@@ -207,14 +211,16 @@ defmodule Ethereumex.Client.Macro do
         "eth_getTransactionReceipt" |> request(params, opts)
       end
 
-      @spec eth_get_uncle_by_block_hash_and_index(binary(), binary(), keyword()) :: {:ok, map()} | error
+      @spec eth_get_uncle_by_block_hash_and_index(binary(), binary(), keyword()) ::
+              {:ok, map()} | error
       def eth_get_uncle_by_block_hash_and_index(hash, index, opts \\ []) do
         params = [hash, index]
 
         "eth_getUncleByBlockHashAndIndex" |> request(params, opts)
       end
 
-      @spec eth_get_uncle_by_block_number_and_index(binary(), binary(), keyword()) :: {:ok, map()} | error
+      @spec eth_get_uncle_by_block_number_and_index(binary(), binary(), keyword()) ::
+              {:ok, map()} | error
       def eth_get_uncle_by_block_number_and_index(block, index, opts \\ []) do
         params = [block, index]
 
@@ -411,8 +417,9 @@ defmodule Ethereumex.Client.Macro do
         |> Map.put("params", params)
       end
 
-      @spec request(binary(), list(binary() | boolean | map), keyword()) :: {:ok, any() | [any()]} | error
-      def request(name, params, [batch: true]) do
+      @spec request(binary(), list(binary() | boolean | map), keyword()) ::
+              {:ok, any() | [any()]} | error
+      def request(name, params, batch: true) do
         name |> add_request_info(params)
       end
 
@@ -425,7 +432,7 @@ defmodule Ethereumex.Client.Macro do
       @spec batch_request([{atom(), list(binary())}]) :: {:ok, [any()]} | error
       def batch_request(methods) do
         methods
-        |> Enum.map(fn({method, params}) ->
+        |> Enum.map(fn {method, params} ->
           opts = [batch: true]
           params = params ++ [opts]
 
@@ -435,7 +442,7 @@ defmodule Ethereumex.Client.Macro do
       end
 
       defp server_request(params) do
-        GenServer.call __MODULE__, {:request, params}
+        GenServer.call(__MODULE__, {:request, params})
       end
 
       def start_link do
@@ -443,14 +450,14 @@ defmodule Ethereumex.Client.Macro do
       end
 
       def reset_id do
-        GenServer.cast __MODULE__, :reset_id
+        GenServer.cast(__MODULE__, :reset_id)
       end
 
       def single_request(params) do
         {:error, :not_implemented}
       end
 
-      defoverridable [single_request: 1]
+      defoverridable single_request: 1
     end
   end
 end

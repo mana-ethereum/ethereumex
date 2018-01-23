@@ -10,7 +10,7 @@ defmodule Ethereumex.Client.Behaviour do
   @callback net_peer_count(keyword()) :: {:ok, binary()} | error
   @callback net_listening(keyword()) :: {:ok, boolean()} | error
   @callback eth_protocol_version(keyword()) :: {:ok, binary()} | error
-  @callback eth_syncing(keyword()) :: {:ok, map() | true} | error
+  @callback eth_syncing(keyword()) :: {:ok, map() | boolean()} | error
   @callback eth_coinbase(keyword()) :: {:ok, binary()} | error
   @callback eth_mining(keyword()) :: {:ok, boolean()} | error
   @callback eth_hashrate(keyword()) :: {:ok, binary()} | error
@@ -20,8 +20,10 @@ defmodule Ethereumex.Client.Behaviour do
   @callback eth_get_balance(binary(), binary(), keyword()) :: {:ok, binary()} | error
   @callback eth_get_storage_at(binary(), binary(), binary(), keyword()) :: {:ok, binary()} | error
   @callback eth_get_transaction_count(binary(), binary(), keyword()) :: {:ok, binary()} | error
-  @callback eth_get_block_transaction_count_by_hash(binary(), keyword()) :: {:ok, binary()} | error
-  @callback eth_get_block_transaction_count_by_number(binary(), keyword()) :: {:ok, binary()} | error
+  @callback eth_get_block_transaction_count_by_hash(binary(), keyword()) ::
+              {:ok, binary()} | error
+  @callback eth_get_block_transaction_count_by_number(binary(), keyword()) ::
+              {:ok, binary()} | error
   @callback eth_get_uncle_count_by_block_hash(binary(), keyword()) :: {:ok, binary()} | error
   @callback eth_get_uncle_count_by_block_number(binary(), keyword()) :: {:ok, binary()} | error
   @callback eth_get_code(binary(), binary(), keyword()) :: {:ok, binary()} | error
@@ -33,11 +35,15 @@ defmodule Ethereumex.Client.Behaviour do
   @callback eth_get_block_by_hash(binary(), binary(), keyword()) :: {:ok, map()} | error
   @callback eth_get_block_by_number(binary(), binary(), keyword()) :: {:ok, map()} | error
   @callback eth_get_transaction_by_hash(binary(), keyword()) :: {:ok, map()} | error
-  @callback eth_get_transaction_by_block_hash_and_index(binary(), binary(), keyword()) :: {:ok, map()} | error
-  @callback eth_get_transaction_by_block_number_and_index(binary(), binary(), keyword()) :: {:ok, binary()} | error
+  @callback eth_get_transaction_by_block_hash_and_index(binary(), binary(), keyword()) ::
+              {:ok, map()} | error
+  @callback eth_get_transaction_by_block_number_and_index(binary(), binary(), keyword()) ::
+              {:ok, binary()} | error
   @callback eth_get_transaction_receipt(binary(), keyword()) :: {:ok, map()} | error
-  @callback eth_get_uncle_by_block_hash_and_index(binary(), binary(), keyword()) :: {:ok, map()} | error
-  @callback eth_get_uncle_by_block_number_and_index(binary(), binary(), keyword()) :: {:ok, map()} | error
+  @callback eth_get_uncle_by_block_hash_and_index(binary(), binary(), keyword()) ::
+              {:ok, map()} | error
+  @callback eth_get_uncle_by_block_number_and_index(binary(), binary(), keyword()) ::
+              {:ok, map()} | error
   @callback eth_get_compilers(keyword()) :: {:ok, [binary()]} | error
   @callback eth_compile_lll(binary(), keyword()) :: {:ok, binary()} | error
   @callback eth_compile_solidity(binary(), keyword()) :: {:ok, binary()} | error
