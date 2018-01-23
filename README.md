@@ -8,7 +8,7 @@ Add Ethereumex to your `mix.exs` dependencies:
 1. Add `ethereumex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
-  [{:ethereumex, "~> 0.2.0"}]
+  [{:ethereumex, "~> 0.3.0"}]
 end
 ```
 
@@ -26,9 +26,7 @@ In `config/config.exs`, add Ethereum protocol host params to your config file
 
 ```elixir
 config :ethereumex,
-  scheme: "http",
-  host: "localhost",
-  port: 8545
+  url: "http://localhost:8545"
 ```
 
 ## Usage

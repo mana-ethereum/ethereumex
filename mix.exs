@@ -2,20 +2,18 @@ defmodule Ethereumex.Mixfile do
   use Mix.Project
 
   def project do
-    [
-      app: :ethereumex,
-      version: "0.2.1",
-      elixir: "~> 1.6",
-      description: "Elixir JSON-RPC client for the Ethereum blockchain",
-      package: [
-        maintainers: ["Ayrat Badykov", "Izel Nakri"],
-        licenses: ["MIT"],
-        links: %{"GitHub" => "https://github.com/exthereum/ethereumex"}
-      ],
-      build_embedded: Mix.env() == :prod,
-      start_permanent: Mix.env() == :prod,
-      deps: deps()
-    ]
+    [app: :ethereumex,
+     version: "0.3.0",
+     elixir: "~> 1.6",
+     description: "Elixir JSON-RPC client for the Ethereum blockchain",
+     package: [
+       maintainers: ["Ayrat Badykov", "Izel Nakri", "Geoff Hayes"],
+       licenses: ["MIT"],
+       links: %{"GitHub" => "https://github.com/ayrat555/ethereumex"}
+     ],
+     build_embedded: Mix.env == :prod,
+     start_permanent: Mix.env == :prod,
+     deps: deps()]
   end
 
   def application do
