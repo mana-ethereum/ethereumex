@@ -17,26 +17,28 @@ defmodule Ethereumex.HttpClient do
 
   @spec post_request(binary()) :: {:ok | :error, any()}
   defp post_request(payload) do
-    response = rpc_url() |> HTTPoison.post(payload, [{"Content-Type", "application/json"}], Ethereumex.Config.http_options())
-
-    case response do
-      {:ok, %HTTPoison.Response{body: body, status_code: code}} ->
-        body |> decode_body(code)
-
-      {:error, %HTTPoison.Error{reason: reason}} ->
-        {:error, reason}
+    headers = [{"Content-Type", "application/json"}]
+    options = Ethereumex.Config.http_options()
+    with {:ok, response} <- HTTPoison.post(rpc_url(), payload, headers, options),
+         %HTTPoison.Response{body: body, status_code: code} = response do
+      decode_body(body, code)
+    else
+      {:error, %HTTPoison.Error{reason: reason}} -> {:error, reason}
+      e -> {:error, e}
     end
   end
 
   @spec decode_body(binary(), integer()) :: {:ok | :error, any()}
   defp decode_body(body, code) do
-    decoded_body = body |> Poison.decode!()
-
-    case {code, decoded_body} do
-      {200, %{"error" => error}} -> {:error, error}
-      {200, result = [%{} | _]} -> {:ok, format_batch(result)}
-      {200, %{"result" => result}} -> {:ok, result}
-      _ -> {:error, decoded_body}
+    with {:ok, decoded_body} <- Poison.decode(body) do
+      case {code, decoded_body} do
+        {200, %{"error" => error}} -> {:error, error}
+        {200, result = [%{} | _]} -> {:ok, format_batch(result)}
+        {200, %{"result" => result}} -> {:ok, result}
+        _ -> {:error, decoded_body}
+      end
+    else
+      {:error, error} -> {:error, {:invalid_json, error}}
     end
   end
 
