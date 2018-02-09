@@ -1,3 +1,5 @@
+# 0.3.1
+* Handle failed HTTP requests more gracefully
 # 0.3.0
 * Breaking: Use `:url` config variable instead of `:host`, `:port` and `:scheme`
 # 0.2.0
