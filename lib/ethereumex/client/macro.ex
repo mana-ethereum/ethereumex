@@ -295,7 +295,7 @@ defmodule Ethereumex.Client.Macro do
       def eth_get_logs(filter, opts \\ []) do
         params = [filter]
 
-        "eth_getLogs" |> request(params, filter)
+        "eth_getLogs" |> request(params, opts)
       end
 
       @spec eth_get_work(keyword()) :: {:ok, [binary()]} | error
