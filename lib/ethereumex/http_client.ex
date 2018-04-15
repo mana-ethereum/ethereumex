@@ -19,6 +19,7 @@ defmodule Ethereumex.HttpClient do
   defp post_request(payload) do
     headers = [{"Content-Type", "application/json"}]
     options = Ethereumex.Config.http_options()
+
     with {:ok, response} <- HTTPoison.post(rpc_url(), payload, headers, options),
          %HTTPoison.Response{body: body, status_code: code} = response do
       decode_body(body, code)
