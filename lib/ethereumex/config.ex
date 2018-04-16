@@ -4,8 +4,15 @@ defmodule Ethereumex.Config do
   @spec rpc_url() :: binary()
   def rpc_url do
     case Application.get_env(:ethereumex, :url) do
-      url when is_binary(url) and url != "" -> url
-      els -> raise ArgumentError, message: "Please set config variable `config :ethereumex, :url, \"http://...\", got: `#{inspect els}``"
+      url when is_binary(url) and url != "" ->
+        url
+
+      els ->
+        raise ArgumentError,
+          message:
+            "Please set config variable `config :ethereumex, :url, \"http://...\", got: `#{
+              inspect(els)
+            }``"
     end
   end
 
