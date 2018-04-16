@@ -7,8 +7,13 @@ jobs:
 
     steps:
       - checkout
+
       - restore_cache:
-          key: _build
+          keys:
+            - v1-dependency-cache-{{ arch }}-{{ checksum "mix.lock" }}
+            - v1-dependency-cache-{{ arch }}
+            - v1-dependency-cache
+
       - run: mix local.rebar --force
       - run: mix local.hex --force
       - run: mix deps.get
