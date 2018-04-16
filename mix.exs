@@ -24,10 +24,10 @@ defmodule Ethereumex.Mixfile do
 
   defp deps do
     [
-      {:httpoison, "~> 1.0.0"},
+      {:httpoison, "~> 1.1.0"},
       {:poison, "~> 3.1.0"},
-      {:credo, "~> 0.9.0-rc1", only: [:dev, :test], runtime: false},
-      {:ex_doc, "~> 0.14", only: :dev, runtime: false},
+      {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.16", only: :dev, runtime: false},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
     ]
   end
