@@ -13,9 +13,33 @@ jobs:
       - run: mix local.hex --force
       - run: mix deps.get
       - run: mix credo
-      - run: mix test --include eth --include batch
-      - run: mix dialyzer
+      - run: mix format --check-formatted
+      - run:
+          command: mix compile
+          environment:
+            MIX_ENV: test
+
       - save_cache:
-          key: _build
+          key: v1-dependency-cache-{{ arch }}-{{ checksum "mix.lock" }}
           paths:
             - _build
+            - deps
+            - ~/.mix
+
+      - run: mix test --include eth --include batch
+
+      - restore_cache:
+          keys:
+            - v1-plt-cache-{{ arch }}-{{ checksum "mix.lock" }}
+            - v1-plt-cache-{{ arch }}
+            - v1-plt-cache
+
+      - run: mix dialyzer --plt
+
+      - save_cache:
+          key: v1-plt-cache-{{ arch }}-{{ checksum "mix.lock" }}
+          paths:
+            - _build
+            - ~/.mix
+
+      - run: mix dialyzer --halt-exit-status
