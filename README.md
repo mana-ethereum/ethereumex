@@ -110,6 +110,72 @@ iex> Ethereumex.HttpClient.eth_get_balance("0x407d73d8a49eeb85d32cf465507dd71d50
 ```
 Note that all method names are snakecases, so, for example, shh_getMessages method has corresponding Ethereumex.HttpClient.shh_get_messages/1 method. Signatures can be found in Ethereumex.Client.Behaviour. There are more examples in tests.
 
+
+#### eth_call example - Read only smart contract calls
+In order to call a smart contract using the JSON-RPC interface you need to properly hash the data attribute (this will need to include the contract method signature along with arguments if any). You can do this manually or use a hex package like (ABI)[https://github.com/exthereum/abi] to parse your smart contract interface or encode individual calls.
+
+```
+defp deps do
+  [
+    ...
+    {:ethereumex, "~> 0.3.2"},
+    {:abi, "~> 0.1.8"}
+    ...
+  ]
+end
+```
+
+Now load the abi and pass the method signature. Note that the address needs to be converted to bytes
+
+```
+address           = "0x123" |> String.slice(2..-1) |> Base.decode16(case: :mixed)
+contract_address  = "0x432"  
+abi_encoded_data  = ABI.encode("balanceOf(address)", [address])
+```
+
+Now you can use eth_call to execute this smart contract command:
+
+```
+balance_bytes = Ethereumex.HttpClient.eth_call(%{
+  data: "0x" <> abi_encoded_data,
+  contract: contract_address
+})
+```
+
+To convert the balance into an integer:
+
+```
+balance_bytes
+|> String.slice(2..-1)
+|> Base.decode16!(case: :lower)
+|> TypeDecoder.decode_raw([{:uint, 256}])
+|> List.first
+```
+
+#### eth_send_raw_transaction example - Payable smart contract call
+Calling a smart contract method that requires computation will cost you gas or ether (if that method requires payment also). This means you will have to sign your transactions using the private key that owns some ethereum. In order to send signed transactions you will need both (ABI)[https://hex.pm/packages/abi] and (Blockchain)[https://hex.pm/packages/blockchain] hex packages.
+
+```
+abi_encoded_data = ABI.encode("transferFrom(address,address,uint)", [from_address, to_address, token_id])
+contrat_address = "0x123"
+
+transaction_data = %Blockchain.Transaction{
+    data: abi_encoded_data,
+    gas_limit: 100_000,
+    gas_price: 16_000_000_000,
+    init: <<>>,
+    nonce: 5,
+    to: contract_address,
+    value: 0
+}
+|> Blockchain.Transaction.Signature.sign_transaction(private_key)
+|> Blockchain.Transaction.serialize()
+|> ExRLP.encode()
+|> Base.encode16(case: :lower)
+
+Ethereumex.HttpClient.eth_send_raw_transaction("0x" <> transaction_data)
+```
+
 ### Custom requests
 Many Ethereum protocol implementations support additional JSON-RPC API methods. To use them, you should call Ethereumex.HttpClient.request/3 method.
 
@@ -141,6 +207,7 @@ requests = [
    ]
  }
 ```
+
 
 ## Contributing
 
