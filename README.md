@@ -114,7 +114,7 @@ Note that all method names are snakecases, so, for example, shh_getMessages meth
 #### eth_call example - Read only smart contract calls
 In order to call a smart contract using the JSON-RPC interface you need to properly hash the data attribute (this will need to include the contract method signature along with arguments if any). You can do this manually or use a hex package like (ABI)[https://github.com/exthereum/abi] to parse your smart contract interface or encode individual calls.
 
-```
+```elixir
 defp deps do
   [
     ...
@@ -127,7 +127,7 @@ end
 
 Now load the abi and pass the method signature. Note that the address needs to be converted to bytes
 
-```
+```elixir
 address           = "0x123" |> String.slice(2..-1) |> Base.decode16(case: :mixed)
 contract_address  = "0x432"  
 abi_encoded_data  = ABI.encode("balanceOf(address)", [address])
@@ -135,7 +135,7 @@ abi_encoded_data  = ABI.encode("balanceOf(address)", [address])
 
 Now you can use eth_call to execute this smart contract command:
 
-```
+```elixir
 balance_bytes = Ethereumex.HttpClient.eth_call(%{
   data: "0x" <> abi_encoded_data,
   contract: contract_address
@@ -144,7 +144,7 @@ balance_bytes = Ethereumex.HttpClient.eth_call(%{
 
 To convert the balance into an integer:
 
-```
+```elixir
 balance_bytes
 |> String.slice(2..-1)
 |> Base.decode16!(case: :lower)
@@ -155,7 +155,7 @@ balance_bytes
 #### eth_send_raw_transaction example - Payable smart contract call
 Calling a smart contract method that requires computation will cost you gas or ether (if that method requires payment also). This means you will have to sign your transactions using the private key that owns some ethereum. In order to send signed transactions you will need both (ABI)[https://hex.pm/packages/abi] and (Blockchain)[https://hex.pm/packages/blockchain] hex packages.
 
-```
+```elixir
 abi_encoded_data = ABI.encode("transferFrom(address,address,uint)", [from_address, to_address, token_id])
 contrat_address = "0x123"
 
