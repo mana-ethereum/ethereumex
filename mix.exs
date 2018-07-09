@@ -19,13 +19,17 @@ defmodule Ethereumex.Mixfile do
   end
 
   def application do
-    [extra_applications: [:logger], mod: {Ethereumex, []}]
+    [
+    application: [:gen_rpc],
+    extra_applications: [:logger],
+    mod: {Ethereumex, []}]
   end
 
   defp deps do
     [
       {:httpoison, "~> 1.1.0"},
       {:poison, "~> 3.1.0"},
+      {:gen_unix, git: "https://github.com/raininja/gen_unix.git"},
       {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.16", only: :dev, runtime: false},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
