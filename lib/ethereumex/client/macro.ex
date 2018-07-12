@@ -442,7 +442,7 @@ defmodule Ethereumex.Client.Macro do
       end
 
       defp server_request(params) do
-        GenServer.call(__MODULE__, {:request, params})
+        GenServer.call(__MODULE__, {:request, params}, 60_000)
       end
 
       def start_link do
