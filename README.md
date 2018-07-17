@@ -129,8 +129,8 @@ Now load the abi and pass the method signature. Note that the address needs to b
 
 ```elixir
 address           = "0x123" |> String.slice(2..-1) |> Base.decode16(case: :mixed)
-contract_address  = "0x432"  
-abi_encoded_data  = ABI.encode("balanceOf(address)", [address])
+contract_address  = "0x432"
+abi_encoded_data  = ABI.encode("balanceOf(address)", [address]) |> Base.encode16(case: :lower)
 ```
 
 Now you can use eth_call to execute this smart contract command:
@@ -138,7 +138,7 @@ Now you can use eth_call to execute this smart contract command:
 ```elixir
 balance_bytes = Ethereumex.HttpClient.eth_call(%{
   data: "0x" <> abi_encoded_data,
-  contract: contract_address
+  to: contract_address
 })
 ```
 
