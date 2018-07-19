@@ -12,14 +12,14 @@ defmodule Ethereumex.Client.MacroTest do
   end
 
   defmodule Helpers do
-    def check_simple_method(method) do
+    def check(method, params \\ [], defaults \\ []) do
       method
       |> make_tuple
-      |> assert_method
+      |> assert_method(params, params ++ defaults)
     end
 
-    def assert_method({ex_method, eth_method}) do
-      {^eth_method, []} = apply(ClientMock, String.to_atom(ex_method), [])
+    def assert_method({ex_method, eth_method}, params, payload) do
+      {^eth_method, ^payload} = apply(ClientMock, String.to_atom(ex_method), params)
     end
 
     def make_tuple(ex_method) do
@@ -50,36 +50,45 @@ defmodule Ethereumex.Client.MacroTest do
     :ok
   end
 
-  describe "methods w/o params ... /0" do
-    test ".web3_client_version/0", do: Helpers.check_simple_method("web3_client_version")
-    test ".net_version/0", do: Helpers.check_simple_method("net_version")
-    test ".net_peer_count/0", do: Helpers.check_simple_method("net_peer_count")
-    test ".net_listening/0", do: Helpers.check_simple_method("net_listening")
-    test ".eth_protocol_version/0", do: Helpers.check_simple_method("eth_protocol_version")
-    test ".eth_syncing/0", do: Helpers.check_simple_method("eth_syncing")
-    test ".eth_coinbase/0", do: Helpers.check_simple_method("eth_coinbase")
-    test ".eth_mining/0", do: Helpers.check_simple_method("eth_mining")
-    test ".eth_hashrate/0", do: Helpers.check_simple_method("eth_hashrate")
-    test ".eth_gas_price/0", do: Helpers.check_simple_method("eth_gas_price")
-    test ".eth_accounts/0", do: Helpers.check_simple_method("eth_accounts")
-    test ".eth_block_number/0", do: Helpers.check_simple_method("eth_block_number")
-    test ".eth_get_compilers/0", do: Helpers.check_simple_method("eth_get_compilers")
-    test ".eth_new_block_filter/0", do: Helpers.check_simple_method("eth_new_block_filter")
+  @address "0x407d73d8a49eeb85d32cf465507dd71d507100c1"
 
-    test ".eth_new_pending_transaction_filter/0",
-      do: Helpers.check_simple_method("eth_new_pending_transaction_filter")
+  test ".web3_client_version/0", do: Helpers.check("web3_client_version")
+  test ".net_version/0", do: Helpers.check("net_version")
+  test ".net_peer_count/0", do: Helpers.check("net_peer_count")
+  test ".net_listening/0", do: Helpers.check("net_listening")
+  test ".eth_protocol_version/0", do: Helpers.check("eth_protocol_version")
+  test ".eth_syncing/0", do: Helpers.check("eth_syncing")
+  test ".eth_coinbase/0", do: Helpers.check("eth_coinbase")
+  test ".eth_mining/0", do: Helpers.check("eth_mining")
+  test ".eth_hashrate/0", do: Helpers.check("eth_hashrate")
+  test ".eth_gas_price/0", do: Helpers.check("eth_gas_price")
+  test ".eth_accounts/0", do: Helpers.check("eth_accounts")
+  test ".eth_block_number/0", do: Helpers.check("eth_block_number")
+  test ".eth_get_compilers/0", do: Helpers.check("eth_get_compilers")
+  test ".eth_new_block_filter/0", do: Helpers.check("eth_new_block_filter")
 
-    test ".eth_get_work/0", do: Helpers.check_simple_method("eth_get_work")
-    test ".shh_version/0", do: Helpers.check_simple_method("shh_version")
-    test ".shh_new_identity/0", do: Helpers.check_simple_method("shh_new_identity")
-    test ".shh_new_group/0", do: Helpers.check_simple_method("shh_new_group")
-  end
+  test ".eth_new_pending_transaction_filter/0",
+    do: Helpers.check("eth_new_pending_transaction_filter")
 
-  describe ".web3_sha3/1" do
-    test "returns correct params" do
-      string = "string to be hashed"
+  test ".eth_get_work/0", do: Helpers.check("eth_get_work")
+  test ".shh_version/0", do: Helpers.check("shh_version")
+  test ".shh_new_identity/0", do: Helpers.check("shh_new_identity")
+  test ".shh_new_group/0", do: Helpers.check("shh_new_group")
 
-      {"web3_sha3", [string]} = ClientMock.web3_sha3(string)
-    end
+  test ".web3_sha3/1", do: Helpers.check("web3_sha3", ["string to be hashed"])
+
+  test ".eth_get_balance/1",
+    do: Helpers.check("eth_get_balance", [@address], ["latest"])
+
+  test ".eth_get_storage_at/1",
+    do: Helpers.check("eth_get_storage_at", [@address, "0x0"], ["latest"])
+
+  test ".eth_get_transaction_count/1",
+    do: Helpers.check("eth_get_transaction_count", [@address], ["latest"])
+
+  test ".eth_get_block_transaction_count_by_hash/1" do
+    Helpers.check("eth_get_block_transaction_count_by_hash", [
+      "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238"
+    ])
   end
 end
