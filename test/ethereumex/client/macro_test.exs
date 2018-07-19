@@ -23,9 +23,10 @@ defmodule Ethereumex.Client.MacroTest do
     end
 
     def make_tuple(ex_method) do
-      eth_method = ex_method
-                   |> String.split("_")
-                   |> uppercase
+      eth_method =
+        ex_method
+        |> String.split("_")
+        |> uppercase
 
       {ex_method, eth_method}
     end
@@ -34,9 +35,10 @@ defmodule Ethereumex.Client.MacroTest do
     def uppercase([first, second]), do: Enum.join([first, second], "_")
     # web3_client_version -> web3_clientVersion and keep this logic
     def uppercase([first, second | tail]) do
-      uppered = tail
-      |> Enum.map(&String.capitalize/1)
-      |> Enum.join
+      uppered =
+        tail
+        |> Enum.map(&String.capitalize/1)
+        |> Enum.join()
 
       Enum.join([first, second], "_") <> uppered
     end
@@ -63,7 +65,10 @@ defmodule Ethereumex.Client.MacroTest do
     test ".eth_block_number/0", do: Helpers.check_simple_method("eth_block_number")
     test ".eth_get_compilers/0", do: Helpers.check_simple_method("eth_get_compilers")
     test ".eth_new_block_filter/0", do: Helpers.check_simple_method("eth_new_block_filter")
-    test ".eth_new_pending_transaction_filter/0", do: Helpers.check_simple_method("eth_new_pending_transaction_filter")
+
+    test ".eth_new_pending_transaction_filter/0",
+      do: Helpers.check_simple_method("eth_new_pending_transaction_filter")
+
     test ".eth_get_work/0", do: Helpers.check_simple_method("eth_get_work")
     test ".shh_version/0", do: Helpers.check_simple_method("shh_version")
     test ".shh_new_identity/0", do: Helpers.check_simple_method("shh_new_identity")
