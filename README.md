@@ -157,7 +157,7 @@ Calling a smart contract method that requires computation will cost you gas or e
 
 ```elixir
 abi_encoded_data = ABI.encode("transferFrom(address,address,uint)", [from_address, to_address, token_id])
-contrat_address = "0x123"
+contract_address = "0x123" |> String.slice(2..-1) |> Base.decode16(case: :mixed)
 
 transaction_data = %Blockchain.Transaction{
     data: abi_encoded_data,
