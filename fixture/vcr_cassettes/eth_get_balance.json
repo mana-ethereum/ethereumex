@@ -1,0 +1,25 @@
+[
+  {
+    "request": {
+      "body": "{\"params\":[\"0x001bdcde60cb916377a3a3bf4e8054051a4d02e7\",\"latest\"],\"method\":\"eth_getBalance\",\"jsonrpc\":\"2.0\",\"id\":5}",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "method": "post",
+      "options": [],
+      "request_body": "",
+      "url": "http://localhost:8545"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"jsonrpc\":\"2.0\",\"id\":5,\"result\":\"0x0\"}\n",
+      "headers": {
+        "Content-Type": "application/json",
+        "Date": "Fri, 20 Jul 2018 00:15:27 GMT",
+        "Content-Length": "40"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

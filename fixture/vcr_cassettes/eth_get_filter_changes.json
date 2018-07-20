@@ -1,0 +1,25 @@
+[
+  {
+    "request": {
+      "body": "{\"params\":[\"0x16\"],\"method\":\"eth_getFilterChanges\",\"jsonrpc\":\"2.0\",\"id\":25}",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "method": "post",
+      "options": [],
+      "request_body": "",
+      "url": "http://localhost:8545"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"jsonrpc\":\"2.0\",\"id\":25,\"error\":{\"code\":-32000,\"message\":\"filter not found\"}}\n",
+      "headers": {
+        "Content-Type": "application/json",
+        "Date": "Fri, 20 Jul 2018 00:15:31 GMT",
+        "Content-Length": "79"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

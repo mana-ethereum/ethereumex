@@ -1,0 +1,25 @@
+[
+  {
+    "request": {
+      "body": "{\"params\":[],\"method\":\"web3_clientVersion\",\"jsonrpc\":\"2.0\",\"id\":13}",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "method": "post",
+      "options": [],
+      "request_body": "",
+      "url": "http://localhost:8545"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"jsonrpc\":\"2.0\",\"id\":13,\"result\":\"Geth/v1.8.12-stable-37685930/linux-amd64/go1.10.3\"}\n",
+      "headers": {
+        "Content-Type": "application/json",
+        "Date": "Fri, 20 Jul 2018 00:15:29 GMT",
+        "Content-Length": "87"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

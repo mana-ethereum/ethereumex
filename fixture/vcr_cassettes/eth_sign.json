@@ -1,0 +1,25 @@
+[
+  {
+    "request": {
+      "body": "{\"params\":[\"0xdb7f51a15211778cb7670e00e5df8ca4edb8581e\",\"0xdeadbeaf\"],\"method\":\"eth_sign\",\"jsonrpc\":\"2.0\",\"id\":38}",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "method": "post",
+      "options": [],
+      "request_body": "",
+      "url": "http://localhost:8545"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"jsonrpc\":\"2.0\",\"id\":38,\"error\":{\"code\":-32000,\"message\":\"authentication needed: password or unlock\"}}\n",
+      "headers": {
+        "Content-Type": "application/json",
+        "Date": "Fri, 20 Jul 2018 04:45:48 GMT",
+        "Content-Length": "104"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

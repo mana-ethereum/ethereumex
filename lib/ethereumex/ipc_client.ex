@@ -3,22 +3,23 @@ defmodule Ethereumex.IpcClient do
   import Ethereumex.Config
   @moduledoc false
 
-  @spec single_request(map()) :: {:ok, any() | [and()]} | error
+  @spec single_request(map()) :: {:ok, any() | [any()]} | error
   def single_request(payload) do
     payload
     |> encode_payload
     |> post_request
   end
 
-  @@spec encode_payload(map()) :: binary()
+  @spec encode_payload(map()) :: binary()
   defp encode_payload(payload) do
     payload |> Poison.encode!()
   end
 
-  @@spec post_request(binary()) :: {:ok | :error, any()}
+  @spec post_request(binary()) :: {:ok | :error, any()}
   defp post_request(payload) do
     options = Ethereumex.Config.ipc_options()
-
-    with {:ok, response} <-
-
+  #
+  #   with {:ok, response} <-
+  #
   end
+end

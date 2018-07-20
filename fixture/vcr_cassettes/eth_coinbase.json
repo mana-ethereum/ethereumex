@@ -1,0 +1,25 @@
+[
+  {
+    "request": {
+      "body": "{\"params\":[],\"method\":\"eth_coinbase\",\"jsonrpc\":\"2.0\",\"id\":6}",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "method": "post",
+      "options": [],
+      "request_body": "",
+      "url": "http://localhost:8545"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"jsonrpc\":\"2.0\",\"id\":6,\"result\":\"0x4c184ca487f9af9fb3378eb5008f177f7b418400\"}\n",
+      "headers": {
+        "Content-Type": "application/json",
+        "Date": "Fri, 20 Jul 2018 00:15:28 GMT",
+        "Content-Length": "79"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

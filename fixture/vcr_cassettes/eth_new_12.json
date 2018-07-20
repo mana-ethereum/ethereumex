@@ -1,0 +1,25 @@
+[
+  {
+    "request": {
+      "body": "{\"params\":[{\"topics\":[\"0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b\",null,[\"0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b\",\"0x0000000000000000000000000aff3454fce5edbc8cca8697c15331677e6ebccc\"]],\"toBlock\":\"0x2\",\"fromBlock\":\"0x1\",\"address\":\"0x8888f1f195afa192cfee860698584c030f4c9db1\"}],\"method\":\"eth_newFilter\",\"jsonrpc\":\"2.0\",\"id\":2}",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "method": "post",
+      "options": [],
+      "request_body": "",
+      "url": "http://localhost:8545"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"jsonrpc\":\"2.0\",\"id\":2,\"result\":\"0x2be6963b9c2521911266ef875e79e408\"}\n",
+      "headers": {
+        "Content-Type": "application/json",
+        "Date": "Fri, 20 Jul 2018 00:15:27 GMT",
+        "Content-Length": "71"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

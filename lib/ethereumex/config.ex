@@ -20,4 +20,10 @@ defmodule Ethereumex.Config do
   def http_options do
     Application.get_env(:ethereumex, :http_options, [])
   end
-end
+
+    @spec gen_unix_options() :: keyword()
+    def gen_unix_options do
+      Application.get_env(:ethereumex, :gen_unix_options, [])
+    end
+  end
+    

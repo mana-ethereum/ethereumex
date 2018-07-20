@@ -1,0 +1,25 @@
+[
+  {
+    "request": {
+      "body": "{\"params\":[],\"method\":\"eth_mining\",\"jsonrpc\":\"2.0\",\"id\":24}",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "method": "post",
+      "options": [],
+      "request_body": "",
+      "url": "http://localhost:8545"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"jsonrpc\":\"2.0\",\"id\":24,\"result\":true}\n",
+      "headers": {
+        "Content-Type": "application/json",
+        "Date": "Fri, 20 Jul 2018 01:24:59 GMT",
+        "Content-Length": "40"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

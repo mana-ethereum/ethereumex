@@ -111,19 +111,19 @@ defmodule Ethereumex.Client.Macro do
         "eth_getBlockTransactionCountByNumber" |> request(params, opts)
       end
 
-      @spec eth_get_uncle_count_by_block_hash(binary(), keyword()) :: {:ok, binary()} | error
-      def eth_get_uncle_count_by_block_hash(hash, opts \\ []) do
-        params = [hash]
-
-        "eth_getUncleCountByBlockHash" |> request(params, opts)
-      end
-
-      @spec eth_get_uncle_count_by_block_number(binary(), keyword()) :: {:ok, binary()} | error
-      def eth_get_uncle_count_by_block_number(block \\ "latest", opts \\ []) do
-        params = [block]
-
-        "eth_getUncleCountByBlockNumber" |> request(params, opts)
-      end
+      # @spec eth_get_uncle_by_block_hash(binary(), keyword()) :: {:ok, binary()} | error
+      # def eth_get_uncle_by_block_hash(hash, opts \\ []) do
+      #   params = [hash]
+      #
+      #   "eth_getUncleByBlockHash" |> request(params, opts)
+      # end
+      #
+      # @spec eth_get_uncle_by_block_number(binary(), keyword()) :: {:ok, binary()} | error
+      # def eth_get_uncle_by_block_number(block \\ "latest", opts \\ []) do
+      #   params = [block]
+      #
+      #   "eth_getUncleByBlockNumber" |> request(params, opts)
+      # end
 
       @spec eth_get_code(binary(), binary(), keyword()) :: {:ok, binary()} | error
       def eth_get_code(address, block \\ "latest", opts \\ []) do
@@ -211,26 +211,26 @@ defmodule Ethereumex.Client.Macro do
         "eth_getTransactionReceipt" |> request(params, opts)
       end
 
-      @spec eth_get_uncle_by_block_hash_and_index(binary(), binary(), keyword()) ::
-              {:ok, map()} | error
-      def eth_get_uncle_by_block_hash_and_index(hash, index, opts \\ []) do
-        params = [hash, index]
+      # @spec eth_get_uncle_by_block_hash_and_index(binary(), binary(), keyword()) ::
+      #         {:ok, map()} | error
+      # def eth_get_uncle_by_block_hash_and_index(hash, index, opts \\ []) do
+      #   params = [hash, index]
+      #
+      #   "eth_getUncleByBlockHashAndIndex" |> request(params, opts)
+      # end
+      #
+      # @spec eth_get_uncle_by_block_number_and_index(binary(), binary(), keyword()) ::
+      #         {:ok, map()} | error
+      # def eth_get_uncle_by_block_number_and_index(block, index, opts \\ []) do
+      #   params = [block, index]
+      #
+      #   "eth_getUncleByBlockNumberAndIndex" |> request(params, opts)
+      # end
 
-        "eth_getUncleByBlockHashAndIndex" |> request(params, opts)
-      end
-
-      @spec eth_get_uncle_by_block_number_and_index(binary(), binary(), keyword()) ::
-              {:ok, map()} | error
-      def eth_get_uncle_by_block_number_and_index(block, index, opts \\ []) do
-        params = [block, index]
-
-        "eth_getUncleByBlockNumberAndIndex" |> request(params, opts)
-      end
-
-      @spec eth_get_compilers(keyword()) :: {:ok, [binary()]} | error
-      def eth_get_compilers(opts \\ []) do
-        "eth_getCompilers" |> request([], opts)
-      end
+      # @spec eth_get_compilers(keyword()) :: {:ok, [binary()]} | error
+      # def eth_get_compilers(opts \\ []) do
+      #   "eth_getCompilers" |> request([], opts)
+      # end
 
       @spec eth_compile_lll(binary(), keyword()) :: {:ok, binary()} | error
       def eth_compile_lll(data, opts \\ []) do
@@ -317,97 +317,99 @@ defmodule Ethereumex.Client.Macro do
         "eth_submitHashrate" |> request(params, opts)
       end
 
-      @spec db_put_string(binary(), binary(), binary(), keyword()) :: {:ok, boolean()} | error
-      def db_put_string(db, key, value, opts \\ []) do
-        params = [db, key, value]
+      # db methods removed, see https://github.com/ethereum/go-ethereum/issues/311
+      # @spec db_put_string(binary(), binary(), binary(), keyword()) :: {:ok, boolean()} | error
+      # def db_put_string(db, key, value, opts \\ []) do
+      #   params = [db, key, value]
+      #
+      #   "db_putString" |> request(params, opts)
+      # end
+      #
+      # @spec db_get_string(binary(), binary(), keyword()) :: {:ok, binary()} | error
+      # def db_get_string(db, key, opts \\ []) do
+      #   params = [db, key]
+      #
+      #   "db_getString" |> request(params, opts)
+      # end
+      #
+      # @spec db_put_hex(binary(), binary(), binary(), keyword()) :: {:ok, boolean()} | error
+      # def db_put_hex(db, key, data, opts \\ []) do
+      #   params = [db, key, data]
+      #
+      #   "db_putHex" |> request(params, opts)
+      # end
+      #
+      # @spec db_get_hex(binary(), binary(), keyword()) :: {:ok, binary()} | error
+      # def db_get_hex(db, key, opts \\ []) do
+      #   params = [db, key]
+      #
+      #   "db_getHex" |> request(params, opts)
+      # end
 
-        "db_putString" |> request(params, opts)
-      end
+      # @spec shh_post(map(), keyword()) :: {:ok, boolean()} | error
+      # def shh_post(whisper, opts \\ []) do
+      #   params = [whisper]
+      #
+      #   "shh_post" |> request(params, opts)
+      # end
+      #
+      # @spec shh_version(keyword()) :: {:ok, binary()} | error
+      # def shh_version(opts \\ []) do
+      #   "shh_version" |> request([], opts)
+      # end
+      #
+      # @spec shh_new_identity(keyword()) :: {:ok, binary()} | error
+      # def shh_new_identity(opts \\ []) do
+      #   "shh_newIdentity" |> request([], opts)
+      # end
+      #
+      # @spec shh_has_identity(binary(), keyword()) :: {:ok, boolean} | error
+      # def shh_has_identity(address, opts \\ []) do
+      #   params = [address]
+      #
+      #   "shh_hasIdentity" |> request(params, opts)
+      # end
 
-      @spec db_get_string(binary(), binary(), keyword()) :: {:ok, binary()} | error
-      def db_get_string(db, key, opts \\ []) do
-        params = [db, key]
+      # not_implemented
+      # @spec shh_new_group(keyword()) :: {:ok, binary()} | error
+      # def shh_new_group(opts \\ []) do
+      #   "shh_newGroup" |> request([], opts)
+      # end
+      #
+      # @spec shh_add_to_group(binary(), keyword()) :: {:ok, boolean()} | error
+      # def shh_add_to_group(address, opts \\ []) do
+      #   params = [address]
+      #
+      #   "shh_addToGroup" |> request(params, opts)
+      # end
 
-        "db_getString" |> request(params, opts)
-      end
-
-      @spec db_put_hex(binary(), binary(), binary(), keyword()) :: {:ok, boolean()} | error
-      def db_put_hex(db, key, data, opts \\ []) do
-        params = [db, key, data]
-
-        "db_putHex" |> request(params, opts)
-      end
-
-      @spec db_get_hex(binary(), binary(), keyword()) :: {:ok, binary()} | error
-      def db_get_hex(db, key, opts \\ []) do
-        params = [db, key]
-
-        "db_getHex" |> request(params, opts)
-      end
-
-      @spec shh_post(map(), keyword()) :: {:ok, boolean()} | error
-      def shh_post(whisper, opts \\ []) do
-        params = [whisper]
-
-        "shh_post" |> request(params, opts)
-      end
-
-      @spec shh_version(keyword()) :: {:ok, binary()} | error
-      def shh_version(opts \\ []) do
-        "shh_version" |> request([], opts)
-      end
-
-      @spec shh_new_identity(keyword()) :: {:ok, binary()} | error
-      def shh_new_identity(opts \\ []) do
-        "shh_newIdentity" |> request([], opts)
-      end
-
-      @spec shh_has_identity(binary(), keyword()) :: {:ok, boolean} | error
-      def shh_has_identity(address, opts \\ []) do
-        params = [address]
-
-        "shh_hasIdentity" |> request(params, opts)
-      end
-
-      @spec shh_new_group(keyword()) :: {:ok, binary()} | error
-      def shh_new_group(opts \\ []) do
-        "shh_newGroup" |> request([], opts)
-      end
-
-      @spec shh_add_to_group(binary(), keyword()) :: {:ok, boolean()} | error
-      def shh_add_to_group(address, opts \\ []) do
-        params = [address]
-
-        "shh_addToGroup" |> request(params, opts)
-      end
-
-      @spec shh_new_filter(map(), keyword()) :: {:ok, binary()} | error
-      def shh_new_filter(filter_options, opts \\ []) do
-        params = [filter_options]
-
-        "shh_newFilter" |> request(params, opts)
-      end
-
-      @spec shh_uninstall_filter(binary(), keyword()) :: {:ok, binary()} | error
-      def shh_uninstall_filter(filter_id, opts \\ []) do
-        params = [filter_id]
-
-        "shh_uninstallFilter" |> request(params, opts)
-      end
-
-      @spec shh_get_filter_changes(binary(), keyword()) :: {:ok, [map()]} | error
-      def shh_get_filter_changes(filter_id, opts \\ []) do
-        params = [filter_id]
-
-        "shh_getFilterChanges" |> request(params, opts)
-      end
-
-      @spec shh_get_messages(binary(), keyword()) :: {:ok, [map()]} | error
-      def shh_get_messages(filter_id, opts \\ []) do
-        params = [filter_id]
-
-        "shh_getMessages" |> request(params, opts)
-      end
+      # @spec shh_new_message_filter(map(), keyword()) :: {:ok, binary()} | error
+      # def shh_new_message_filter(filter_options, opts \\ []) do
+      #   params = [filter_options]
+      #
+      #   "shh_newFilter" |> request(params, opts)
+      # end
+      #
+      # @spec shh_uninstall_filter(binary(), keyword()) :: {:ok, binary()} | error
+      # def shh_uninstall_filter(filter_id, opts \\ []) do
+      #   params = [filter_id]
+      #
+      #   "shh_uninstallFilter" |> request(params, opts)
+      # end
+      #
+      # @spec shh_get_filter_changes(binary(), keyword()) :: {:ok, [map()]} | error
+      # def shh_get_filter_changes(filter_id, opts \\ []) do
+      #   params = [filter_id]
+      #
+      #   "shh_getFilterChanges" |> request(params, opts)
+      # end
+      #
+      # @spec shh_get_messages(binary(), keyword()) :: {:ok, [map()]} | error
+      # def shh_get_messages(filter_id, opts \\ []) do
+      #   params = [filter_id]
+      #
+      #   "shh_getMessages" |> request(params, opts)
+      # end
 
       @spec add_request_info(binary, [binary] | [map]) :: map
       defp add_request_info(method_name, params \\ []) do

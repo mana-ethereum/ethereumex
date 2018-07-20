@@ -1,0 +1,25 @@
+[
+  {
+    "request": {
+      "body": "{\"params\":[\"0x0000000000000000000000000000000000000000000000000000000000500000\",\"0x59daa26581d0acd1fce254fb7e85952f4c09d0915afd33d3886cd914bc7d283c\"],\"method\":\"eth_submitHashrate\",\"jsonrpc\":\"2.0\",\"id\":1}",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "method": "post",
+      "options": [],
+      "request_body": "",
+      "url": "http://localhost:8545"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"error\":{\"code\":-32602,\"message\":\"invalid argument 0: json: cannot unmarshal hex number with leading zero digits into Go value of type hexutil.Uint64\"}}\n",
+      "headers": {
+        "Content-Type": "application/json",
+        "Date": "Fri, 20 Jul 2018 00:15:27 GMT",
+        "Content-Length": "177"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

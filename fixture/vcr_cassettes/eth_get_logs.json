@@ -1,0 +1,25 @@
+[
+  {
+    "request": {
+      "body": "{\"params\":[{\"topics\":[\"0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b\"]}],\"method\":\"eth_getLogs\",\"jsonrpc\":\"2.0\",\"id\":34}",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "method": "post",
+      "options": [],
+      "request_body": "",
+      "url": "http://localhost:8545"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"jsonrpc\":\"2.0\",\"id\":34,\"result\":[]}\n",
+      "headers": {
+        "Content-Type": "application/json",
+        "Date": "Fri, 20 Jul 2018 00:15:33 GMT",
+        "Content-Length": "38"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

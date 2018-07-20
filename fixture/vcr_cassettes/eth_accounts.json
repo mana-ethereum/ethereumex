@@ -1,0 +1,25 @@
+[
+  {
+    "request": {
+      "body": "{\"params\":[],\"method\":\"eth_accounts\",\"jsonrpc\":\"2.0\",\"id\":12}",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "method": "post",
+      "options": [],
+      "request_body": "",
+      "url": "http://localhost:8545"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"jsonrpc\":\"2.0\",\"id\":12,\"result\":[\"0xdb7f51a15211778cb7670e00e5df8ca4edb8581e\"]}\n",
+      "headers": {
+        "Content-Type": "application/json",
+        "Date": "Fri, 20 Jul 2018 00:15:29 GMT",
+        "Content-Length": "82"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

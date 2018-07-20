@@ -1,0 +1,25 @@
+[
+  {
+    "request": {
+      "body": "{\"params\":[],\"method\":\"eth_getWork\",\"jsonrpc\":\"2.0\",\"id\":23}",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "method": "post",
+      "options": [],
+      "request_body": "",
+      "url": "http://localhost:8545"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"jsonrpc\":\"2.0\",\"id\":23,\"result\":[\"0xb5b2d41b18ef3f2ad1ba1287041af43676a94628b8f3fa7935b8c33f4bee0325\",\"0x526ee6e688a9b3d466fe4a7355197a89898593509d75c570942cc73a5ca8299d\",\"0x00000006704461ce9585e5857da1e140f73ab64dd4ed40f9fc08d0df5fe4c1ee\"]}\n",
+      "headers": {
+        "Content-Type": "application/json",
+        "Date": "Thu, 19 Jul 2018 23:44:29 GMT",
+        "Content-Length": "244"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]
