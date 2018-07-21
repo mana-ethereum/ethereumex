@@ -4,6 +4,7 @@ Elixir JSON-RPC client for the Ethereum blockchain
 This is WIP code meant to complete integration testing
 
 I've implemented functionality from [exVCR](https://github.com/parroty/exvcr) to record tests that return positive
+
 TODO:  
 - [ ] geth truffle box for testing consistency
 - [ ] method by method review of ethereum API
@@ -62,11 +63,11 @@ config :ethereumex,
 - [x]eth_getUncleCountByBlockHash
 - [x]eth_getUncleCountByBlockNumber
 - [x]eth_getCode
-- [x]eth_sign
+- [ ]eth_sign
 - [x]eth_sendTransaction
 - [x]eth_sendRawTransaction
-- [x]eth_call
-- [x]eth_estimateGas
+- [ ]eth_call
+- [ ]eth_estimateGas
 - [x]eth_getBlockByHash
 - [x]eth_getBlockByNumber
 - [x]eth_getTransactionByHash
