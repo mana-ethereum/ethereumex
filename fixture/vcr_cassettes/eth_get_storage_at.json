@@ -1,7 +1,7 @@
 [
   {
     "request": {
-      "body": "{\"params\":[\"0x68087cc0282c35d9ad8b51bf6a35a933\"],\"method\":\"eth_getFilterChanges\",\"jsonrpc\":\"2.0\",\"id\":38}",
+      "body": "{\"params\":[\"0x001bdcde60cb916377a3a3bf4e8054051a4d02e7\",\"0x0\"],\"method\":\"eth_getBalance\",\"jsonrpc\":\"2.0\",\"id\":24}",
       "headers": {
         "Content-Type": "application/json"
       },
@@ -12,11 +12,11 @@
     },
     "response": {
       "binary": false,
-      "body": "{\"jsonrpc\":\"2.0\",\"id\":38,\"result\":[]}\n",
+      "body": "{\"jsonrpc\":\"2.0\",\"id\":24,\"result\":\"0x0\"}\n",
       "headers": {
         "Content-Type": "application/json",
-        "Date": "Sat, 21 Jul 2018 01:50:47 GMT",
-        "Content-Length": "38"
+        "Date": "Fri, 20 Jul 2018 05:06:29 GMT",
+        "Content-Length": "41"
       },
       "status_code": 200,
       "type": "ok"

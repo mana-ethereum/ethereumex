@@ -1,7 +1,7 @@
 [
   {
     "request": {
-      "body": "{\"params\":[\"0xdb7f51a15211778cb7670e00e5df8ca4edb8581e\",\"0xdeadbeaf\"],\"method\":\"eth_sign\",\"jsonrpc\":\"2.0\",\"id\":38}",
+      "body": "{\"params\":[\"0x4b6f0963088345e3b0e95af72c186dd40fa95392\",\"test\"],\"method\":\"eth_sign\",\"jsonrpc\":\"2.0\",\"id\":32}",
       "headers": {
         "Content-Type": "application/json"
       },
@@ -12,11 +12,11 @@
     },
     "response": {
       "binary": false,
-      "body": "{\"jsonrpc\":\"2.0\",\"id\":38,\"error\":{\"code\":-32000,\"message\":\"authentication needed: password or unlock\"}}\n",
+      "body": "{\"jsonrpc\":\"2.0\",\"id\":32,\"error\":{\"code\":-32602,\"message\":\"invalid argument 1: json: cannot unmarshal hex string without 0x prefix into Go value of type hexutil.Bytes\"}}\n",
       "headers": {
         "Content-Type": "application/json",
-        "Date": "Fri, 20 Jul 2018 04:45:48 GMT",
-        "Content-Length": "104"
+        "Date": "Fri, 20 Jul 2018 05:58:55 GMT",
+        "Content-Length": "170"
       },
       "status_code": 200,
       "type": "ok"

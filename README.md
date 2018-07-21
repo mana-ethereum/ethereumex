@@ -33,68 +33,68 @@ config :ethereumex,
 
 ### Available methods:
 
-* web3_clientVersion
-* web3_sha3
-* net_version
-* net_peerCount
-* net_listening
-* eth_protocolVersion
-* eth_syncing
-* eth_coinbase
-* eth_mining
-* eth_hashrate
-* eth_gasPrice
-* eth_accounts
-* eth_blockNumber
-* eth_getBalance
-* eth_getStorageAt
-* eth_getTransactionCount
-* eth_getBlockTransactionCountByHash
-* eth_getBlockTransactionCountByNumber
-* eth_getUncleCountByBlockHash
-* eth_getUncleCountByBlockNumber
-* eth_getCode
-* eth_sign
-* eth_sendTransaction
-* eth_sendRawTransaction
-* eth_call
-* eth_estimateGas
-* eth_getBlockByHash
-* eth_getBlockByNumber
-* eth_getTransactionByHash
-* eth_getTransactionByBlockHashAndIndex
-* eth_getTransactionByBlockNumberAndIndex
-* eth_getTransactionReceipt
-* eth_getUncleByBlockHashAndIndex
-* eth_getUncleByBlockNumberAndIndex
-* eth_getCompilers
-* eth_compileLLL
-* eth_compileSolidity
-* eth_compileSerpent
-* eth_newFilter
-* eth_newBlockFilter
-* eth_newPendingTransactionFilter
-* eth_uninstallFilter
-* eth_getFilterChanges
-* eth_getFilterLogs
-* eth_getLogs
-* eth_getWork
-* eth_submitWork
-* eth_submitHashrate
-* db_putString
-* db_getString
-* db_putHex
-* db_getHex
-* shh_post
-* shh_version
-* shh_newIdentity
-* shh_hasIdentity
-* shh_newGroup
-* shh_addToGroup
-* shh_newFilter
-* shh_uninstallFilter
-* shh_getFilterChanges
-* shh_getMessages
+- [x]web3_clientVersion
+- [x]web3_sha3
+- [x]net_version
+- [x]net_peerCount
+- [x]net_listening
+- [x]eth_protocolVersion
+- [x]eth_syncing
+- [x]eth_coinbase
+- [x]eth_mining
+- [x]eth_hashrate
+- [x]eth_gasPrice
+- [x]eth_accounts
+- [x]eth_blockNumber
+- [x]eth_getBalance
+- [x]eth_getStorageAt
+- [x]eth_getTransactionCount
+- [x]eth_getBlockTransactionCountByHash
+- [x]eth_getBlockTransactionCountByNumber
+- [x]eth_getUncleCountByBlockHash
+- [x]eth_getUncleCountByBlockNumber
+- [x]eth_getCode
+- [x]eth_sign
+- [x]eth_sendTransaction
+- [x]eth_sendRawTransaction
+- [x]eth_call
+- [x]eth_estimateGas
+- [x]eth_getBlockByHash
+- [x]eth_getBlockByNumber
+- [x]eth_getTransactionByHash
+- [x]eth_getTransactionByBlockHashAndIndex
+- [x]eth_getTransactionByBlockNumberAndIndex
+- [ ]eth_getTransactionReceipt
+- [ ]eth_getUncleByBlockHashAndIndex
+- [ ]eth_getUncleByBlockNumberAndIndex
+- [ ]eth_getCompilers
+- [ ]eth_compileLLL
+- [ ]eth_compileSolidity
+- [ ]eth_compileSerpent
+- [ ]eth_newFilter
+- [ ]eth_newBlockFilter
+- [ ]eth_newPendingTransactionFilter
+- [ ]eth_uninstallFilter
+- [ ]eth_getFilterChanges
+- [ ]eth_getFilterLogs
+- [ ]eth_getLogs
+- [ ]eth_getWork
+- [ ]eth_submitWork
+- [ ]eth_submitHashrate
+- [ ]db_putString
+- [ ]db_getString
+- [ ]db_putHex
+- [ ]db_getHex
+- [ ]shh_post
+- [ ]shh_version
+- [ ]shh_newIdentity
+- [ ]shh_hasIdentity
+- [ ]shh_newGroup
+- [ ]shh_addToGroup
+- [ ]shh_newFilter
+- [ ]shh_uninstallFilter
+- [ ]shh_getFilterChanges
+- [ ]shh_getMessages
 
 ### Examples
 
@@ -157,7 +157,7 @@ Calling a smart contract method that requires computation will cost you gas or e
 
 ```elixir
 abi_encoded_data = ABI.encode("transferFrom(address,address,uint)", [from_address, to_address, token_id])
-contrat_address = "0x123"
+contract_address = "0x123"
 
 transaction_data = %Blockchain.Transaction{
     data: abi_encoded_data,
