@@ -12,13 +12,14 @@ The command above is an example of removing the cassette to reset the test to us
 "Cassette" names are test_name.json found in ./fixture/vcr_cassettes .
 
 TODO:  
-- [ ] geth truffle box for testing consistency
-- [ ] method by method latest review of EEthereum API for JSONRPC
-- [ ] IPC Methods allowed
 - [ ] integrate abi library for encoding data to test eth_call
+- [ ] method by method latest review of Ethereum API for JSONRPC
+- [ ] add on/off configuration option for exVCR
+- [ ] IPC Methods allowed
+- [ ] unix domain client
 - [ ] whisper methods
 - [ ] expand configuration docs
-- [ ] add on/off configuration option for exVCR
+- [ ] geth truffle box for testing consistency
 
 ## Installation
 Add Ethereumex to your `mix.exs` dependencies:
