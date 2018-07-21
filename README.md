@@ -1,16 +1,22 @@
 # Ethereumex [![CircleCI](https://circleci.com/gh/exthereum/ethereumex.svg?style=svg)](https://circleci.com/gh/exthereum/ethereumex)
 
 Elixir JSON-RPC client for the Ethereum blockchain
-This is WIP code meant to complete integration testing
+This is WIP code meant to complete integration testing and UNIX domain socket development
 
 I've implemented functionality from [exVCR](https://github.com/parroty/exvcr) to record tests that return positive
+```
+mix vcr.delete test_name
+```
+The command above is an example of removing the cassette to reset the test to use actual HTTP.
 
 TODO:  
 - [ ] geth truffle box for testing consistency
-- [ ] method by method latest review of ethereum API for JSONRPC 
+- [ ] method by method latest review of EEthereum API for JSONRPC
 - [ ] IPC Methods allowed
 - [ ] integrate abi library for encoding data to test eth_call
 - [ ] whisper methods
+- [ ] expand configuration docs
+- [ ] add on/off configuration option for exVCR
 
 ## Installation
 Add Ethereumex to your `mix.exs` dependencies:
@@ -64,11 +70,11 @@ config :ethereumex,
 - [x]eth_getUncleCountByBlockHash
 - [x]eth_getUncleCountByBlockNumber
 - [x]eth_getCode
-- [ ]eth_sign
+- [ ]eth_sign WIP
 - [x]eth_sendTransaction
 - [x]eth_sendRawTransaction
-- [ ]eth_call
-- [ ]eth_estimateGas
+- [ ]eth_call WIP
+- [ ]eth_estimateGas WIP
 - [x]eth_getBlockByHash
 - [x]eth_getBlockByNumber
 - [x]eth_getTransactionByHash
