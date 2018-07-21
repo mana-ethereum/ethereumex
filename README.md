@@ -3,6 +3,7 @@
 Elixir JSON-RPC client for the Ethereum blockchain
 This is WIP code meant to complete integration testing
 
+I've implemented functionality from [exVCR](https://github.com/parroty/exvcr) to record tests that return positive
 TODO:  
 - [ ] geth truffle box for testing consistency
 - [ ] method by method review of ethereum API
