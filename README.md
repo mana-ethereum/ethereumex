@@ -12,14 +12,14 @@ The command above is an example of removing the cassette to reset the test to us
 "Cassette" names are test_name.json found in ./fixture/vcr_cassettes .
 
 TODO:  
-- [ ] integrate abi library for encoding data to test eth_call
-- [ ] method by method latest review of Ethereum API for JSONRPC
-- [ ] add on/off configuration option for exVCR
-- [ ] IPC Methods allowed
-- [ ] unix domain client
-- [ ] whisper methods
-- [ ] expand configuration docs
-- [ ] geth truffle box for testing consistency
+- [ ]  integrate abi library for encoding data to test eth_call
+- [ ]  method by method latest review of Ethereum API for JSONRPC
+- [ ]  add on/off configuration option for exVCR
+- [ ]  IPC Methods allowed
+- [ ]  unix domain client
+- [ ]  whisper methods
+- [ ]  expand configuration docs
+- [ ]  geth truffle box for testing consistency
 
 ## Installation
 Add Ethereumex to your `mix.exs` dependencies:
@@ -52,68 +52,68 @@ config :ethereumex,
 
 ### Available methods:
 
-- [x]web3_clientVersion
-- [x]web3_sha3
-- [x]net_version
-- [x]net_peerCount
-- [x]net_listening
-- [x]eth_protocolVersion
-- [x]eth_syncing
-- [x]eth_coinbase
-- [x]eth_mining
-- [x]eth_hashrate
-- [x]eth_gasPrice
-- [x]eth_accounts
-- [x]eth_blockNumber
-- [x]eth_getBalance
-- [x]eth_getStorageAt
-- [x]eth_getTransactionCount
-- [x]eth_getBlockTransactionCountByHash
-- [x]eth_getBlockTransactionCountByNumber
-- [x]eth_getUncleCountByBlockHash
-- [x]eth_getUncleCountByBlockNumber
-- [x]eth_getCode
-- [ ]eth_sign WIP
-- [x]eth_sendTransaction
-- [x]eth_sendRawTransaction
-- [ ]eth_call WIP
-- [ ]eth_estimateGas WIP
-- [x]eth_getBlockByHash
-- [x]eth_getBlockByNumber
-- [x]eth_getTransactionByHash
-- [x]eth_getTransactionByBlockHashAndIndex
-- [x]eth_getTransactionByBlockNumberAndIndex
-- [ ]eth_getTransactionReceipt
-- [ ]eth_getUncleByBlockHashAndIndex
-- [ ]eth_getUncleByBlockNumberAndIndex
-- [ ]eth_getCompilers [deprecated](https://github.com/ethereum/go-ethereum/issues/3793)
-- [ ]eth_compileLLL [deprecated](https://github.com/ethereum/go-ethereum/issues/3793)
-- [ ]eth_compileSolidity [deprecated](https://github.com/ethereum/go-ethereum/issues/3793)
-- [ ]eth_compileSerpent [deprecated](https://github.com/ethereum/go-ethereum/issues/3793)
-- [ ]eth_newFilter
-- [ ]eth_newBlockFilter
-- [ ]eth_newPendingTransactionFilter
-- [ ]eth_uninstallFilter
-- [ ]eth_getFilterChanges
-- [ ]eth_getFilterLogs
-- [ ]eth_getLogs
-- [ ]eth_getWork
-- [ ]eth_submitWork
-- [ ]eth_submitHashrate
-- [ ]db_putString [deprecated](https://github.com/ethereum/go-ethereum/issues/311)
-- [ ]db_getString [deprecated](https://github.com/ethereum/go-ethereum/issues/311)
-- [ ]db_putHex [deprecated](https://github.com/ethereum/go-ethereum/issues/311)
-- [ ]db_getHex [deprecated](https://github.com/ethereum/go-ethereum/issues/311)
-- [ ]shh_post
-- [ ]shh_version
-- [ ]shh_newIdentity
-- [ ]shh_hasIdentity
-- [ ]shh_newGroup
-- [ ]shh_addToGroup
-- [ ]shh_newFilter
-- [ ]shh_uninstallFilter
-- [ ]shh_getFilterChanges
-- [ ]shh_getMessages
+- [x] web3_clientVersion
+- [x] web3_sha3
+- [x] net_version
+- [x] net_peerCount
+- [x] net_listening
+- [x] eth_protocolVersion
+- [x] eth_syncing
+- [x] eth_coinbase
+- [x] eth_mining
+- [x] eth_hashrate
+- [x] eth_gasPrice
+- [x] eth_accounts
+- [x] eth_blockNumber
+- [x] eth_getBalance
+- [x] eth_getStorageAt
+- [x] eth_getTransactionCount
+- [x] eth_getBlockTransactionCountByHash
+- [x] eth_getBlockTransactionCountByNumber
+- [x] eth_getUncleCountByBlockHash
+- [x] eth_getUncleCountByBlockNumber
+- [x] eth_getCode
+- [ ] eth_sign WIP
+- [x] eth_sendTransaction
+- [x] eth_sendRawTransaction
+- [ ] eth_call WIP
+- [ ] eth_estimateGas WIP
+- [x] eth_getBlockByHash
+- [x] eth_getBlockByNumber
+- [x] eth_getTransactionByHash
+- [x] eth_getTransactionByBlockHashAndIndex
+- [x] eth_getTransactionByBlockNumberAndIndex
+- [ ] eth_getTransactionReceipt
+- [ ] eth_getUncleByBlockHashAndIndex
+- [ ] eth_getUncleByBlockNumberAndIndex
+- [ ] eth_getCompilers [deprecated](https://github.com/ethereum/go-ethereum/issues/3793)
+- [ ] eth_compileLLL [deprecated](https://github.com/ethereum/go-ethereum/issues/3793)
+- [ ] eth_compileSolidity [deprecated](https://github.com/ethereum/go-ethereum/issues/3793)
+- [ ] eth_compileSerpent [deprecated](https://github.com/ethereum/go-ethereum/issues/3793)
+- [ ] eth_newFilter
+- [ ] eth_newBlockFilter
+- [ ] eth_newPendingTransactionFilter
+- [ ] eth_uninstallFilter
+- [ ] eth_getFilterChanges
+- [ ] eth_getFilterLogs
+- [ ] eth_getLogs
+- [ ] eth_getWork
+- [ ] eth_submitWork
+- [ ] eth_submitHashrate
+- [ ] db_putString [deprecated](https://github.com/ethereum/go-ethereum/issues/311)
+- [ ] db_getString [deprecated](https://github.com/ethereum/go-ethereum/issues/311)
+- [ ] db_putHex [deprecated](https://github.com/ethereum/go-ethereum/issues/311)
+- [ ] db_getHex [deprecated](https://github.com/ethereum/go-ethereum/issues/311)
+- [ ] shh_post
+- [ ] shh_version
+- [ ] shh_newIdentity
+- [ ] shh_hasIdentity
+- [ ] shh_newGroup
+- [ ] shh_addToGroup
+- [ ] shh_newFilter
+- [ ] shh_uninstallFilter
+- [ ] shh_getFilterChanges
+- [ ] shh_getMessages
 
 ### Examples
 
