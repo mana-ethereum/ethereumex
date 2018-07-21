@@ -10,6 +10,7 @@ TODO:
 - [ ] method by method review of ethereum API
 - [ ] IPC Methods allowed
 - [ ] integrate abi library for encoding data to test eth_call
+- [ ] whisper methods
 
 ## Installation
 Add Ethereumex to your `mix.exs` dependencies:
@@ -76,10 +77,10 @@ config :ethereumex,
 - [ ]eth_getTransactionReceipt
 - [ ]eth_getUncleByBlockHashAndIndex
 - [ ]eth_getUncleByBlockNumberAndIndex
-- [ ]eth_getCompilers
-- [ ]eth_compileLLL
-- [ ]eth_compileSolidity
-- [ ]eth_compileSerpent
+- [ ]eth_getCompilers [deprecated](https://github.com/ethereum/go-ethereum/issues/3793)
+- [ ]eth_compileLLL [deprecated](https://github.com/ethereum/go-ethereum/issues/3793)
+- [ ]eth_compileSolidity [deprecated](https://github.com/ethereum/go-ethereum/issues/3793)
+- [ ]eth_compileSerpent [deprecated](https://github.com/ethereum/go-ethereum/issues/3793)
 - [ ]eth_newFilter
 - [ ]eth_newBlockFilter
 - [ ]eth_newPendingTransactionFilter
@@ -90,10 +91,10 @@ config :ethereumex,
 - [ ]eth_getWork
 - [ ]eth_submitWork
 - [ ]eth_submitHashrate
-- [ ]db_putString
-- [ ]db_getString
-- [ ]db_putHex
-- [ ]db_getHex
+- [ ]db_putString [deprecated](https://github.com/ethereum/go-ethereum/issues/311)
+- [ ]db_getString [deprecated](https://github.com/ethereum/go-ethereum/issues/311)
+- [ ]db_putHex [deprecated](https://github.com/ethereum/go-ethereum/issues/311)
+- [ ]db_getHex [deprecated](https://github.com/ethereum/go-ethereum/issues/311)
 - [ ]shh_post
 - [ ]shh_version
 - [ ]shh_newIdentity
