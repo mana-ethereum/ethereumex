@@ -8,6 +8,7 @@ I've implemented functionality from [exVCR](https://github.com/parroty/exvcr) to
 mix vcr.delete test_name
 ```
 The command above is an example of removing the cassette to reset the test to use actual HTTP.
+"Cassette" names are test_name.json found in ./fixture/vcr_cassettes .
 
 TODO:  
 - [ ] geth truffle box for testing consistency
