@@ -1,6 +1,7 @@
 # Ethereumex [![CircleCI](https://circleci.com/gh/exthereum/ethereumex.svg?style=svg)](https://circleci.com/gh/exthereum/ethereumex)
 
 Elixir JSON-RPC client for the Ethereum blockchain
+
 This is WIP code meant to complete integration testing and UNIX domain socket development
 
 I've implemented functionality from [exVCR](https://github.com/parroty/exvcr) to record tests that return positive
