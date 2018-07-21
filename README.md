@@ -7,7 +7,7 @@ I've implemented functionality from [exVCR](https://github.com/parroty/exvcr) to
 
 TODO:  
 - [ ] geth truffle box for testing consistency
-- [ ] method by method review of ethereum API
+- [ ] method by method latest review of ethereum API for JSONRPC 
 - [ ] IPC Methods allowed
 - [ ] integrate abi library for encoding data to test eth_call
 - [ ] whisper methods
