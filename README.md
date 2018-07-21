@@ -1,6 +1,13 @@
 # Ethereumex [![CircleCI](https://circleci.com/gh/exthereum/ethereumex.svg?style=svg)](https://circleci.com/gh/exthereum/ethereumex)
 
 Elixir JSON-RPC client for the Ethereum blockchain
+This is WIP code meant to complete integration testing
+
+TODO:  
+- [ ] geth docker container for testing consistency
+- [ ] method by method review of ethereum API
+- [ ] IPC Methods allowed
+- [ ] integrate abi library for encoding data to test eth_call 
 
 ## Installation
 Add Ethereumex to your `mix.exs` dependencies:
