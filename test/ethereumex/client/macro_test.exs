@@ -61,6 +61,13 @@ defmodule Ethereumex.Client.MacroTest do
     value: @hex_232,
     data: @hash
   }
+  @source_code "(returnlll (suicide (caller)))"
+  @filter %{
+    fromBlock: "0x1",
+    toBlock: "0x2",
+    address: "0x8888f1f195afa192cfee860698584c030f4c9db1",
+    topics: ["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b"]
+  }
 
   test ".web3_client_version/0", do: Helpers.check("web3_client_version")
   test ".net_version/0", do: Helpers.check("net_version")
@@ -151,4 +158,132 @@ defmodule Ethereumex.Client.MacroTest do
 
   test ".eth_get_transaction_receipt/1",
     do: Helpers.check("eth_get_transaction_receipt", [@hash])
+
+  test ".eth_get_uncle_by_block_hash_and_index/2",
+    do: Helpers.check("eth_get_uncle_by_block_hash_and_index", [@hash, "0x0"])
+
+  test ".eth_get_uncle_by_block_number_and_index/2",
+    do: Helpers.check("eth_get_uncle_by_block_number_and_index", ["0x29c", "0x0"])
+
+  test "eth_compile_lll/1" do
+    Helpers.assert_method({"eth_compile_lll", "eth_compileLLL"}, [@source_code], [@source_code])
+  end
+
+  test ".eth_compile_solidity/1",
+    do: Helpers.check("eth_compile_solidity", [@source_code])
+
+  test ".eth_compile_serpent/1",
+    do: Helpers.check("eth_compile_serpent", [@source_code])
+
+  test ".eth_new_filter/1",
+    do: Helpers.check("eth_new_filter", [@filter])
+
+  test ".eth_uninstall_filter/1",
+    do: Helpers.check("eth_uninstall_filter", ["0xb"])
+
+  test ".eth_get_filter_changes/1",
+    do: Helpers.check("eth_get_filter_changes", ["0xb"])
+
+  test ".eth_get_filter_logs/1",
+    do: Helpers.check("eth_get_filter_logs", ["0xb"])
+
+  test ".eth_get_logs/1",
+    do: Helpers.check("eth_get_logs", [@filter])
+
+  test ".eth_submit_work/3" do
+    params = [
+      "0x0000000000000001",
+      "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+      "0xD1FE5700000000000000000000000000D1FE5700000000000000000000000000"
+    ]
+
+    Helpers.check("eth_submit_work", params)
+  end
+
+  test ".eth_submit_hashrate/2" do
+    params = [
+      "0x0000000000000000000000000000000000000000000000000000000000500000",
+      "0x59daa26581d0acd1fce254fb7e85952f4c09d0915afd33d3886cd914bc7d283c"
+    ]
+
+    Helpers.check("eth_submit_hashrate", params)
+  end
+
+  test ".db_put_string/3" do
+    params = [
+      "testDB",
+      "myKey",
+      "myString"
+    ]
+
+    Helpers.check("db_put_string", params)
+  end
+
+  test ".db_get_string/2" do
+    params = [
+      "testDB",
+      "myKey"
+    ]
+
+    Helpers.check("db_get_string", params)
+  end
+
+  test ".db_put_hex/3" do
+    params = [
+      "testDB",
+      "myKey",
+      "0x68656c6c6f20776f726c64"
+    ]
+
+    Helpers.check("db_put_hex", params)
+  end
+
+  test ".db_get_hex/2" do
+    params = [
+      "testDB",
+      "myKey"
+    ]
+
+    Helpers.check("db_get_hex", params)
+  end
+
+  test ".shh_post/1" do
+    params = %{
+      from:
+        "0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1",
+      to:
+        "0x3e245533f97284d442460f2998cd41858798ddf04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a0d4d661997d3940272b717b1",
+      topics: ["0x776869737065722d636861742d636c69656e74", "0x4d5a695276454c39425154466b61693532"],
+      payload: "0x7b2274797065223a226d6",
+      priority: "0x64",
+      ttl: "0x64"
+    }
+
+    Helpers.check("shh_post", [params])
+  end
+
+  test ".shh_has_identity/1",
+    do: Helpers.check("shh_has_identity", [@address])
+
+  test ".shh_add_to_group/1",
+    do: Helpers.check("shh_add_to_group", [@address])
+
+  test ".shh_new_filter/2" do
+    params = %{
+      topics: ['0x12341234bf4b564f'],
+      to:
+        "0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1"
+    }
+
+    Helpers.check("shh_new_filter", [params])
+  end
+
+  test ".shh_uninstall_filter/1",
+    do: Helpers.check("shh_uninstall_filter", ["0x7"])
+
+  test ".shh_get_filter_changes/1",
+    do: Helpers.check("shh_get_filter_changes", ["0x7"])
+
+  test ".shh_get_messages/1",
+    do: Helpers.check("shh_get_messages", ["0x7"])
 end
