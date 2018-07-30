@@ -102,6 +102,10 @@ config :ethereumex,
 iex> Ethereumex.HttpClient.web3_client_version
 {:ok, "Parity//v1.7.2-beta-9f47909-20170918/x86_64-macos/rustc1.19.0"}
 
+# Using the url option will overwrite the configuration
+iex> Ethereumex.HttpClient.web3_client_version(url: "http://localhost:8545")
+{:ok, "Parity//v1.7.2-beta-9f47909-20170918/x86_64-macos/rustc1.19.0"}
+
 iex> Ethereumex.HttpClient.web3_sha3("wrong_param")
 {:error, %{"code" => -32602, "message" => "Invalid params: invalid format."}}
 

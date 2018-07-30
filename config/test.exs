@@ -1,3 +1,3 @@
 use Mix.Config
 
-config :ethereumex, url: "http://localhost:8545"
+config :ethereumex, url: "http://localhost:9545"
