@@ -1,3 +1,6 @@
+# 0.3.3
+* Added dynamic url input(https://github.com/exthereum/ethereumex/pull/37)
+
 # 0.3.2
 * Fix eth_getLogs mathod params (https://github.com/exthereum/ethereumex/pull/20)
 
