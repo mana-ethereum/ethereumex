@@ -3,11 +3,11 @@ defmodule Ethereumex.HttpClient do
   import Ethereumex.Config
   @moduledoc false
 
-  @spec single_request(map()) :: {:ok, any() | [any()]} | error
-  def single_request(payload) do
+  @spec single_request(map(), []) :: {:ok, any() | [any()]} | error
+  def single_request(payload, opts \\ []) do
     payload
     |> encode_payload
-    |> post_request
+    |> post_request(opts)
   end
 
   @spec encode_payload(map()) :: binary()
@@ -15,12 +15,13 @@ defmodule Ethereumex.HttpClient do
     payload |> Poison.encode!()
   end
 
-  @spec post_request(binary()) :: {:ok | :error, any()}
-  defp post_request(payload) do
+  @spec post_request(binary(), []) :: {:ok | :error, any()}
+  defp post_request(payload, opts) do
     headers = [{"Content-Type", "application/json"}]
     options = Ethereumex.Config.http_options()
+    url = Keyword.get(opts, :url) || rpc_url()
 
-    with {:ok, response} <- HTTPoison.post(rpc_url(), payload, headers, options),
+    with {:ok, response} <- HTTPoison.post(url, payload, headers, options),
          %HTTPoison.Response{body: body, status_code: code} = response do
       decode_body(body, code)
     else

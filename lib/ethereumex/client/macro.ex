@@ -419,14 +419,17 @@ defmodule Ethereumex.Client.Macro do
 
       @spec request(binary(), list(binary() | boolean | map), keyword()) ::
               {:ok, any() | [any()]} | error
+      def request(_name, _params, batch: true, url: _url),
+        do: raise("Cannot use batch and url options at the same time")
+
       def request(name, params, batch: true) do
         name |> add_request_info(params)
       end
 
-      def request(name, params, _) do
+      def request(name, params, opts) do
         name
         |> add_request_info(params)
-        |> server_request
+        |> server_request(opts)
       end
 
       @spec batch_request([{atom(), list(binary())}]) :: {:ok, [any()]} | error
@@ -441,8 +444,8 @@ defmodule Ethereumex.Client.Macro do
         |> server_request
       end
 
-      defp server_request(params) do
-        GenServer.call(__MODULE__, {:request, params})
+      defp server_request(params, opts \\ []) do
+        GenServer.call(__MODULE__, {:request, params, opts})
       end
 
       def start_link do
@@ -453,11 +456,11 @@ defmodule Ethereumex.Client.Macro do
         GenServer.cast(__MODULE__, :reset_id)
       end
 
-      def single_request(params) do
+      def single_request(params, opts) do
         {:error, :not_implemented}
       end
 
-      defoverridable single_request: 1
+      defoverridable single_request: 2
     end
   end
 end

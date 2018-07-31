@@ -4,10 +4,10 @@ defmodule Ethereumex.Client.MacroTest do
   defmodule ClientMock do
     use Ethereumex.Client.Macro
 
-    def single_request(payload) do
+    def single_request(payload, opts) do
       %{"method" => method, "jsonrpc" => "2.0", "params" => params} = payload
 
-      {method, params}
+      {method, params, opts}
     end
   end
 
@@ -19,7 +19,11 @@ defmodule Ethereumex.Client.MacroTest do
     end
 
     def assert_method({ex_method, eth_method}, params, payload) do
-      {^eth_method, ^payload} = apply(ClientMock, String.to_atom(ex_method), params)
+      {^eth_method, ^payload, _opts} = apply(ClientMock, String.to_atom(ex_method), params)
+    end
+
+    def assert_opts({ex_method, _eth_method}, params, opts) do
+      {_eth_method, _payload, ^opts} = apply(ClientMock, String.to_atom(ex_method), params)
     end
 
     def make_tuple(ex_method) do
@@ -69,7 +73,18 @@ defmodule Ethereumex.Client.MacroTest do
     topics: ["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b"]
   }
 
-  test ".web3_client_version/0", do: Helpers.check("web3_client_version")
+  describe ".web3_client_version/0" do
+    test "with configuration url", do: Helpers.check("web3_client_version")
+
+    test "with dynamic url",
+      do:
+        Helpers.assert_opts(
+          {"web3_client_version", "web3_client_version"},
+          [[url: "http://localhost:4000"]],
+          url: "http://localhost:4000"
+        )
+  end
+
   test ".net_version/0", do: Helpers.check("net_version")
   test ".net_peer_count/0", do: Helpers.check("net_peer_count")
   test ".net_listening/0", do: Helpers.check("net_listening")

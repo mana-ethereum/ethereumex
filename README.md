@@ -8,7 +8,7 @@ Add Ethereumex to your `mix.exs` dependencies:
 1. Add `ethereumex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
-  [{:ethereumex, "~> 0.3.2"}]
+  [{:ethereumex, "~> 0.3.3"}]
 end
 ```
 
@@ -100,6 +100,10 @@ config :ethereumex,
 
 ```elixir
 iex> Ethereumex.HttpClient.web3_client_version
+{:ok, "Parity//v1.7.2-beta-9f47909-20170918/x86_64-macos/rustc1.19.0"}
+
+# Using the url option will overwrite the configuration
+iex> Ethereumex.HttpClient.web3_client_version(url: "http://localhost:8545")
 {:ok, "Parity//v1.7.2-beta-9f47909-20170918/x86_64-macos/rustc1.19.0"}
 
 iex> Ethereumex.HttpClient.web3_sha3("wrong_param")
