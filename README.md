@@ -157,7 +157,7 @@ balance_bytes
 ```
 
 #### eth_send_raw_transaction example - Payable smart contract call
-Calling a smart contract method that requires computation will cost you gas or ether (if that method requires payment also). This means you will have to sign your transactions using the private key that owns some ethereum. In order to send signed transactions you will need both (ABI)[https://hex.pm/packages/abi] and (Blockchain)[https://hex.pm/packages/blockchain] hex packages.
+Calling a smart contract method that requires computation will cost you gas or ether (if that method requires payment also). This means you will have to sign your transactions using the private key that owns some ethereum. In order to send signed transactions you will need both [ABI](https://hex.pm/packages/abi) and [Blockchain](https://hex.pm/packages/blockchain) hex packages.
 
 ```elixir
 abi_encoded_data = ABI.encode("transferFrom(address,address,uint)", [from_address, to_address, token_id])
