@@ -19,7 +19,11 @@ defmodule Ethereumex.Mixfile do
   end
 
   def application do
-    [extra_applications: [:logger], mod: {Ethereumex, []}]
+    [
+      env: [request_timeout: 5000],
+      extra_applications: [:logger],
+      mod: {Ethereumex, []}
+    ]
   end
 
   defp deps do
