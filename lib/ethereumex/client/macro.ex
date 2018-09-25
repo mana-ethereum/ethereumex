@@ -445,7 +445,8 @@ defmodule Ethereumex.Client.Macro do
       end
 
       defp server_request(params, opts \\ []) do
-        GenServer.call(__MODULE__, {:request, params, opts})
+        timeout = Keyword.get(opts, :request_timeout, Ethereumex.Config.request_timeout())
+        GenServer.call(__MODULE__, {:request, params, opts}, timeout)
       end
 
       def start_link do

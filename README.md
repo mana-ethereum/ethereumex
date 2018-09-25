@@ -29,6 +29,14 @@ config :ethereumex,
   url: "http://localhost:8545"
 ```
 
+You can also configure the `GenServer` request timeout for requests sent to the Ethereum JSON-RPC
+(you can also overwrite this configuration in `opts` used when calling the client):
+
+```elixir
+config :ethereumex,
+  request_timeout: 10_000 # default is 5000 ms
+```
+
 ## Usage
 
 ### Available methods:
