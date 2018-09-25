@@ -1,3 +1,6 @@
+# 0.3.4
+* Allow configuring GenServer timeout for requests (https://github.com/exthereum/ethereumex/pull/39)
+
 # 0.3.3
 * Added dynamic url input(https://github.com/exthereum/ethereumex/pull/37)
 
