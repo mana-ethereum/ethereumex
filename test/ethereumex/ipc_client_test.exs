@@ -256,14 +256,14 @@ defmodule Ethereumex.IpcClientTest do
     end
   end
 
-  @tag :eth
-  describe "IpcClient.eth_get_block_by_number/3" do
-    test "returns information about a block by number" do
-      {:ok, result} = IpcClient.eth_get_block_by_number("0x1b4", true)
+  # @tag :eth
+  # describe "IpcClient.eth_get_block_by_number/3" do
+  #   test "returns information about a block by number" do
+  #     {:ok, result} = IpcClient.eth_get_block_by_number("0x1b4", true)
 
-      assert is_nil(result) || is_map(result)
-    end
-  end
+  #     assert is_nil(result) || is_map(result)
+  #   end
+  # end
 
   @tag :eth
   describe "IpcClient.eth_get_transaction_by_hash/2" do

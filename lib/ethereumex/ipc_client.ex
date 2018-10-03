@@ -17,18 +17,16 @@ defmodule Ethereumex.IpcClient do
 
   @spec post_request(binary(), []) :: {:ok | :error, any()}
   defp post_request(payload, opts) do
-
-    with {:ok, response} <- Ethereumex.IpcServer.post(payload) do
-      case Poison.decode(response) do
-	{:ok, %{"error"=>error}} -> {:error, error}
-	{:ok, %{"result" => result}} -> {:ok, result}
-	_ -> {:error, response}
-      end      
-    else	
-      {:error, reason} -> {:error, reason}
-      e -> {:error, e}
-    end
     
+    with {:ok, response} <- Ethereumex.IpcServer.post(payload) do
+      decoded = Poison.decode(response)
+      
+      case decoded do
+	{:ok, result} -> {:ok, Map.get(result, "result")}
+	{:error, error} -> {:error, {:invalid_json, error}}
+      end
+      
+    end    
   end
 
   @spec decode_body(binary()) :: {:ok | :error, any()}
