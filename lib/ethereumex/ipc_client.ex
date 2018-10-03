@@ -22,6 +22,7 @@ defmodule Ethereumex.IpcClient do
       decoded = Poison.decode(response)
       
       case decoded do
+	{:ok, result = [%{} | _]} -> {:ok, format_batch(result)}
 	{:ok, result} -> {:ok, Map.get(result, "result")}
 	{:error, error} -> {:error, {:invalid_json, error}}
       end
