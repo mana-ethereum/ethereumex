@@ -3,6 +3,7 @@ defmodule Ethereumex.IpcClientTest do
   alias Ethereumex.IpcClient
 
   setup_all do
+    Ethereumex.IpcServer.start_link()
     IpcClient.start_link()
 
     :ok
