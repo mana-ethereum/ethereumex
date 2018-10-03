@@ -3,7 +3,7 @@ defmodule Ethereumex.IpcClientTest do
   alias Ethereumex.IpcClient
 
   setup_all do
-    Ethereumex.IpcServer.start_link()
+    Ethereumex.IpcServer.start_link(%{path: Enum.join([System.user_home!, "/.local/share/io.parity.ethereum/jsonrpc.ipc"])})
     IpcClient.start_link()
 
     :ok
