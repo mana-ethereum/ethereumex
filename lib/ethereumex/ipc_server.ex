@@ -1,5 +1,6 @@
 defmodule Ethereumex.IpcServer do
   use GenServer
+  @moduledoc false
 
   def init(state) do
     opts = [:binary, active: false]
