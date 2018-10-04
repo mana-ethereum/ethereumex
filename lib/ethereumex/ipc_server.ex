@@ -4,11 +4,12 @@ defmodule Ethereumex.IpcServer do
   def init(state) do
     opts = [:binary, active: false]
     response = :gen_tcp.connect({:local, state[:path]}, 0, opts)
+
     case response do
       {:ok, socket} -> {:ok, %{state | socket: socket}}
       {:error, reason} -> {:error, reason}
     end
-  end  
+  end
 
   def start_link(state \\ %{}) do
     GenServer.start_link(__MODULE__, Map.merge(state, %{socket: nil}), name: IpcServer)
@@ -22,6 +23,6 @@ defmodule Ethereumex.IpcServer do
     :ok = :gen_tcp.send(socket, request)
 
     response = :gen_tcp.recv(socket, 0)
-    {:reply, response, state}    
+    {:reply, response, state}
   end
 end
