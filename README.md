@@ -2,6 +2,8 @@
 
 Elixir JSON-RPC client for the Ethereum blockchain
 
+Check out the documentation [here](https://hexdocs.pm/ethereumex/Ethereumex.html#content)
+
 ## Installation
 Add Ethereumex to your `mix.exs` dependencies:
 
