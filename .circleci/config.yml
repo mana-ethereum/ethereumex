@@ -10,9 +10,9 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-dependency-cache-{{ arch }}-{{ checksum "mix.lock" }}
-            - v1-dependency-cache-{{ arch }}
-            - v1-dependency-cache
+            - v2-dependency-cache-{{ arch }}-{{ checksum "mix.lock" }}
+            - v2-dependency-cache-{{ arch }}
+            - v2-dependency-cache
 
       - run: mix local.rebar --force
       - run: mix local.hex --force
@@ -25,7 +25,7 @@ jobs:
             MIX_ENV: test
 
       - save_cache:
-          key: v1-dependency-cache-{{ arch }}-{{ checksum "mix.lock" }}
+          key: v2-dependency-cache-{{ arch }}-{{ checksum "mix.lock" }}
           paths:
             - _build
             - deps
@@ -35,14 +35,14 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-plt-cache-{{ arch }}-{{ checksum "mix.lock" }}
-            - v1-plt-cache-{{ arch }}
-            - v1-plt-cache
+            - v2-plt-cache-{{ arch }}-{{ checksum "mix.lock" }}
+            - v2-plt-cache-{{ arch }}
+            - v2-plt-cache
 
       - run: mix dialyzer --plt
 
       - save_cache:
-          key: v1-plt-cache-{{ arch }}-{{ checksum "mix.lock" }}
+          key: v2-plt-cache-{{ arch }}-{{ checksum "mix.lock" }}
           paths:
             - _build
             - ~/.mix
