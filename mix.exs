@@ -14,7 +14,12 @@ defmodule Ethereumex.Mixfile do
       ],
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      dialyzer: [
+        flags: [:underspecs, :unknown, :unmatched_returns],
+        plt_add_apps: [:mix, :poison, :iex, :logger],
+        plt_add_deps: :transitive
+      ]
     ]
   end
 
@@ -28,11 +33,11 @@ defmodule Ethereumex.Mixfile do
 
   defp deps do
     [
-      {:httpoison, "~> 1.1.0"},
-      {:poison, "~> 3.1.0"},
-      {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false},
+      {:httpoison, "~> 1.3.1"},
+      {:poison, "~> 4.0.1"},
+      {:credo, "~> 0.10.2", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.19", only: :dev, runtime: false},
-      {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.0.0-rc.3", only: [:dev], runtime: false}
     ]
   end
 end
