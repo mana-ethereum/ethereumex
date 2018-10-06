@@ -27,11 +27,10 @@ defmodule Ethereumex.Config do
   end
 
   def client_type do
-    Application.get_env(:ethereumex, :client_type, :http)    
+    Application.get_env(:ethereumex, :client_type, :http)
   end
 
   def ipc_path do
     Application.get_env(:ethereumex, :ipc_path, "/")
   end
-
 end

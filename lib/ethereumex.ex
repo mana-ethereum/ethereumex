@@ -2,10 +2,9 @@ defmodule Ethereumex do
   use Application
   @moduledoc File.read!("#{__DIR__}/../README.md")
 
-  import Supervisor.Spec, warn: false  
+  import Supervisor.Spec, warn: false
 
   def start(_type, _args) do
-
     children = setup_children()
 
     opts = [strategy: :one_for_one, name: Ethereumex.Supervisor]
@@ -13,7 +12,7 @@ defmodule Ethereumex do
   end
 
   def setup_children do
-    setup_children(Ethereumex.Config.client_type)
+    setup_children(Ethereumex.Config.client_type())
   end
 
   def setup_children(:ipc) do
@@ -26,11 +25,10 @@ defmodule Ethereumex do
   end
 
   def setup_children(:http) do
-    [ worker(Ethereumex.HttpClient, []) ]
+    [worker(Ethereumex.HttpClient, [])]
   end
 
   def setup_children(opt) do
     raise "Invalid :client option (#{opt}) in config"
   end
-  
 end
