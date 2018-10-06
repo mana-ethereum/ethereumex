@@ -456,7 +456,6 @@ defmodule Ethereumex.Client.Macro do
       def reset_id do
         GenServer.cast(__MODULE__, :reset_id)
       end
-      
     end
   end
 end

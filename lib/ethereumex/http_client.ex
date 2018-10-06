@@ -1,6 +1,6 @@
 defmodule Ethereumex.HttpClient do
   use Ethereumex.Client.Macro
-  use Ethereumex.Client.BaseClient  
+  use Ethereumex.Client.BaseClient
   import Ethereumex.Config
   @moduledoc false
 
@@ -32,5 +32,4 @@ defmodule Ethereumex.HttpClient do
       {:error, error} -> {:error, {:invalid_json, error}}
     end
   end
-
 end

@@ -40,7 +40,7 @@ defmodule Ethereumex.Config do
   end
 
   def setup_children(:http) do
-    [ Supervisor.Spec.worker(Ethereumex.HttpClient, []) ]
+    [Supervisor.Spec.worker(Ethereumex.HttpClient, [])]
   end
 
   def setup_children(opt) do

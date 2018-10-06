@@ -1,8 +1,8 @@
 defmodule Ethereumex.IpcClient do
   use Ethereumex.Client.Macro
   use Ethereumex.Client.BaseClient
-  #import Ethereumex.Config
-  @moduledoc false  
+  # import Ethereumex.Config
+  @moduledoc false
 
   @spec post_request(binary(), []) :: {:ok | :error, any()}
   def post_request(payload, _opts) do
@@ -18,5 +18,4 @@ defmodule Ethereumex.IpcClient do
       {:error, error} -> {:error, error}
     end
   end
-
 end
