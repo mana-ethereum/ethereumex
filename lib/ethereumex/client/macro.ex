@@ -456,12 +456,7 @@ defmodule Ethereumex.Client.Macro do
       def reset_id do
         GenServer.cast(__MODULE__, :reset_id)
       end
-
-      def single_request(params, opts) do
-        {:error, :not_implemented}
-      end
-
-      defoverridable single_request: 2
+      
     end
   end
 end
