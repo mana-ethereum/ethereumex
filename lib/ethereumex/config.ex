@@ -25,4 +25,25 @@ defmodule Ethereumex.Config do
   def request_timeout do
     Application.get_env(:ethereumex, :request_timeout, 5000)
   end
+
+  def setup_children do
+    setup_children(Application.get_env(:ethereumex, :client, :http))
+  end
+
+  def setup_children(:ipc) do
+    path = Enum.join([System.user_home!(), Application.get_env(:ethereumex, :ipc_path, "/")])
+
+    [
+      Supervisor.Spec.worker(Ethereumex.IpcServer, [%{path: path}]),
+      Supervisor.Spec.worker(Ethereumex.IpcClient, [])
+    ]
+  end
+
+  def setup_children(:http) do
+    [ Supervisor.Spec.worker(Ethereumex.HttpClient, []) ]
+  end
+
+  def setup_children(opt) do
+    raise "Invalid :client option (#{opt}) in config"
+  end
 end
