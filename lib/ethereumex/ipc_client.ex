@@ -14,6 +14,8 @@ defmodule Ethereumex.IpcClient do
         {:ok, result} -> {:ok, Map.get(result, "result")}
         {:error, error} -> {:error, {:invalid_json, error}}
       end
+    else
+      {:error, error} -> {:error, error}
     end
   end
 
