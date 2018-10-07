@@ -37,7 +37,7 @@ config :ethereumex,
   request_timeout: 10_000 # default is 5000 ms
 ```
 
-If you want to use IPC you will need to a few things in your config.
+If you want to use IPC you will need to set a few things in your config.
 
 First, specify the `:client_type`:
 
