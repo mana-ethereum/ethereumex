@@ -20,20 +20,34 @@ defmodule Ethereumex.IpcServer do
     GenServer.call(IpcServer, {:request, request})
   end
 
-  def request_helper({:error, reason}, _socket) do
+  def receive_response(data, socket, resukt \\ <<>>)
+
+  def receive_response({:error, reason}, _socket, _result) do
     {:error, reason}
   end
 
-  def request_helper(:ok, socket) do
-    :gen_tcp.recv(socket, 0)
+  def receive_response(:ok, socket, result) do
+    with {:ok, response} <- :gen_tcp.recv(socket, 0) do
+      new_result = result <> response
+
+      if String.ends_with?(response, "\n") do
+        {:ok, new_result}
+      else
+        receive_response(:ok, socket, new_result)
+      end
+    end
   end
 
-  def request_helper(data, _socket) do
+  def receive_response(data, _socket, _result) do
     {:error, data}
   end
 
   def handle_call({:request, request}, _from, %{socket: socket} = state) do
-    response = request_helper(:gen_tcp.send(socket, request), socket)
+    response =
+      socket
+      |> :gen_tcp.send(request)
+      |> receive_response(socket)
+
     {:reply, response, state}
   end
 end
