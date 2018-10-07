@@ -3,10 +3,15 @@ jobs:
     working_directory: ~/ethereumex
     docker:
       - image: elixir:latest
-      - image: parity/parity:v1.7.2
 
     steps:
       - checkout
+      - run: curl https://sh.rustup.rs -sSf | sh -s -- -y
+      - run: git clone https://github.com/paritytech/parity-ethereum
+      - run: cd parity-ethereum && cargo build --release --features final
+      - run: ./target/release
+      - run: ./parity --jsonrpc-interface all --no-warp &
+
 
       - restore_cache:
           keys:
