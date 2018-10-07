@@ -1,4 +1,4 @@
-defmodule Ethereumex.Client.Macro do
+defmodule Ethereumex.Client.BaseClient do
   alias Ethereumex.Client.{Server, Behaviour}
   @moduledoc false
 
@@ -444,6 +444,35 @@ defmodule Ethereumex.Client.Macro do
         |> server_request
       end
 
+      @spec single_request(map(), []) :: {:ok, any() | [any()]} | error
+      def single_request(payload, opts \\ []) do
+        payload
+        |> encode_payload
+        |> post_request(opts)
+      end
+
+      @spec encode_payload(map()) :: binary()
+      defp encode_payload(payload) do
+        payload |> Poison.encode!()
+      end
+
+      @spec format_batch([map()]) :: [map() | nil | binary()]
+      def format_batch(list) do
+        list
+        |> Enum.sort(fn %{"id" => id1}, %{"id" => id2} ->
+          id1 <= id2
+        end)
+        |> Enum.map(fn %{"result" => result} ->
+          result
+        end)
+      end
+
+      defp post_request(payload, opts) do
+        {:error, :not_implemented}
+      end
+
+      defoverridable post_request: 2
+
       defp server_request(params, opts \\ []) do
         timeout = Keyword.get(opts, :request_timeout, Ethereumex.Config.request_timeout())
         GenServer.call(__MODULE__, {:request, params, opts}, timeout)
@@ -456,12 +485,6 @@ defmodule Ethereumex.Client.Macro do
       def reset_id do
         GenServer.cast(__MODULE__, :reset_id)
       end
-
-      def single_request(params, opts) do
-        {:error, :not_implemented}
-      end
-
-      defoverridable single_request: 2
     end
   end
 end

@@ -39,6 +39,24 @@ config :ethereumex,
   request_timeout: 10_000 # default is 5000 ms
 ```
 
+If you want to use IPC you will need to set a few things in your config.
+
+First, specify the `:client_type`:
+
+```elixir
+config :ethereumex,
+  client_type: :ipc
+```
+
+This will resolve to `:http` by default.
+
+Second, specify the `:ipc_path`:
+
+```elixir
+config :ethereumex,
+  ipc_path: "/path/to/ipc"
+```
+
 ## Usage
 
 ### Available methods:
@@ -106,6 +124,10 @@ config :ethereumex,
 * shh_getFilterChanges
 * shh_getMessages
 
+### IpcClient
+
+You can follow along with any of these examples using IPC by replacing `HttpClient` with `IpcClient`.
+
 ### Examples
 
 ```elixir
@@ -124,7 +146,6 @@ iex> Ethereumex.HttpClient.eth_get_balance("0x407d73d8a49eeb85d32cf465507dd71d50
 ```
 Note that all method names are snakecases, so, for example, shh_getMessages method has corresponding Ethereumex.HttpClient.shh_get_messages/1 method. Signatures can be found in Ethereumex.Client.Behaviour. There are more examples in tests.
 
-
 #### eth_call example - Read only smart contract calls
 In order to call a smart contract using the JSON-RPC interface you need to properly hash the data attribute (this will need to include the contract method signature along with arguments if any). You can do this manually or use a hex package like (ABI)[https://github.com/exthereum/abi] to parse your smart contract interface or encode individual calls.
 
@@ -132,7 +153,7 @@ In order to call a smart contract using the JSON-RPC interface you need to prope
 defp deps do
   [
     ...
-    {:ethereumex, "~> 0.3.2"},
+    {:ethereumex, "~> 0.4.0"},
     {:abi, "~> 0.1.8"}
     ...
   ]

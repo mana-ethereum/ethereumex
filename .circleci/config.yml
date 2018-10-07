@@ -3,11 +3,17 @@ jobs:
     working_directory: ~/ethereumex
     docker:
       - image: elixir:latest
-      - image: parity/parity:v1.7.2
 
     steps:
       - checkout
-
+      - run: wget https://releases.parity.io/v1.10.7/x86_64-unknown-linux-gnu/parity
+      - run: chmod 755 ./parity
+      - run: echo > passfile
+      - run:
+          name: "Parity"
+          command: ./parity --chain dev
+          background: true
+      
       - restore_cache:
           keys:
             - v2-dependency-cache-{{ arch }}-{{ checksum "mix.lock" }}

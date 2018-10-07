@@ -25,4 +25,24 @@ defmodule Ethereumex.Config do
   def request_timeout do
     Application.get_env(:ethereumex, :request_timeout, 5000)
   end
+
+  @spec client_type() :: atom()
+  def client_type do
+    Application.get_env(:ethereumex, :client_type, :http)
+  end
+
+  @spec ipc_path() :: binary()
+  def ipc_path do
+    case Application.get_env(:ethereumex, :ipc_path, "") do
+      path when is_binary(path) and path != "" ->
+        path
+
+      not_a_path ->
+        raise ArgumentError,
+          message:
+            "Please set config variable `config :ethereumex, :ipc_path, \"path/to/ipc\", got `#{
+              not_a_path
+            }`. Note: System.user_home! will be prepended to path for you on initialization"
+    end
+  end
 end

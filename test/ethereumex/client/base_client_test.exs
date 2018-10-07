@@ -1,11 +1,11 @@
-defmodule Ethereumex.Client.MacroTest do
+defmodule Ethereumex.Client.BaseClientTest do
   use ExUnit.Case
 
   defmodule ClientMock do
-    use Ethereumex.Client.Macro
+    use Ethereumex.Client.BaseClient
 
-    def single_request(payload, opts) do
-      %{"method" => method, "jsonrpc" => "2.0", "params" => params} = payload
+    def post_request(payload, opts) do
+      %{"method" => method, "jsonrpc" => "2.0", "params" => params} = Poison.decode!(payload)
 
       {method, params, opts}
     end
@@ -19,11 +19,17 @@ defmodule Ethereumex.Client.MacroTest do
     end
 
     def assert_method({ex_method, eth_method}, params, payload) do
-      {^eth_method, ^payload, _opts} = apply(ClientMock, String.to_atom(ex_method), params)
+      {result_eth_method, result_payload, _opts} =
+        apply(ClientMock, String.to_atom(ex_method), params)
+
+      assert result_eth_method == eth_method
+      assert result_payload == payload
     end
 
     def assert_opts({ex_method, _eth_method}, params, opts) do
-      {_eth_method, _payload, ^opts} = apply(ClientMock, String.to_atom(ex_method), params)
+      {_eth_method, _payload, result_opts} = apply(ClientMock, String.to_atom(ex_method), params)
+
+      assert result_opts == opts
     end
 
     def make_tuple(ex_method) do
@@ -58,19 +64,19 @@ defmodule Ethereumex.Client.MacroTest do
   @hash "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238"
   @hex_232 "0xe8"
   @transaction %{
-    from: @address,
-    to: @address,
-    gas: @hex_232,
-    gasPrice: @hex_232,
-    value: @hex_232,
-    data: @hash
+    "from" => @address,
+    "to" => @address,
+    "gas" => @hex_232,
+    "gasPrice" => @hex_232,
+    "value" => @hex_232,
+    "data" => @hash
   }
   @source_code "(returnlll (suicide (caller)))"
   @filter %{
-    fromBlock: "0x1",
-    toBlock: "0x2",
-    address: "0x8888f1f195afa192cfee860698584c030f4c9db1",
-    topics: ["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b"]
+    "fromBlock" => "0x1",
+    "toBlock" => "0x2",
+    "address" => "0x8888f1f195afa192cfee860698584c030f4c9db1",
+    "topics" => ["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b"]
   }
 
   describe ".web3_client_version/0" do
@@ -264,14 +270,17 @@ defmodule Ethereumex.Client.MacroTest do
 
   test ".shh_post/1" do
     params = %{
-      from:
+      "from" =>
         "0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1",
-      to:
+      "to" =>
         "0x3e245533f97284d442460f2998cd41858798ddf04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a0d4d661997d3940272b717b1",
-      topics: ["0x776869737065722d636861742d636c69656e74", "0x4d5a695276454c39425154466b61693532"],
-      payload: "0x7b2274797065223a226d6",
-      priority: "0x64",
-      ttl: "0x64"
+      "topics" => [
+        "0x776869737065722d636861742d636c69656e74",
+        "0x4d5a695276454c39425154466b61693532"
+      ],
+      "payload" => "0x7b2274797065223a226d6",
+      "priority" => "0x64",
+      "ttl" => "0x64"
     }
 
     Helpers.check("shh_post", [params])
@@ -285,8 +294,8 @@ defmodule Ethereumex.Client.MacroTest do
 
   test ".shh_new_filter/2" do
     params = %{
-      topics: ['0x12341234bf4b564f'],
-      to:
+      "topics" => ['0x12341234bf4b564f'],
+      "to" =>
         "0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1"
     }
 
