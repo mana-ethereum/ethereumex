@@ -1,4 +1,4 @@
-# 0.3.5
+# 0.4.0
 * Use IPC with IpcClient. Choose client type based on config :client_type (https://github.com/exthereum/ethereumex/pull/40)
 
 # 0.3.4
