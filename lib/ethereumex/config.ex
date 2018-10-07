@@ -26,10 +26,12 @@ defmodule Ethereumex.Config do
     Application.get_env(:ethereumex, :request_timeout, 5000)
   end
 
+  @spec client_type() :: atom()
   def client_type do
     Application.get_env(:ethereumex, :client_type, :http)
   end
 
+  @spec ipc_path() :: binary()
   def ipc_path do
     Application.get_env(:ethereumex, :ipc_path, "/")
   end

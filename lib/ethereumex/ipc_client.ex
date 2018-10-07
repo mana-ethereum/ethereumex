@@ -1,6 +1,6 @@
 defmodule Ethereumex.IpcClient do
-  use Ethereumex.Client.Macro
   use Ethereumex.Client.BaseClient
+
   @moduledoc false
 
   @spec post_request(binary(), []) :: {:ok | :error, any()}

@@ -3,7 +3,7 @@ defmodule Ethereumex.IpcServer do
   @moduledoc false
 
   def init(state) do
-    opts = [:binary, active: false]
+    opts = [:binary, active: false, reuseaddr: true]
     response = :gen_tcp.connect({:local, state[:path]}, 0, opts)
 
     case response do

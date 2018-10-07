@@ -1,5 +1,4 @@
 defmodule Ethereumex.HttpClient do
-  use Ethereumex.Client.Macro
   use Ethereumex.Client.BaseClient
   import Ethereumex.Config
   @moduledoc false
