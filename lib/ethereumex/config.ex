@@ -33,6 +33,16 @@ defmodule Ethereumex.Config do
 
   @spec ipc_path() :: binary()
   def ipc_path do
-    Application.get_env(:ethereumex, :ipc_path, "/")
+    case Application.get_env(:ethereumex, :ipc_path, "") do
+      path when is_binary(path) and path != "" ->
+        path
+
+      not_a_path ->
+        raise ArgumentError,
+          message:
+            "Please set config variable `config :ethereumex, :ipc_path, \"path/to/ipc\", got `#{
+              not_a_path
+            }`. Note: System.user_home! will be prepended to path for you on initialization"
+    end
   end
 end

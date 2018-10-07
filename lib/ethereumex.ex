@@ -16,7 +16,7 @@ defmodule Ethereumex do
   end
 
   def setup_children(:ipc) do
-    path = Enum.join([System.user_home!(), Ethereumex.Config.ipc_path])
+    path = Enum.join([System.user_home!(), Ethereumex.Config.ipc_path()])
 
     [
       worker(Ethereumex.IpcServer, [%{path: path}]),
