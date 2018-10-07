@@ -6,12 +6,13 @@ jobs:
 
     steps:
       - checkout
-      - run: curl https://sh.rustup.rs -sSf | sh -s -- -y
-      - run: git clone https://github.com/paritytech/parity-ethereum
-      - run: cd parity-ethereum && cargo build --release --features final
-      - run: ./target/release
-      - run: ./parity --jsonrpc-interface all --no-warp &
-
+      - run: wget https://releases.parity.io/v1.8.5/x86_64-unknown-linux-gnu/parity
+      - run: chmod 755 ./parity
+      - run: echo > passfile
+      - run: ./parity --chain 2>&1 &
+      - run: sleep 10
+      - run: kill -9 $(lsof -t -i:8545)
+      - run: ./parity --chain dev --unlock=0x00a329c0648769a73afac7f9381e08fb43dbea72 --reseal-min-period 0 --password passfile
 
       - restore_cache:
           keys:
