@@ -448,7 +448,7 @@ defmodule Ethereumex.Client.BaseClient do
       def single_request(payload, opts \\ []) do
         payload
         |> encode_payload
-        |> post_request(opts)
+        |> post_request(opts, payload["id"])
       end
 
       @spec encode_payload(map()) :: binary()
@@ -467,11 +467,11 @@ defmodule Ethereumex.Client.BaseClient do
         end)
       end
 
-      defp post_request(payload, opts) do
+      defp post_request(payload, opts, request_id) do
         {:error, :not_implemented}
       end
 
-      defoverridable post_request: 2
+      defoverridable post_request: 3
 
       defp server_request(params, opts \\ []) do
         timeout = Keyword.get(opts, :request_timeout, Ethereumex.Config.request_timeout())

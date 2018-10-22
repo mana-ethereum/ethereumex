@@ -19,6 +19,8 @@ defmodule Ethereumex do
     path = Enum.join([System.user_home!(), Ethereumex.Config.ipc_path()])
 
     [
+      worker(Ethereumex.WebSocketServer, [Ethereumex.Config.web3_url()]),
+      worker(Ethereumex.WebSocketClient, []),
       worker(Ethereumex.IpcServer, [%{path: path}]),
       worker(Ethereumex.IpcClient, [])
     ]

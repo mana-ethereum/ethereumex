@@ -33,11 +33,12 @@ defmodule Ethereumex.Mixfile do
 
   defp deps do
     [
+      {:credo, "~> 0.10.2", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.0.0-rc.3", only: [:dev], runtime: false},
+      {:ex_doc, "~> 0.19", only: :dev, runtime: false},
       {:httpoison, "~> 1.3.1"},
       {:poison, "~> 4.0.1"},
-      {:credo, "~> 0.10.2", only: [:dev, :test], runtime: false},
-      {:ex_doc, "~> 0.19", only: :dev, runtime: false},
-      {:dialyxir, "~> 1.0.0-rc.3", only: [:dev], runtime: false}
+      {:websockex, "0.4.1"}
     ]
   end
 end

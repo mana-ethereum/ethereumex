@@ -1,30 +1,29 @@
-defmodule Ethereumex.IpcClientTest do
+defmodule Ethereumex.WebSocketClientTest do
   use ExUnit.Case
-  alias Ethereumex.IpcClient
+  alias Ethereumex.WebSocketClient
 
   setup_all do
-    Ethereumex.IpcServer.start_link(%{
-      path: Enum.join([System.user_home!(), Ethereumex.Config.ipc_path()])
-    })
+    Ethereumex.WebSocketServer.start_link(Ethereumex.Config.web3_url())
 
-    IpcClient.start_link()
+    WebSocketClient.start_link()
 
     :ok
   end
 
   @tag :web3
-  describe "IpcClient.web3_client_version/0" do
+  describe "WebSocketClient.web3_client_version/0" do
     test "returns client version" do
-      result = IpcClient.web3_client_version()
+      result = WebSocketClient.web3_client_version()
 
-      {:ok, <<_::binary>>} = result
+      {:ok, <<version::binary>>} = result
+      assert version =~ "Parity" || version =~ "Geth"
     end
   end
 
   @tag :web3
-  describe "IpcClient.web3_sha3/1" do
+  describe "WebSocketClient.web3_sha3/1" do
     test "returns sha3 of the given data" do
-      result = IpcClient.web3_sha3("0x68656c6c6f20776f726c64")
+      result = WebSocketClient.web3_sha3("0x68656c6c6f20776f726c64")
 
       {
         :ok,
@@ -34,118 +33,130 @@ defmodule Ethereumex.IpcClientTest do
   end
 
   @tag :net
-  describe "IpcClient.net_version/0" do
+  describe "WebSocketClient.net_version/0" do
     test "returns network id" do
-      result = IpcClient.net_version()
+      result = WebSocketClient.net_version()
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :net
-  describe "IpcClient.net_peer_count/0" do
+  describe "WebSocketClient.net_peer_count/0" do
     test "returns number of peers currently connected to the client" do
-      result = IpcClient.net_peer_count()
+      result = WebSocketClient.net_peer_count()
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :net
-  describe "IpcClient.net_listening/0" do
+  describe "WebSocketClient.net_listening/0" do
     test "returns true" do
-      result = IpcClient.net_listening()
+      result = WebSocketClient.net_listening()
 
       {:ok, true} = result
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_protocol_version/0" do
+  describe "WebSocketClient.eth_subscribe/1" do
+    test "subscribes to new block" do
+      WebSocketClient.eth_subscribe("newHeads")
+
+      receive do
+        _block_header = %{"hash" => hash} ->
+          refute is_nil(hash)
+      end
+    end
+  end
+
+  @tag :eth
+  describe "WebSocketClient.eth_protocol_version/0" do
     test "returns true" do
-      result = IpcClient.eth_protocol_version()
+      result = WebSocketClient.eth_protocol_version()
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_syncing/1" do
+  describe "WebSocketClient.eth_syncing/1" do
     test "checks sync status" do
-      {:ok, result} = IpcClient.eth_syncing()
+      {:ok, result} = WebSocketClient.eth_syncing()
 
       assert is_map(result) || is_boolean(result)
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_coinbase/1" do
+  describe "WebSocketClient.eth_coinbase/1" do
     test "returns coinbase address" do
-      result = IpcClient.eth_coinbase()
+      result = WebSocketClient.eth_coinbase()
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_mining/1" do
+  describe "WebSocketClient.eth_mining/1" do
     test "checks mining status" do
-      result = IpcClient.eth_mining()
+      result = WebSocketClient.eth_mining()
 
       {:ok, false} = result
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_hashrate/1" do
+  describe "WebSocketClient.eth_hashrate/1" do
     test "returns hashrate" do
-      result = IpcClient.eth_hashrate()
+      result = WebSocketClient.eth_hashrate()
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_gas_price/1" do
+  describe "WebSocketClient.eth_gas_price/1" do
     test "returns current price per gas" do
-      result = IpcClient.eth_gas_price()
+      result = WebSocketClient.eth_gas_price()
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_accounts/1" do
+  describe "WebSocketClient.eth_accounts/1" do
     test "returns addresses owned by client" do
-      {:ok, result} = IpcClient.eth_accounts()
+      {:ok, result} = WebSocketClient.eth_accounts()
 
       assert result |> is_list
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_block_number/1" do
+  describe "WebSocketClient.eth_block_number/1" do
     test "returns number of most recent block" do
-      result = IpcClient.eth_block_number()
+      result = WebSocketClient.eth_block_number()
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_get_balance/3" do
+  describe "WebSocketClient.eth_get_balance/3" do
     test "returns balance of given account" do
-      result = IpcClient.eth_get_balance("0x001bdcde60cb916377a3a3bf4e8054051a4d02e7")
+      result = WebSocketClient.eth_get_balance("0x001bdcde60cb916377a3a3bf4e8054051a4d02e7")
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :skip
-  describe "IpcClient.eth_get_storage_at/4" do
+  describe "WebSocketClient.eth_get_storage_at/4" do
     test "returns value from a storage position at a given address." do
       result =
-        IpcClient.eth_get_balance(
+        WebSocketClient.eth_get_balance(
           "0x001bdcde60cb916377a3a3bf4e8054051a4d02e7",
           "0x0"
         )
@@ -155,19 +166,20 @@ defmodule Ethereumex.IpcClientTest do
   end
 
   @tag :eth
-  describe "IpcClient.eth_get_transaction_count/3" do
+  describe "WebSocketClient.eth_get_transaction_count/3" do
     test "returns number of transactions sent from an address." do
-      result = IpcClient.eth_get_transaction_count("0x001bdcde60cb916377a3a3bf4e8054051a4d02e7")
+      result =
+        WebSocketClient.eth_get_transaction_count("0x001bdcde60cb916377a3a3bf4e8054051a4d02e7")
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_get_block_transaction_count_by_hash/2" do
+  describe "WebSocketClient.eth_get_block_transaction_count_by_hash/2" do
     test "number of transactions in a block from a block matching the given block hash" do
       result =
-        IpcClient.eth_get_block_transaction_count_by_hash(
+        WebSocketClient.eth_get_block_transaction_count_by_hash(
           "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238"
         )
 
@@ -176,19 +188,19 @@ defmodule Ethereumex.IpcClientTest do
   end
 
   @tag :eth
-  describe "IpcClient.eth_get_block_transaction_count_by_number/2" do
+  describe "WebSocketClient.eth_get_block_transaction_count_by_number/2" do
     test "returns number of transactions in a block from a block matching the given block number" do
-      result = IpcClient.eth_get_block_transaction_count_by_number()
+      result = WebSocketClient.eth_get_block_transaction_count_by_number()
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_get_uncle_count_by_block_hash/2" do
+  describe "WebSocketClient.eth_get_uncle_count_by_block_hash/2" do
     test "the number of uncles in a block from a block matching the given block hash" do
       result =
-        IpcClient.eth_get_uncle_count_by_block_hash(
+        WebSocketClient.eth_get_uncle_count_by_block_hash(
           "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238"
         )
 
@@ -197,34 +209,35 @@ defmodule Ethereumex.IpcClientTest do
   end
 
   @tag :eth
-  describe "IpcClient.eth_get_uncle_count_by_block_number/2" do
+  describe "WebSocketClient.eth_get_uncle_count_by_block_number/2" do
     test "the number of uncles in a block from a block matching the given block hash" do
-      result = IpcClient.eth_get_uncle_count_by_block_number()
+      result = WebSocketClient.eth_get_uncle_count_by_block_number()
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_get_code/3" do
+  describe "WebSocketClient.eth_get_code/3" do
     test "returns code at a given address" do
-      result = IpcClient.eth_get_code("0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b")
+      result = WebSocketClient.eth_get_code("0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b")
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :eth_sign
-  describe "IpcClient.eth_sign/3" do
+  describe "WebSocketClient.eth_sign/3" do
     test "returns signature" do
-      result = IpcClient.eth_sign("0x71cf0b576a95c347078ec2339303d13024a26910", "0xdeadbeaf")
+      result =
+        WebSocketClient.eth_sign("0x71cf0b576a95c347078ec2339303d13024a26910", "0xdeadbeaf")
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_estimate_gas/3" do
+  describe "WebSocketClient.eth_estimate_gas/3" do
     test "estimates gas" do
       data =
         "0x6060604052341561" <>
@@ -240,17 +253,17 @@ defmodule Ethereumex.IpcClientTest do
       from = "0x001bdcde60cb916377a3a3bf4e8054051a4d02e7"
       transaction = %{data: data, from: from}
 
-      result = IpcClient.eth_estimate_gas(transaction)
+      result = WebSocketClient.eth_estimate_gas(transaction)
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_get_block_by_hash/3" do
+  describe "WebSocketClient.eth_get_block_by_hash/3" do
     test "returns information about a block by hash" do
       result =
-        IpcClient.eth_get_block_by_hash(
+        WebSocketClient.eth_get_block_by_hash(
           "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238",
           true
         )
@@ -260,19 +273,19 @@ defmodule Ethereumex.IpcClientTest do
   end
 
   @tag :eth
-  describe "IpcClient.eth_get_block_by_number/3" do
+  describe "WebSocketClient.eth_get_block_by_number/3" do
     test "returns information about a block by number" do
-      {:ok, result} = IpcClient.eth_get_block_by_number("0x1b4", true)
+      {:ok, result} = WebSocketClient.eth_get_block_by_number("0x1b4", true)
 
       assert is_nil(result) || is_map(result)
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_get_transaction_by_hash/2" do
+  describe "WebSocketClient.eth_get_transaction_by_hash/2" do
     test "returns the information about a transaction by its hash" do
       result =
-        IpcClient.eth_get_transaction_by_hash(
+        WebSocketClient.eth_get_transaction_by_hash(
           "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238"
         )
 
@@ -281,10 +294,10 @@ defmodule Ethereumex.IpcClientTest do
   end
 
   @tag :eth
-  describe "IpcClient.eth_get_transaction_by_block_hash_and_index/3" do
+  describe "WebSocketClient.eth_get_transaction_by_block_hash_and_index/3" do
     test "returns the information about a transaction by block hash and index" do
       result =
-        IpcClient.eth_get_transaction_by_block_hash_and_index(
+        WebSocketClient.eth_get_transaction_by_block_hash_and_index(
           "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238",
           "0x0"
         )
@@ -294,19 +307,19 @@ defmodule Ethereumex.IpcClientTest do
   end
 
   @tag :eth
-  describe "IpcClient.eth_get_transaction_by_block_number_and_index/3" do
+  describe "WebSocketClient.eth_get_transaction_by_block_number_and_index/3" do
     test "returns the information about a transaction by block number and index" do
-      result = IpcClient.eth_get_transaction_by_block_number_and_index("earliest", "0x0")
+      result = WebSocketClient.eth_get_transaction_by_block_number_and_index("earliest", "0x0")
 
       {:ok, nil} = result
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_get_transaction_receipt/2" do
+  describe "WebSocketClient.eth_get_transaction_receipt/2" do
     test "returns the receipt of a transaction by transaction hash" do
       result =
-        IpcClient.eth_get_transaction_receipt(
+        WebSocketClient.eth_get_transaction_receipt(
           "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238"
         )
 
@@ -315,10 +328,10 @@ defmodule Ethereumex.IpcClientTest do
   end
 
   @tag :eth
-  describe "IpcClient.eth_get_uncle_by_block_hash_and_index/3" do
+  describe "WebSocketClient.eth_get_uncle_by_block_hash_and_index/3" do
     test "returns information about a uncle of a block by hash and uncle index position" do
       result =
-        IpcClient.eth_get_uncle_by_block_hash_and_index(
+        WebSocketClient.eth_get_uncle_by_block_hash_and_index(
           "0xc6ef2fc5426d6ad6fd9e2a26abeab0aa2411b7ab17f30a99d3cb96aed1d1055b",
           "0x0"
         )
@@ -328,25 +341,25 @@ defmodule Ethereumex.IpcClientTest do
   end
 
   @tag :eth
-  describe "IpcClient.eth_get_uncle_by_block_number_and_index/3" do
+  describe "WebSocketClient.eth_get_uncle_by_block_number_and_index/3" do
     test "returns information about a uncle of a block by number and uncle index position" do
-      result = IpcClient.eth_get_uncle_by_block_number_and_index("0x29c", "0x0")
+      result = WebSocketClient.eth_get_uncle_by_block_number_and_index("0x29c", "0x0")
 
       {:ok, _} = result
     end
   end
 
   @tag :eth_compile
-  describe "IpcClient.eth_get_compilers/1" do
+  describe "WebSocketClient.eth_get_compilers/1" do
     test "returns a list of available compilers in the client" do
-      result = IpcClient.eth_get_compilers()
+      result = WebSocketClient.eth_get_compilers()
 
       {:ok, _} = result
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_new_filter/2" do
+  describe "WebSocketClient.eth_new_filter/2" do
     test "creates a filter object" do
       filter = %{
         fromBlock: "0x1",
@@ -362,14 +375,14 @@ defmodule Ethereumex.IpcClientTest do
         ]
       }
 
-      result = IpcClient.eth_new_filter(filter)
+      result = WebSocketClient.eth_new_filter(filter)
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_new_12" do
+  describe "WebSocketClient.eth_new_12" do
     test "creates a filter object" do
       filter = %{
         fromBlock: "0x1",
@@ -385,75 +398,75 @@ defmodule Ethereumex.IpcClientTest do
         ]
       }
 
-      result = IpcClient.eth_new_filter(filter)
+      result = WebSocketClient.eth_new_filter(filter)
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_new_block_filter/1" do
+  describe "WebSocketClient.eth_new_block_filter/1" do
     test "creates new block filter" do
-      result = IpcClient.eth_new_block_filter()
+      result = WebSocketClient.eth_new_block_filter()
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_new_pending_transaction_filter/1" do
+  describe "WebSocketClient.eth_new_pending_transaction_filter/1" do
     test "creates new pending transaction filter" do
-      result = IpcClient.eth_new_pending_transaction_filter()
+      result = WebSocketClient.eth_new_pending_transaction_filter()
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_uninstall_filter/2" do
+  describe "WebSocketClient.eth_uninstall_filter/2" do
     test "uninstalls a filter with given id" do
-      {:ok, result} = IpcClient.eth_uninstall_filter("0xb")
+      {:ok, result} = WebSocketClient.eth_uninstall_filter("0xb")
 
       assert is_boolean(result)
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_get_filter_changes/2" do
+  describe "WebSocketClient.eth_get_filter_changes/2" do
     test "returns an array of logs which occurred since last poll" do
-      result = IpcClient.eth_get_filter_changes("0x16")
+      result = WebSocketClient.eth_get_filter_changes("0x16")
 
       {:ok, []} = result
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_get_filter_logs/2" do
+  describe "WebSocketClient.eth_get_filter_logs/2" do
     test "returns an array of all logs matching filter with given id" do
-      result = IpcClient.eth_get_filter_logs("0x16")
+      result = WebSocketClient.eth_get_filter_logs("0x16")
 
       {:ok, []} = result
     end
   end
 
   @tag :eth
-  describe "IpcClient.eth_get_logs/2" do
+  describe "WebSocketClient.eth_get_logs/2" do
     test "returns an array of all logs matching a given filter object" do
       filter = %{
         topics: ["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b"]
       }
 
-      result = IpcClient.eth_get_logs(filter)
+      result = WebSocketClient.eth_get_logs(filter)
 
       {:ok, []} = result
     end
   end
 
   @tag :eth_mine
-  describe "IpcClient.eth_submit_work/4" do
+  describe "WebSocketClient.eth_submit_work/4" do
     test "validates solution" do
       result =
-        IpcClient.eth_submit_work(
+        WebSocketClient.eth_submit_work(
           "0x0000000000000001",
           "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
           "0xD1FE5700000000000000000000000000D1FE5700000000000000000000000000"
@@ -464,19 +477,19 @@ defmodule Ethereumex.IpcClientTest do
   end
 
   @tag :eth_mine
-  describe "IpcClient.eth_get_work/1" do
+  describe "WebSocketClient.eth_get_work/1" do
     test "returns the hash of the current block, the seedHash, and the boundary condition to be met " do
-      result = IpcClient.eth_get_work()
+      result = WebSocketClient.eth_get_work()
 
       {:ok, [<<_::binary>>, <<_::binary>>, <<_::binary>>]} = result
     end
   end
 
   @tag :eth_mine
-  describe "IpcClient.eth_submit_hashrate/3" do
+  describe "WebSocketClient.eth_submit_hashrate/3" do
     test "submits mining hashrate" do
       result =
-        IpcClient.eth_submit_hashrate(
+        WebSocketClient.eth_submit_hashrate(
           "0x0000000000000000000000000000000000000000000000000000000000500000",
           "0x59daa26581d0acd1fce254fb7e85952f4c09d0915afd33d3886cd914bc7d283c"
         )
@@ -486,43 +499,43 @@ defmodule Ethereumex.IpcClientTest do
   end
 
   @tag :eth_db
-  describe "IpcClient.db_put_string/4" do
+  describe "WebSocketClient.db_put_string/4" do
     test "stores a string in the local database" do
-      result = IpcClient.db_put_string("testDB", "myKey", "myString")
+      result = WebSocketClient.db_put_string("testDB", "myKey", "myString")
 
       {:ok, true} = result
     end
   end
 
   @tag :eth_db
-  describe "IpcClient.db_get_string/3" do
+  describe "WebSocketClient.db_get_string/3" do
     test "returns string from the local database" do
-      result = IpcClient.db_get_string("db", "key")
+      result = WebSocketClient.db_get_string("db", "key")
 
       {:ok, nil} = result
     end
   end
 
   @tag :eth_db
-  describe "IpcClient.db_put_hex/4" do
+  describe "WebSocketClient.db_put_hex/4" do
     test "stores binary data in the local database" do
-      result = IpcClient.db_put_hex("db", "key", "data")
+      result = WebSocketClient.db_put_hex("db", "key", "data")
 
       {:ok, true} = result
     end
   end
 
   @tag :eth_db
-  describe "IpcClient.db_get_hex/3" do
+  describe "WebSocketClient.db_get_hex/3" do
     test "returns binary data from the local database" do
-      result = IpcClient.db_get_hex("db", "key")
+      result = WebSocketClient.db_get_hex("db", "key")
 
       {:ok, nil} = result
     end
   end
 
   @tag :shh
-  describe "IpcClient.shh_post/2" do
+  describe "WebSocketClient.shh_post/2" do
     test "sends a whisper message" do
       whisper = %{
         from:
@@ -538,35 +551,35 @@ defmodule Ethereumex.IpcClientTest do
         ttl: "0x64"
       }
 
-      result = IpcClient.shh_post(whisper)
+      result = WebSocketClient.shh_post(whisper)
 
       {:ok, true} = result
     end
   end
 
   @tag :shh
-  describe "IpcClient.shh_version/1" do
+  describe "WebSocketClient.shh_version/1" do
     test "returns the current whisper protocol version" do
-      result = IpcClient.shh_version()
+      result = WebSocketClient.shh_version()
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :shh
-  describe "IpcClient.shh_new_identity/1" do
+  describe "WebSocketClient.shh_new_identity/1" do
     test "creates new whisper identity in the client" do
-      result = IpcClient.shh_new_identity()
+      result = WebSocketClient.shh_new_identity()
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :shh
-  describe "IpcClient.shh_has_entity/2" do
+  describe "WebSocketClient.shh_has_entity/2" do
     test "creates new whisper identity in the client" do
       result =
-        IpcClient.shh_has_identity(
+        WebSocketClient.shh_has_identity(
           "0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1"
         )
 
@@ -575,10 +588,10 @@ defmodule Ethereumex.IpcClientTest do
   end
 
   @tag :shh
-  describe "IpcClient.shh_add_to_group/2" do
+  describe "WebSocketClient.shh_add_to_group/2" do
     test "adds adress to group" do
       result =
-        IpcClient.shh_add_to_group(
+        WebSocketClient.shh_add_to_group(
           "0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1"
         )
 
@@ -587,16 +600,16 @@ defmodule Ethereumex.IpcClientTest do
   end
 
   @tag :shh
-  describe "IpcClient.shh_new_group/1" do
+  describe "WebSocketClient.shh_new_group/1" do
     test "creates new group" do
-      result = IpcClient.shh_new_group()
+      result = WebSocketClient.shh_new_group()
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :shh
-  describe "IpcClient.shh_new_filter/2" do
+  describe "WebSocketClient.shh_new_filter/2" do
     test "creates filter to notify, when client receives whisper message matching the filter options" do
       filter_options = %{
         topics: ['0x12341234bf4b564f'],
@@ -604,41 +617,41 @@ defmodule Ethereumex.IpcClientTest do
           "0x04f96a5e25610293e42a73908e93ccc8c4d4dc0edcfa9fa872f50cb214e08ebf61a03e245533f97284d442460f2998cd41858798ddfd4d661997d3940272b717b1"
       }
 
-      result = IpcClient.shh_new_filter(filter_options)
+      result = WebSocketClient.shh_new_filter(filter_options)
 
       {:ok, <<_::binary>>} = result
     end
   end
 
   @tag :shh
-  describe "IpcClient.shh_uninstall_filter/2" do
+  describe "WebSocketClient.shh_uninstall_filter/2" do
     test "uninstalls a filter with given id" do
-      result = IpcClient.shh_uninstall_filter("0x7")
+      result = WebSocketClient.shh_uninstall_filter("0x7")
 
       {:ok, false} = result
     end
   end
 
   @tag :shh
-  describe "IpcClient.shh_get_filter_changes/2" do
+  describe "WebSocketClient.shh_get_filter_changes/2" do
     test "polls filter chages" do
-      result = IpcClient.shh_get_filter_changes("0x7")
+      result = WebSocketClient.shh_get_filter_changes("0x7")
 
       {:ok, []} = result
     end
   end
 
   @tag :shh
-  describe "IpcClient.shh_get_messages/2" do
+  describe "WebSocketClient.shh_get_messages/2" do
     test "returns all messages matching a filter" do
-      result = IpcClient.shh_get_messages("0x7")
+      result = WebSocketClient.shh_get_messages("0x7")
 
       {:ok, []} = result
     end
   end
 
   @tag :batch
-  describe "IpcClient.batch_request/1" do
+  describe "WebSocketClient.batch_request/1" do
     test "sends batch request" do
       requests = [
         {:web3_client_version, []},
@@ -646,7 +659,7 @@ defmodule Ethereumex.IpcClientTest do
         {:web3_sha3, ["0x68656c6c6f20776f726c64"]}
       ]
 
-      result = IpcClient.batch_request(requests)
+      result = WebSocketClient.batch_request(requests)
 
       {
         :ok,

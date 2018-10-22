@@ -1,8 +1,8 @@
 defmodule Ethereumex.Config do
   @moduledoc false
 
-  @spec rpc_url() :: binary()
-  def rpc_url do
+  @spec web3_url() :: binary()
+  def web3_url do
     case Application.get_env(:ethereumex, :url) do
       url when is_binary(url) and url != "" ->
         url
