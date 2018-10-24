@@ -1,6 +1,11 @@
 defmodule Ethereumex.Client.BaseClient do
-  alias Ethereumex.Client.{Server, Behaviour}
-  @moduledoc false
+  alias Ethereumex.Client.Behaviour
+  alias Ethereumex.Counter
+
+  @moduledoc """
+  The Base Client exposes the Ethereum Client RPC functionality. We use a macro so that exposed functions can be used in
+  different behaviours (HTTP or IPC).
+  """
 
   defmacro __using__(_) do
     quote location: :keep do
@@ -471,19 +476,34 @@ defmodule Ethereumex.Client.BaseClient do
         {:error, :not_implemented}
       end
 
+      # The function that a behavior like HTTP or IPC needs to implement.
       defoverridable post_request: 2
 
+      @spec server_request(list(map()) | map(), list()) :: {:ok, [any()]} | {:ok, any()} | error
       defp server_request(params, opts \\ []) do
-        timeout = Keyword.get(opts, :request_timeout, Ethereumex.Config.request_timeout())
-        GenServer.call(__MODULE__, {:request, params, opts}, timeout)
+        params
+        |> prepare_request
+        |> request(opts)
       end
 
-      def start_link do
-        Server.start_link(__MODULE__)
+      defp prepare_request(params) when is_list(params) do
+        id = Counter.increment(:rpc_counter)
+
+        params =
+          params
+          |> Enum.with_index()
+          |> Enum.map(fn {req_data, index} ->
+            Map.put(req_data, "id", index + id)
+          end)
+
+        _ = Counter.increment(:rpc_counter, id + Enum.count(params))
+        params
       end
 
-      def reset_id do
-        GenServer.cast(__MODULE__, :reset_id)
+      defp prepare_request(params), do: Map.put(params, "id", Counter.increment(:rpc_counter))
+
+      defp request(params, opts) do
+        __MODULE__.single_request(params, opts)
       end
     end
   end

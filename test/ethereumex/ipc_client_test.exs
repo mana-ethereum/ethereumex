@@ -7,8 +7,6 @@ defmodule Ethereumex.IpcClientTest do
       path: Enum.join([System.user_home!(), "/.local/share/io.parity.ethereum/jsonrpc.ipc"])
     })
 
-    IpcClient.start_link()
-
     :ok
   end
 
