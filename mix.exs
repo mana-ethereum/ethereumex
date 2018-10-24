@@ -25,7 +25,7 @@ defmodule Ethereumex.Mixfile do
 
   def application do
     [
-      env: [request_timeout: 5000],
+      env: [],
       extra_applications: [:logger],
       mod: {Ethereumex, []}
     ]

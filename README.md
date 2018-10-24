@@ -31,13 +31,16 @@ config :ethereumex,
   url: "http://localhost:8545"
 ```
 
-You can also configure the `GenServer` request timeout for requests sent to the Ethereum JSON-RPC
+You can also configure the `HTTP` request timeout for requests sent to the Ethereum JSON-RPC
 (you can also overwrite this configuration in `opts` used when calling the client):
 
 ```elixir
 config :ethereumex,
-  request_timeout: 10_000 # default is 5000 ms
+  http_options: [timeout: 8000, recv_timeout: 5000]
+
 ```
+:timeout - timeout to establish a connection, in milliseconds. Default is 8000
+:recv_timeout - timeout used when receiving a connection. Default is 5000
 
 If you want to use IPC you will need to set a few things in your config.
 

@@ -21,11 +21,6 @@ defmodule Ethereumex.Config do
     Application.get_env(:ethereumex, :http_options, [])
   end
 
-  @spec request_timeout() :: integer()
-  def request_timeout do
-    Application.get_env(:ethereumex, :request_timeout, 5000)
-  end
-
   @spec client_type() :: atom()
   def client_type do
     Application.get_env(:ethereumex, :client_type, :http)
