@@ -4,49 +4,54 @@ defmodule Ethereumex.IpcServer do
 
   def init(state) do
     opts = [:binary, active: false, reuseaddr: true]
+
     response = :gen_tcp.connect({:local, state[:path]}, 0, opts)
 
     case response do
-      {:ok, socket} -> {:ok, %{state | socket: socket}}
+      {:ok, socket} -> {:ok, Keyword.put(state, :socket, socket)}
       {:error, reason} -> {:error, reason}
     end
   end
 
-  def start_link(state \\ %{}) do
-    GenServer.start_link(__MODULE__, Map.merge(state, %{socket: nil}), name: IpcServer)
+  def start_link(state \\ []) do
+    GenServer.start_link(__MODULE__, Keyword.merge(state, socket: nil))
   end
 
-  def post(request) do
-    GenServer.call(IpcServer, {:request, request})
+  def post(pid, request) do
+    GenServer.call(pid, {:request, request})
   end
 
-  def receive_response(data, socket, resukt \\ <<>>)
+  def receive_response(data, socket, timeout, result \\ <<>>)
 
-  def receive_response({:error, reason}, _socket, _result) do
+  def receive_response({:error, reason}, _socket, _timeout, _result) do
     {:error, reason}
   end
 
-  def receive_response(:ok, socket, result) do
-    with {:ok, response} <- :gen_tcp.recv(socket, 0) do
+  def receive_response(:ok, socket, timeout, result) do
+    with {:ok, response} <- :gen_tcp.recv(socket, 0, timeout) do
       new_result = result <> response
 
       if String.ends_with?(response, "\n") do
         {:ok, new_result}
       else
-        receive_response(:ok, socket, new_result)
+        receive_response(:ok, socket, timeout, new_result)
       end
     end
   end
 
-  def receive_response(data, _socket, _result) do
+  def receive_response(data, _socket, _timeout, _result) do
     {:error, data}
   end
 
-  def handle_call({:request, request}, _from, %{socket: socket} = state) do
+  def handle_call(
+        {:request, request},
+        _from,
+        [socket: socket, path: _, ipc_request_timeout: timeout] = state
+      ) do
     response =
       socket
       |> :gen_tcp.send(request)
-      |> receive_response(socket)
+      |> receive_response(socket, timeout)
 
     {:reply, response, state}
   end

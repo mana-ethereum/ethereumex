@@ -2,10 +2,10 @@ defmodule Ethereumex.IpcClient do
   use Ethereumex.Client.BaseClient
   alias Ethereumex.IpcServer
   @moduledoc false
-
+  @timeout 60_000
   @spec post_request(binary(), []) :: {:ok | :error, any()}
   def post_request(payload, _opts) do
-    with {:ok, response} <- IpcServer.post(payload) do
+    with {:ok, response} <- call_ipc(payload) do
       with {:ok, decoded_body} <- Poison.decode(response) do
         case decoded_body do
           %{"error" => error} -> {:error, error}
@@ -18,5 +18,9 @@ defmodule Ethereumex.IpcClient do
     else
       {:error, error} -> {:error, error}
     end
+  end
+
+  defp call_ipc(payload) do
+    :poolboy.transaction(:ipc_worker, fn pid -> IpcServer.post(pid, payload) end, @timeout)
   end
 end
