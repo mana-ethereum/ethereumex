@@ -54,12 +54,6 @@ defmodule Ethereumex.Client.BaseClientTest do
     end
   end
 
-  setup_all do
-    ClientMock.start_link()
-
-    :ok
-  end
-
   @address "0x407d73d8a49eeb85d32cf465507dd71d507100c1"
   @hash "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238"
   @hex_232 "0xe8"

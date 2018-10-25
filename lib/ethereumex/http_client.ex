@@ -1,13 +1,13 @@
 defmodule Ethereumex.HttpClient do
   use Ethereumex.Client.BaseClient
-  import Ethereumex.Config
+  alias Ethereumex.Config
   @moduledoc false
 
   @spec post_request(binary(), []) :: {:ok | :error, any()}
   def post_request(payload, opts) do
     headers = [{"Content-Type", "application/json"}]
-    options = Ethereumex.Config.http_options()
-    url = Keyword.get(opts, :url) || rpc_url()
+    options = [hackney: [pool: :default]] ++ Config.http_options()
+    url = Keyword.get(opts, :url) || Config.rpc_url()
 
     with {:ok, response} <- HTTPoison.post(url, payload, headers, options),
          %HTTPoison.Response{body: body, status_code: code} = response do

@@ -2,12 +2,6 @@ defmodule Ethereumex.HttpClientTest do
   use ExUnit.Case
   alias Ethereumex.HttpClient
 
-  setup_all do
-    HttpClient.start_link()
-
-    :ok
-  end
-
   @tag :web3
   describe "HttpClient.web3_client_version/0" do
     test "returns client version" do
