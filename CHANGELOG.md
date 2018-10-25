@@ -1,3 +1,7 @@
+# 0.5.0
+* Remove tunneling requests (https://github.com/exthereum/ethereumex/pull/46)
+* Use poolboy for IpcClient (https://github.com/exthereum/ethereumex/pull/47)
+
 # 0.4.0
 * Use IPC with IpcClient. Choose client type based on config :client_type (https://github.com/exthereum/ethereumex/pull/40)
 * Update poison, credo, dialyzer (https://github.com/exthereum/ethereumex/pull/42)
