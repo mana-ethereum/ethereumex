@@ -60,6 +60,14 @@ config :ethereumex,
   ipc_path: "/path/to/ipc"
 ```
 
+The IPC client type mode opens a pool of connection workers (default is 5 and 2, respectively). You can configure the pool size.
+```elixir
+config :ethereumex,
+  ipc_worker_size: 5,
+  ipc_max_worker_overflow: 2,
+  ipc_request_timeout: 60_000
+```
+
 ## Usage
 
 ### Available methods:

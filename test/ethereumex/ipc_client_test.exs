@@ -1,13 +1,16 @@
 defmodule Ethereumex.IpcClientTest do
   use ExUnit.Case
   alias Ethereumex.IpcClient
+  alias Ethereumex.Config
 
   setup_all do
-    Ethereumex.IpcServer.start_link(%{
-      path: Enum.join([System.user_home!(), "/.local/share/io.parity.ethereum/jsonrpc.ipc"])
-    })
+    _ = Application.put_env(:ethereumex, :client_type, :ipc)
+    [ipc_pool_child] = Config.setup_children()
+    {:ok, _pid} = Supervisor.start_child(Ethereumex.Supervisor, ipc_pool_child)
 
-    :ok
+    on_exit(fn ->
+      _ = Application.put_env(:ethereumex, :client_type, :http)
+    end)
   end
 
   @tag :web3

@@ -1,5 +1,37 @@
 defmodule Ethereumex.Config do
   @moduledoc false
+  alias Ethereumex.IpcServer
+
+  def setup_children do
+    setup_children(client_type())
+  end
+
+  defp setup_children(:ipc) do
+    path = Enum.join([System.user_home!(), ipc_path()])
+
+    [
+      :poolboy.child_spec(:worker, poolboy_config(),
+        path: path,
+        ipc_request_timeout: ipc_request_timeout()
+      )
+    ]
+  end
+
+  defp setup_children(:http), do: []
+
+  defp setup_children(opt) do
+    raise "Invalid :client option (#{opt}) in config"
+  end
+
+  @spec poolboy_config() :: keyword()
+  defp poolboy_config() do
+    [
+      {:name, {:local, :ipc_worker}},
+      {:worker_module, IpcServer},
+      {:size, ipc_worker_size()},
+      {:max_overflow, ipc_max_worker_overflow()}
+    ]
+  end
 
   @spec rpc_url() :: binary()
   def rpc_url do
@@ -39,5 +71,20 @@ defmodule Ethereumex.Config do
               not_a_path
             }`. Note: System.user_home! will be prepended to path for you on initialization"
     end
+  end
+
+  @spec ipc_worker_size() :: integer()
+  defp ipc_worker_size() do
+    Application.get_env(:ethereumex, :ipc_worker_size, 5)
+  end
+
+  @spec ipc_max_worker_overflow() :: integer()
+  defp ipc_max_worker_overflow() do
+    Application.get_env(:ethereumex, :ipc_max_worker_overflow, 2)
+  end
+
+  @spec ipc_request_timeout() :: integer()
+  defp ipc_request_timeout() do
+    Application.get_env(:ethereumex, :ipc_request_timeout, 60_000)
   end
 end
