@@ -458,7 +458,7 @@ defmodule Ethereumex.Client.BaseClient do
 
       @spec encode_payload(map()) :: binary()
       defp encode_payload(payload) do
-        payload |> Poison.encode!()
+        payload |> Jason.encode!()
       end
 
       @spec format_batch([map()]) :: [map() | nil | binary()]

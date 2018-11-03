@@ -4,7 +4,7 @@ defmodule Ethereumex.Mixfile do
   def project do
     [
       app: :ethereumex,
-      version: "0.5.0",
+      version: "0.5.1",
       elixir: "~> 1.7",
       description: "Elixir JSON-RPC client for the Ethereum blockchain",
       package: [
@@ -17,7 +17,7 @@ defmodule Ethereumex.Mixfile do
       deps: deps(),
       dialyzer: [
         flags: [:underspecs, :unknown, :unmatched_returns],
-        plt_add_apps: [:mix, :poison, :iex, :logger],
+        plt_add_apps: [:mix, :jason, :iex, :logger],
         plt_add_deps: :transitive
       ]
     ]
@@ -33,8 +33,8 @@ defmodule Ethereumex.Mixfile do
 
   defp deps do
     [
-      {:httpoison, "~> 1.3.1"},
-      {:poison, "~> 4.0.1"},
+      {:httpoison, "~> 1.4.0"},
+      {:jason, "~> 1.1"},
       {:credo, "~> 0.10.2", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.19", only: :dev, runtime: false},
       {:dialyxir, "~> 1.0.0-rc.3", only: [:dev], runtime: false},

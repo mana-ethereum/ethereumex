@@ -5,7 +5,7 @@ defmodule Ethereumex.Client.BaseClientTest do
     use Ethereumex.Client.BaseClient
 
     def post_request(payload, opts) do
-      %{"method" => method, "jsonrpc" => "2.0", "params" => params} = Poison.decode!(payload)
+      %{"method" => method, "jsonrpc" => "2.0", "params" => params} = Jason.decode!(payload)
 
       {method, params, opts}
     end
