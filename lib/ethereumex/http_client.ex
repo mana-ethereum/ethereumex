@@ -20,7 +20,7 @@ defmodule Ethereumex.HttpClient do
 
   @spec decode_body(binary(), integer()) :: {:ok | :error, any()}
   defp decode_body(body, code) do
-    with {:ok, decoded_body} <- Poison.decode(body) do
+    with {:ok, decoded_body} <- Jason.decode(body) do
       case {code, decoded_body} do
         {200, %{"error" => error}} -> {:error, error}
         {200, result = [%{} | _]} -> {:ok, format_batch(result)}

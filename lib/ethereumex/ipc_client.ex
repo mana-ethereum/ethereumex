@@ -6,7 +6,7 @@ defmodule Ethereumex.IpcClient do
   @spec post_request(binary(), []) :: {:ok | :error, any()}
   def post_request(payload, _opts) do
     with {:ok, response} <- call_ipc(payload) do
-      with {:ok, decoded_body} <- Poison.decode(response) do
+      with {:ok, decoded_body} <- Jason.decode(response) do
         case decoded_body do
           %{"error" => error} -> {:error, error}
           result = [%{} | _] -> {:ok, format_batch(result)}

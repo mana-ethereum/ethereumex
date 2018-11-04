@@ -1,3 +1,7 @@
+# 0.5.1
+* Replaced poison with jason
+* Upgraded httpoison to v1.4
+
 # 0.5.0
 * Remove tunneling requests (https://github.com/exthereum/ethereumex/pull/46)
 * Use poolboy for IpcClient (https://github.com/exthereum/ethereumex/pull/47)
