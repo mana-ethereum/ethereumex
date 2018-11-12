@@ -2,7 +2,9 @@
 
 Elixir JSON-RPC client for the Ethereum blockchain
 
-Check out the documentation [here](https://hexdocs.pm/ethereumex/Ethereumex.html#content)
+Check out the documentation [here](https://hexdocs.pm/ethereumex/Ethereumex.html#content).
+
+If you are looking for a higher level contract abstraction similar to web3.js you might like [exw3](https://github.com/hswick/exw3). It uses ethereumex as a dependency.
 
 ## Installation
 Add Ethereumex to your `mix.exs` dependencies:
