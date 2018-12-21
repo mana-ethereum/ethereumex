@@ -165,9 +165,9 @@ defmodule Ethereumex.Client.BaseClient do
         "eth_call" |> request(params, opts)
       end
 
-      @spec eth_estimate_gas(map(), binary(), keyword()) :: {:ok, binary()} | error
-      def eth_estimate_gas(transaction, block \\ "latest", opts \\ []) do
-        params = [transaction, block]
+      @spec eth_estimate_gas(map(), keyword()) :: {:ok, binary()} | error
+      def eth_estimate_gas(transaction, opts \\ []) do
+        params = [transaction]
 
         "eth_estimateGas" |> request(params, opts)
       end
