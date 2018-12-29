@@ -117,6 +117,7 @@ config :ethereumex,
 * eth_getFilterChanges
 * eth_getFilterLogs
 * eth_getLogs
+* eth_getProof
 * eth_getWork
 * eth_submitWork
 * eth_submitHashrate

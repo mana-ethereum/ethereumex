@@ -102,6 +102,14 @@ defmodule Ethereumex.Client.BaseClientTest do
   test ".eth_new_pending_transaction_filter/0",
     do: Helpers.check("eth_new_pending_transaction_filter")
 
+  describe ".eth_get_proof/3" do
+    test "w/o params",
+      do: Helpers.check("eth_get_proof", [@address, [@hex_232, @hex_232]], ["latest"])
+
+    test "with number",
+      do: Helpers.check("eth_get_proof", [@address, [@hex_232, @hex_232], [@hex232]])
+  end
+
   test ".eth_get_work/0", do: Helpers.check("eth_get_work")
   test ".shh_version/0", do: Helpers.check("shh_version")
   test ".shh_new_identity/0", do: Helpers.check("shh_new_identity")

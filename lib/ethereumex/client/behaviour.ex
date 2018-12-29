@@ -56,6 +56,7 @@ defmodule Ethereumex.Client.Behaviour do
   @callback eth_get_filter_logs(binary(), keyword()) :: {:ok, [binary()] | [map()]} | error
   @callback eth_get_logs(map(), keyword()) :: {:ok, [binary()] | [map()]} | error
   @callback eth_get_work(keyword()) :: {:ok, [binary()]} | error
+  @callback eth_get_proof(binary(), list(binary()), binary(), keyword()) :: {:ok, map()} | error
   @callback eth_submit_work(binary(), binary(), binary(), keyword()) :: {:ok, boolean()} | error
   @callback eth_submit_hashrate(binary(), binary(), keyword()) :: {:ok, boolean()} | error
   @callback db_put_string(binary(), binary(), binary(), keyword()) :: {:ok, boolean()} | error
