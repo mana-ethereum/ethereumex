@@ -303,6 +303,13 @@ defmodule Ethereumex.Client.BaseClient do
       end
 
       @impl true
+      def eth_get_proof(address, storage_keys, block \\ "latest", opts \\ []) do
+        params = [address, storage_keys, block]
+
+        request("eth_getProof", params, opts)
+      end
+
+      @impl true
       def eth_submit_work(nonce, header, digest, opts \\ []) do
         params = [nonce, header, digest]
 
@@ -408,7 +415,7 @@ defmodule Ethereumex.Client.BaseClient do
         "shh_getMessages" |> request(params, opts)
       end
 
-      @spec add_request_info(binary, [binary] | [map]) :: map
+      @spec add_request_info(binary, [binary | map | [binary]]) :: map
       defp add_request_info(method_name, params \\ []) do
         %{}
         |> Map.put("method", method_name)
