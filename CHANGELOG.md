@@ -1,6 +1,10 @@
+# 0.5.2
+* Fix `eth_estimateGas` (https://github.com/mana-ethereum/ethereumex/pull/55)
+* Add `eth_getProof` (https://github.com/mana-ethereum/ethereumex/pull/57)
+
 # 0.5.1
-* Replaced poison with jason
-* Upgraded httpoison to v1.4
+* Replaced poison with jason (https://github.com/mana-ethereum/ethereumex/pull/50)
+* Upgraded httpoison to v1.4 (https://github.com/mana-ethereum/ethereumex/pull/50)
 
 # 0.5.0
 * Remove tunneling requests (https://github.com/exthereum/ethereumex/pull/46)
