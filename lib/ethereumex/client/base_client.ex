@@ -14,90 +14,90 @@ defmodule Ethereumex.Client.BaseClient do
 
       @spec web3_client_version(keyword()) :: {:ok, binary()} | error
       def web3_client_version(opts \\ []) do
-        "web3_clientVersion" |> request([], opts)
+        request("web3_clientVersion", [], opts)
       end
 
       @spec web3_sha3(binary(), keyword()) :: {:ok, binary()} | error
       def web3_sha3(data, opts \\ []) do
         params = [data]
 
-        "web3_sha3" |> request(params, opts)
+        request("web3_sha3", params, opts)
       end
 
       @spec net_version(keyword()) :: {:ok, binary()} | error
       def net_version(opts \\ []) do
-        "net_version" |> request([], opts)
+        request("net_version", [], opts)
       end
 
       @spec net_peer_count(keyword()) :: {:ok, binary()} | error
       def net_peer_count(opts \\ []) do
-        "net_peerCount" |> request([], opts)
+        request("net_peerCount", [], opts)
       end
 
       @spec net_listening(keyword()) :: {:ok, boolean()} | error
       def net_listening(opts \\ []) do
-        "net_listening" |> request([], opts)
+        request("net_listening", [], opts)
       end
 
       @spec eth_protocol_version(keyword()) :: {:ok, binary()} | error
       def eth_protocol_version(opts \\ []) do
-        "eth_protocolVersion" |> request([], opts)
+        request("eth_protocolVersion", [], opts)
       end
 
       @spec eth_syncing(keyword()) :: {:ok, map() | boolean()} | error
       def eth_syncing(opts \\ []) do
-        "eth_syncing" |> request([], opts)
+        request("eth_syncing", [], opts)
       end
 
       @spec eth_coinbase(keyword()) :: {:ok, binary()} | error
       def eth_coinbase(opts \\ []) do
-        "eth_coinbase" |> request([], opts)
+        request("eth_coinbase", [], opts)
       end
 
       @spec eth_mining(keyword()) :: {:ok, boolean()} | error
       def eth_mining(opts \\ []) do
-        "eth_mining" |> request([], opts)
+        request("eth_mining", [], opts)
       end
 
       @spec eth_hashrate(keyword()) :: {:ok, binary()} | error
       def eth_hashrate(opts \\ []) do
-        "eth_hashrate" |> request([], opts)
+        request("eth_hashrate", [], opts)
       end
 
       @spec eth_gas_price(keyword()) :: {:ok, binary()} | error
       def eth_gas_price(opts \\ []) do
-        "eth_gasPrice" |> request([], opts)
+        request("eth_gasPrice", [], opts)
       end
 
       @spec eth_accounts(keyword()) :: {:ok, [binary()]} | error
       def eth_accounts(opts \\ []) do
-        "eth_accounts" |> request([], opts)
+        request("eth_accounts", [], opts)
       end
 
       @spec eth_block_number(keyword()) :: {:ok, binary} | error
       def eth_block_number(opts \\ []) do
-        "eth_blockNumber" |> request([], opts)
+        request("eth_blockNumber", [], opts)
       end
 
       @spec eth_get_balance(binary(), binary(), keyword()) :: {:ok, binary()} | error
       def eth_get_balance(address, block \\ "latest", opts \\ []) do
         params = [address, block]
 
-        "eth_getBalance" |> request(params, opts)
+        request("eth_getBalance", params, opts)
       end
 
       @spec eth_get_storage_at(binary(), binary(), binary(), keyword()) :: {:ok, binary()} | error
       def eth_get_storage_at(address, position, block \\ "latest", opts \\ []) do
         params = [address, position, block]
 
-        "eth_getStorageAt" |> request(params, opts)
+        request("eth_getStorageAt", params, opts)
       end
 
       @spec eth_get_transaction_count(binary(), binary(), keyword()) :: {:ok, binary()} | error
       def eth_get_transaction_count(address, block \\ "latest", opts \\ []) do
         params = [address, block]
 
-        "eth_getTransactionCount" |> request(params, opts)
+        request("eth_getTransactionCount", params, opts)
       end
 
       @spec eth_get_block_transaction_count_by_hash(binary(), keyword()) ::
@@ -105,7 +105,7 @@ defmodule Ethereumex.Client.BaseClient do
       def eth_get_block_transaction_count_by_hash(hash, opts \\ []) do
         params = [hash]
 
-        "eth_getBlockTransactionCountByHash" |> request(params, opts)
+        request("eth_getBlockTransactionCountByHash", params, opts)
       end
 
       @spec eth_get_block_transaction_count_by_number(binary(), keyword()) ::
@@ -113,84 +113,84 @@ defmodule Ethereumex.Client.BaseClient do
       def eth_get_block_transaction_count_by_number(block \\ "latest", opts \\ []) do
         params = [block]
 
-        "eth_getBlockTransactionCountByNumber" |> request(params, opts)
+        request("eth_getBlockTransactionCountByNumber", params, opts)
       end
 
       @spec eth_get_uncle_count_by_block_hash(binary(), keyword()) :: {:ok, binary()} | error
       def eth_get_uncle_count_by_block_hash(hash, opts \\ []) do
         params = [hash]
 
-        "eth_getUncleCountByBlockHash" |> request(params, opts)
+        request("eth_getUncleCountByBlockHash", params, opts)
       end
 
       @spec eth_get_uncle_count_by_block_number(binary(), keyword()) :: {:ok, binary()} | error
       def eth_get_uncle_count_by_block_number(block \\ "latest", opts \\ []) do
         params = [block]
 
-        "eth_getUncleCountByBlockNumber" |> request(params, opts)
+        request("eth_getUncleCountByBlockNumber", params, opts)
       end
 
       @spec eth_get_code(binary(), binary(), keyword()) :: {:ok, binary()} | error
       def eth_get_code(address, block \\ "latest", opts \\ []) do
         params = [address, block]
 
-        "eth_getCode" |> request(params, opts)
+        request("eth_getCode", params, opts)
       end
 
       @spec eth_sign(binary(), binary(), keyword()) :: {:ok, binary()} | error
       def eth_sign(address, message, opts \\ []) do
         params = [address, message]
 
-        "eth_sign" |> request(params, opts)
+        request("eth_sign", params, opts)
       end
 
       @spec eth_send_transaction(map(), keyword()) :: {:ok, binary()} | error
       def eth_send_transaction(transaction, opts \\ []) do
         params = [transaction]
 
-        "eth_sendTransaction" |> request(params, opts)
+        request("eth_sendTransaction", params, opts)
       end
 
       @spec eth_send_raw_transaction(binary(), keyword()) :: {:ok, binary()} | error
       def eth_send_raw_transaction(data, opts \\ []) do
         params = [data]
 
-        "eth_sendRawTransaction" |> request(params, opts)
+        request("eth_sendRawTransaction", params, opts)
       end
 
       @spec eth_call(map, binary(), keyword()) :: {:ok, binary()} | error
       def eth_call(transaction, block \\ "latest", opts \\ []) do
         params = [transaction, block]
 
-        "eth_call" |> request(params, opts)
+        request("eth_call", params, opts)
       end
 
       @spec eth_estimate_gas(map(), keyword()) :: {:ok, binary()} | error
       def eth_estimate_gas(transaction, opts \\ []) do
         params = [transaction]
 
-        "eth_estimateGas" |> request(params, opts)
+        request("eth_estimateGas", params, opts)
       end
 
       @spec eth_get_block_by_hash(binary(), binary(), keyword()) :: {:ok, map()} | error
       def eth_get_block_by_hash(hash, full, opts \\ []) do
         params = [hash, full]
 
-        "eth_getBlockByHash" |> request(params, opts)
+        request("eth_getBlockByHash", params, opts)
       end
 
       @spec eth_get_block_by_number(binary(), binary(), keyword()) :: {:ok, map()} | error
       def eth_get_block_by_number(number, full, opts \\ []) do
         params = [number, full]
 
-        "eth_getBlockByNumber" |> request(params, opts)
+        request("eth_getBlockByNumber", params, opts)
       end
 
       @spec eth_get_transaction_by_hash(binary(), keyword()) :: {:ok, map()} | error
       def eth_get_transaction_by_hash(hash, opts \\ []) do
         params = [hash]
 
-        "eth_getTransactionByHash" |> request(params, opts)
+        request("eth_getTransactionByHash", params, opts)
       end
 
       @spec eth_get_transaction_by_block_hash_and_index(binary(), binary(), keyword()) ::
@@ -198,7 +198,7 @@ defmodule Ethereumex.Client.BaseClient do
       def eth_get_transaction_by_block_hash_and_index(hash, index, opts \\ []) do
         params = [hash, index]
 
-        "eth_getTransactionByBlockHashAndIndex" |> request(params, opts)
+        request("eth_getTransactionByBlockHashAndIndex", params, opts)
       end
 
       @spec eth_get_transaction_by_block_number_and_index(binary(), binary(), keyword()) ::
@@ -206,14 +206,14 @@ defmodule Ethereumex.Client.BaseClient do
       def eth_get_transaction_by_block_number_and_index(block, index, opts \\ []) do
         params = [block, index]
 
-        "eth_getTransactionByBlockNumberAndIndex" |> request(params, opts)
+        request("eth_getTransactionByBlockNumberAndIndex", params, opts)
       end
 
       @spec eth_get_transaction_receipt(binary(), keyword()) :: {:ok, map()} | error
       def eth_get_transaction_receipt(hash, opts \\ []) do
         params = [hash]
 
-        "eth_getTransactionReceipt" |> request(params, opts)
+        request("eth_getTransactionReceipt", params, opts)
       end
 
       @spec eth_get_uncle_by_block_hash_and_index(binary(), binary(), keyword()) ::
@@ -221,7 +221,7 @@ defmodule Ethereumex.Client.BaseClient do
       def eth_get_uncle_by_block_hash_and_index(hash, index, opts \\ []) do
         params = [hash, index]
 
-        "eth_getUncleByBlockHashAndIndex" |> request(params, opts)
+        request("eth_getUncleByBlockHashAndIndex", params, opts)
       end
 
       @spec eth_get_uncle_by_block_number_and_index(binary(), binary(), keyword()) ::
@@ -229,182 +229,182 @@ defmodule Ethereumex.Client.BaseClient do
       def eth_get_uncle_by_block_number_and_index(block, index, opts \\ []) do
         params = [block, index]
 
-        "eth_getUncleByBlockNumberAndIndex" |> request(params, opts)
+        request("eth_getUncleByBlockNumberAndIndex", params, opts)
       end
 
       @spec eth_get_compilers(keyword()) :: {:ok, [binary()]} | error
       def eth_get_compilers(opts \\ []) do
-        "eth_getCompilers" |> request([], opts)
+        request("eth_getCompilers", [], opts)
       end
 
       @spec eth_compile_lll(binary(), keyword()) :: {:ok, binary()} | error
       def eth_compile_lll(data, opts \\ []) do
         params = [data]
 
-        "eth_compileLLL" |> request(params, opts)
+        request("eth_compileLLL", params, opts)
       end
 
       @spec eth_compile_solidity(binary(), keyword()) :: {:ok, binary()} | error
       def eth_compile_solidity(data, opts \\ []) do
         params = [data]
 
-        "eth_compileSolidity" |> request(params, opts)
+        request("eth_compileSolidity", params, opts)
       end
 
       @spec eth_compile_serpent(binary(), keyword()) :: {:ok, binary()} | error
       def eth_compile_serpent(data, opts \\ []) do
         params = [data]
 
-        "eth_compileSerpent" |> request(params, opts)
+        request("eth_compileSerpent", params, opts)
       end
 
       @spec eth_new_filter(map(), keyword()) :: {:ok, binary()} | error
       def eth_new_filter(data, opts \\ []) do
         params = [data]
 
-        "eth_newFilter" |> request(params, opts)
+        request("eth_newFilter", params, opts)
       end
 
       @spec eth_new_block_filter(keyword()) :: {:ok, binary()} | error
       def eth_new_block_filter(opts \\ []) do
-        "eth_newBlockFilter" |> request([], opts)
+        request("eth_newBlockFilter", [], opts)
       end
 
       @spec eth_new_pending_transaction_filter(keyword()) :: {:ok, binary()} | error
       def eth_new_pending_transaction_filter(opts \\ []) do
-        "eth_newPendingTransactionFilter" |> request([], opts)
+        request("eth_newPendingTransactionFilter", [], opts)
       end
 
       @spec eth_uninstall_filter(binary(), keyword()) :: {:ok, boolean()} | error
       def eth_uninstall_filter(id, opts \\ []) do
         params = [id]
 
-        "eth_uninstallFilter" |> request(params, opts)
+        request("eth_uninstallFilter", params, opts)
       end
 
       @spec eth_get_filter_changes(binary(), keyword()) :: {:ok, [binary()] | [map()]} | error
       def eth_get_filter_changes(id, opts \\ []) do
         params = [id]
 
-        "eth_getFilterChanges" |> request(params, opts)
+        request("eth_getFilterChanges", params, opts)
       end
 
       @spec eth_get_filter_logs(binary(), keyword()) :: {:ok, [binary()] | [map()]} | error
       def eth_get_filter_logs(id, opts \\ []) do
         params = [id]
 
-        "eth_getFilterLogs" |> request(params, opts)
+        request("eth_getFilterLogs", params, opts)
       end
 
       @spec eth_get_logs(map(), keyword()) :: {:ok, [binary()] | [map()]} | error
       def eth_get_logs(filter, opts \\ []) do
         params = [filter]
 
-        "eth_getLogs" |> request(params, opts)
+        request("eth_getLogs", params, opts)
       end
 
       @spec eth_get_work(keyword()) :: {:ok, [binary()]} | error
       def eth_get_work(opts \\ []) do
-        "eth_getWork" |> request([], opts)
+        request("eth_getWork", [], opts)
       end
 
       @spec eth_submit_work(binary(), binary(), binary(), keyword()) :: {:ok, boolean()} | error
       def eth_submit_work(nonce, header, digest, opts \\ []) do
         params = [nonce, header, digest]
 
-        "eth_submitWork" |> request(params, opts)
+        request("eth_submitWork", params, opts)
       end
 
       @spec eth_submit_hashrate(binary(), binary(), keyword()) :: {:ok, boolean()} | error
       def eth_submit_hashrate(hashrate, id, opts \\ []) do
         params = [hashrate, id]
 
-        "eth_submitHashrate" |> request(params, opts)
+        request("eth_submitHashrate", params, opts)
       end
 
       @spec db_put_string(binary(), binary(), binary(), keyword()) :: {:ok, boolean()} | error
       def db_put_string(db, key, value, opts \\ []) do
         params = [db, key, value]
 
-        "db_putString" |> request(params, opts)
+        request("db_putString", params, opts)
       end
 
       @spec db_get_string(binary(), binary(), keyword()) :: {:ok, binary()} | error
       def db_get_string(db, key, opts \\ []) do
         params = [db, key]
 
-        "db_getString" |> request(params, opts)
+        request("db_getString", params, opts)
       end
 
       @spec db_put_hex(binary(), binary(), binary(), keyword()) :: {:ok, boolean()} | error
       def db_put_hex(db, key, data, opts \\ []) do
         params = [db, key, data]
 
-        "db_putHex" |> request(params, opts)
+        request("db_putHex", params, opts)
       end
 
       @spec db_get_hex(binary(), binary(), keyword()) :: {:ok, binary()} | error
       def db_get_hex(db, key, opts \\ []) do
         params = [db, key]
 
-        "db_getHex" |> request(params, opts)
+        request("db_getHex", params, opts)
       end
 
       @spec shh_post(map(), keyword()) :: {:ok, boolean()} | error
       def shh_post(whisper, opts \\ []) do
         params = [whisper]
 
-        "shh_post" |> request(params, opts)
+        request("shh_post", params, opts)
       end
 
       @spec shh_version(keyword()) :: {:ok, binary()} | error
       def shh_version(opts \\ []) do
-        "shh_version" |> request([], opts)
+        request("shh_version", [], opts)
       end
 
       @spec shh_new_identity(keyword()) :: {:ok, binary()} | error
       def shh_new_identity(opts \\ []) do
-        "shh_newIdentity" |> request([], opts)
+        request("shh_newIdentity", [], opts)
       end
 
       @spec shh_has_identity(binary(), keyword()) :: {:ok, boolean} | error
       def shh_has_identity(address, opts \\ []) do
         params = [address]
 
-        "shh_hasIdentity" |> request(params, opts)
+        request("shh_hasIdentity", params, opts)
       end
 
       @spec shh_new_group(keyword()) :: {:ok, binary()} | error
       def shh_new_group(opts \\ []) do
-        "shh_newGroup" |> request([], opts)
+        request("shh_newGroup", [], opts)
       end
 
       @spec shh_add_to_group(binary(), keyword()) :: {:ok, boolean()} | error
       def shh_add_to_group(address, opts \\ []) do
         params = [address]
 
-        "shh_addToGroup" |> request(params, opts)
+        request("shh_addToGroup", params, opts)
       end
 
       @spec shh_new_filter(map(), keyword()) :: {:ok, binary()} | error
       def shh_new_filter(filter_options, opts \\ []) do
         params = [filter_options]
 
-        "shh_newFilter" |> request(params, opts)
+        request("shh_newFilter", params, opts)
       end
 
       @spec shh_uninstall_filter(binary(), keyword()) :: {:ok, binary()} | error
       def shh_uninstall_filter(filter_id, opts \\ []) do
         params = [filter_id]
 
-        "shh_uninstallFilter" |> request(params, opts)
+        request("shh_uninstallFilter", params, opts)
       end
 
       @spec shh_get_filter_changes(binary(), keyword()) :: {:ok, [map()]} | error
       def shh_get_filter_changes(filter_id, opts \\ []) do
         params = [filter_id]
 
-        "shh_getFilterChanges" |> request(params, opts)
+        request("shh_getFilterChanges", params, opts)
       end
 
       @spec shh_get_messages(binary(), keyword()) :: {:ok, [map()]} | error
