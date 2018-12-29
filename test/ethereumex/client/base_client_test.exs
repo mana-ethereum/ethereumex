@@ -154,7 +154,7 @@ defmodule Ethereumex.Client.BaseClientTest do
     do: Helpers.check("eth_call", [@transaction], ["latest"])
 
   test ".eth_estimate_gas/1",
-    do: Helpers.check("eth_estimate_gas", [@transaction], ["latest"])
+    do: Helpers.check("eth_estimate_gas", [@transaction])
 
   test ".eth_get_block_by_hash/2",
     do: Helpers.check("eth_get_block_by_hash", [@hash, false])

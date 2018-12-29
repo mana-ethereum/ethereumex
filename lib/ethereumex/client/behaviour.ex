@@ -31,7 +31,7 @@ defmodule Ethereumex.Client.Behaviour do
   @callback eth_send_transaction(map(), keyword()) :: {:ok, binary()} | error
   @callback eth_send_raw_transaction(binary(), keyword()) :: {:ok, binary()} | error
   @callback eth_call(map, binary(), keyword()) :: {:ok, binary()} | error
-  @callback eth_estimate_gas(map(), binary(), keyword()) :: {:ok, binary()} | error
+  @callback eth_estimate_gas(map(), keyword()) :: {:ok, binary()} | error
   @callback eth_get_block_by_hash(binary(), binary(), keyword()) :: {:ok, map()} | error
   @callback eth_get_block_by_number(binary(), binary(), keyword()) :: {:ok, map()} | error
   @callback eth_get_transaction_by_hash(binary(), keyword()) :: {:ok, map()} | error
