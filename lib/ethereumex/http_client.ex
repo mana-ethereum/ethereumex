@@ -28,7 +28,7 @@ defmodule Ethereumex.HttpClient do
         _ -> {:error, decoded_body}
       end
     else
-      {:error,  %Jason.DecodeError{data: ""}} -> {:error, :empty_response}
+      {:error, %Jason.DecodeError{data: ""}} -> {:error, :empty_response}
       {:error, error} -> {:error, {:invalid_json, error}}
     end
   end
