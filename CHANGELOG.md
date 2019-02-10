@@ -1,3 +1,6 @@
+# 0.5.3
+* Add special case for empty response (https://github.com/mana-ethereum/ethereumex/pull/59)
+
 # 0.5.2
 * Fix `eth_estimateGas` (https://github.com/mana-ethereum/ethereumex/pull/55)
 * Add `eth_getProof` (https://github.com/mana-ethereum/ethereumex/pull/57)
