@@ -415,7 +415,7 @@ defmodule Ethereumex.Client.BaseClient do
         "shh_getMessages" |> request(params, opts)
       end
 
-      @spec add_request_info(binary, [binary | map | [binary]]) :: map
+      @spec add_request_info(binary, [boolean() | binary | map | [binary]]) :: map
       defp add_request_info(method_name, params \\ []) do
         %{}
         |> Map.put("method", method_name)
