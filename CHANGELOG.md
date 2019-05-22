@@ -1,3 +1,6 @@
+# 0.5.4
+* Reported issue with dialyzer specs for boolean arguments in params (https://github.com/mana-ethereum/ethereumex/pull/61)
+
 # 0.5.3
 * Add special case for empty response (https://github.com/mana-ethereum/ethereumex/pull/59)
 
