@@ -32,8 +32,8 @@ defmodule Ethereumex.Client.Behaviour do
   @callback eth_send_raw_transaction(binary(), keyword()) :: {:ok, binary()} | error
   @callback eth_call(map, binary(), keyword()) :: {:ok, binary()} | error
   @callback eth_estimate_gas(map(), keyword()) :: {:ok, binary()} | error
-  @callback eth_get_block_by_hash(binary(), binary(), keyword()) :: {:ok, map()} | error
-  @callback eth_get_block_by_number(binary(), binary(), keyword()) :: {:ok, map()} | error
+  @callback eth_get_block_by_hash(binary(), boolean(), keyword()) :: {:ok, map()} | error
+  @callback eth_get_block_by_number(binary(), boolean(), keyword()) :: {:ok, map()} | error
   @callback eth_get_transaction_by_hash(binary(), keyword()) :: {:ok, map()} | error
   @callback eth_get_transaction_by_block_hash_and_index(binary(), binary(), keyword()) ::
               {:ok, map()} | error
@@ -76,7 +76,8 @@ defmodule Ethereumex.Client.Behaviour do
 
   # actual request methods
 
-  @callback request(binary(), list(binary()), keyword()) :: {:ok, any() | [any()]} | error
+  @callback request(binary(), list(boolean() | binary()), keyword()) ::
+              {:ok, any() | [any()]} | error
   @callback single_request(map(), keyword()) :: {:ok, any() | [any()]} | error
-  @callback batch_request([{atom(), list(binary())}]) :: {:ok, [any()]} | error
+  @callback batch_request([{atom(), list(boolean() | binary())}]) :: {:ok, [any()]} | error
 end

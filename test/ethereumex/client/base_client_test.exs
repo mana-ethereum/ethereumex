@@ -107,7 +107,7 @@ defmodule Ethereumex.Client.BaseClientTest do
       do: Helpers.check("eth_get_proof", [@address, [@hex_232, @hex_232]], ["latest"])
 
     test "with number",
-      do: Helpers.check("eth_get_proof", [@address, [@hex_232, @hex_232], [@hex232]])
+      do: Helpers.check("eth_get_proof", [@address, [@hex_232, @hex_232], [@hex_232]])
   end
 
   test ".eth_get_work/0", do: Helpers.check("eth_get_work")
