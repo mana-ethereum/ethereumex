@@ -1,3 +1,6 @@
+# 0.5.5
+* Allow request counter resetting (https://github.com/mana-ethereum/ethereumex/pull/65)
+
 # 0.5.4
 * Reported issue with dialyzer specs for boolean arguments in params (https://github.com/mana-ethereum/ethereumex/pull/61)
 
