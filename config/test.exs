@@ -4,4 +4,4 @@ config :ethereumex, url: "http://localhost:8545"
 
 config :ethereumex, ipc_path: "/.local/share/io.parity.ethereum/jsonrpc.ipc"
 
-# config :ethereumex, id_lock: "0"
+# config :ethereumex, id_reset: true

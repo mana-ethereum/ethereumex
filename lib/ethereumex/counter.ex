@@ -19,30 +19,39 @@ defmodule Ethereumex.Counter do
 
   @spec increment(atom()) :: integer()
   def increment(key) do
-    do_increment(Application.get_env(:ethereumex, :id_lock), key)
+    do_increment(Application.get_env(:ethereumex, :id_reset), key)
   end
 
   @spec increment(atom(), integer()) :: integer()
   def increment(key, count) do
-    do_increment(Application.get_env(:ethereumex, :id_lock), key, count)
+    do_increment(Application.get_env(:ethereumex, :id_reset), key, count)
   end
 
   @spec do_increment(binary() | nil, atom()) :: integer()
-  defp do_increment(nil, key) do
+  defp do_increment(true, key) do
+    :ets.insert(@tab, {key, 0})
+    inc(key)
+  end
+
+  defp do_increment(_, key) do
+    inc(key)
+  end
+
+  @spec do_increment(boolean() | nil, atom(), integer()) :: integer()
+  defp do_increment(true, key, count) do
+    :ets.insert(@tab, {key, 0})
+    inc(key, count)
+  end
+
+  defp do_increment(_, key, count) do
+    inc(key, count)
+  end
+
+  defp inc(key) do
     :ets.update_counter(@tab, key, {2, 1}, {key, 0})
   end
 
-  defp do_increment(id_lock, _key) do
-    id_lock
-  end
-
-  @spec do_increment(binary() | nil, atom(), integer()) :: integer()
-  defp do_increment(nil, key, count) do
+  defp inc(key, count) do
     :ets.update_counter(@tab, key, {2, count}, {key, 0})
-  end
-
-  @spec do_increment(binary() | nil, atom(), integer()) :: integer()
-  defp do_increment(id_lock, _key, _count) do
-    id_lock
   end
 end
