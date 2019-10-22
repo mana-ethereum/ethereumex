@@ -1,4 +1,4 @@
-# Ethereumex [![CircleCI](https://circleci.com/gh/exthereum/ethereumex.svg?style=svg)](https://circleci.com/gh/exthereum/ethereumex)
+# Ethereumex [![CircleCI](https://circleci.com/gh/mana-ethereum/ethereumex.svg?style=svg)](https://circleci.com/gh/exthereum/ethereumex)
 
 Elixir JSON-RPC client for the Ethereum blockchain
 
@@ -10,7 +10,7 @@ Add Ethereumex to your `mix.exs` dependencies:
 1. Add `ethereumex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
-  [{:ethereumex, "~> 0.5.4"}]
+  [{:ethereumex, "~> 0.5.5"}]
 end
 ```
 
