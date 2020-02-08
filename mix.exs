@@ -36,7 +36,7 @@ defmodule Ethereumex.Mixfile do
 
   defp deps do
     [
-      {:httpoison, "~> 1.4.0"},
+      {:httpoison, "~> 1.6.0"},
       {:jason, "~> 1.1"},
       {:credo, "~> 0.10.2", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.19", only: :dev, runtime: false},
