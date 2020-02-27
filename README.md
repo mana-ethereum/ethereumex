@@ -60,6 +60,15 @@ config :ethereumex,
   ipc_path: "/path/to/ipc"
 ```
 
+If you want to count the number of RPC calls per RPC method,
+set adapter in the configuration. The adapter needs to implement `increment/2`
+where the first argument is the key, the second in the count integer.
+
+```elixir
+config :ethereumex,
+  adapter: Datadog
+```
+
 The IPC client type mode opens a pool of connection workers (default is 5 and 2, respectively). You can configure the pool size.
 ```elixir
 config :ethereumex,
