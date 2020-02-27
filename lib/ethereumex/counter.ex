@@ -17,41 +17,59 @@ defmodule Ethereumex.Counter do
     :ok
   end
 
-  @spec increment(atom()) :: integer()
-  def increment(key) do
-    do_increment(Application.get_env(:ethereumex, :id_reset), key)
+  @spec get(atom()) :: integer()
+  def get(key) do
+    case :ets.lookup(@tab, key) do
+      [] -> 1
+      [{^key, num}] -> num
+    end
   end
 
-  @spec increment(atom(), integer()) :: integer()
-  def increment(key, count) do
-    do_increment(Application.get_env(:ethereumex, :id_reset), key, count)
+  @spec increment(atom(), String.t()) :: integer()
+  def increment(key, method) do
+    do_increment(Application.get_env(:ethereumex, :id_reset), key, method)
   end
 
-  @spec do_increment(binary() | nil, atom()) :: integer()
-  defp do_increment(true, key) do
+  @spec increment(atom(), integer(), String.t()) :: integer()
+  def increment(key, count, method) do
+    do_increment(Application.get_env(:ethereumex, :id_reset), key, count, method)
+  end
+
+  @spec do_increment(binary() | nil, atom(), String.t()) :: integer()
+  defp do_increment(true, key, method) do
     :ets.insert(@tab, {key, 0})
-    inc(key)
+    inc(key, method, Application.get_env(:ethereumex, :adapter))
   end
 
-  defp do_increment(_, key) do
-    inc(key)
+  defp do_increment(_, key, method) do
+    inc(key, method, Application.get_env(:ethereumex, :adapter))
   end
 
-  @spec do_increment(boolean() | nil, atom(), integer()) :: integer()
-  defp do_increment(true, key, count) do
+  @spec do_increment(boolean() | nil, atom(), integer(), String.t()) :: integer()
+  defp do_increment(true, key, count, method) do
     :ets.insert(@tab, {key, 0})
-    inc(key, count)
+    inc(key, count, method, Application.get_env(:ethereumex, :adapter))
   end
 
-  defp do_increment(_, key, count) do
-    inc(key, count)
+  defp do_increment(_, key, count, method) do
+    inc(key, count, method, Application.get_env(:ethereumex, :adapter))
   end
 
-  defp inc(key) do
+  defp inc(key, _, nil) do
     :ets.update_counter(@tab, key, {2, 1}, {key, 0})
   end
 
-  defp inc(key, count) do
+  defp inc(key, method, adapter) do
+    _ = adapter.increment(method, 1)
+    :ets.update_counter(@tab, key, {2, 1}, {key, 0})
+  end
+
+  defp inc(key, count, _, nil) do
+    :ets.update_counter(@tab, key, {2, count}, {key, 0})
+  end
+
+  defp inc(key, count, method, adapter) do
+    _ = adapter.increment(method, 1)
     :ets.update_counter(@tab, key, {2, count}, {key, 0})
   end
 end
