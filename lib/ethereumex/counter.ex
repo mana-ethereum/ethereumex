@@ -60,7 +60,7 @@ defmodule Ethereumex.Counter do
   end
 
   defp inc(key, method, adapter) do
-    _ = adapter.increment(method, 1)
+    _ = adapter.increment(method, 1, Application.get_env(:ethereumex, :adapter_options) || [])
     :ets.update_counter(@tab, key, {2, 1}, {key, 0})
   end
 
@@ -69,7 +69,7 @@ defmodule Ethereumex.Counter do
   end
 
   defp inc(key, count, method, adapter) do
-    _ = adapter.increment(method, 1)
+    _ = adapter.increment(method, 1, Application.get_env(:ethereumex, :adapter_options) || [])
     :ets.update_counter(@tab, key, {2, count}, {key, 0})
   end
 end

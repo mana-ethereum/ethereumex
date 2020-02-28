@@ -61,13 +61,17 @@ config :ethereumex,
 ```
 
 If you want to count the number of RPC calls per RPC method,
-set adapter in the configuration. The adapter needs to implement `increment/2`
-where the first argument is the key, the second in the count integer.
+set adapter in the configuration. The adapter needs to implement `increment/3`
+where the first argument is the key, the second is an integer and the third are optional keyword options you
+want to pass to your adapter on each increment call.
 
 ```elixir
 config :ethereumex,
   adapter: Datadog
+  adapter_options: []
 ```
+An example of an adapter would be [Statix](https://github.com/lexmag/statix/blob/v1.2.1/lib/statix.ex#L288-L290).
+Adapter options could be `[sample_rate: 1.0, tags: ["foo", "bar"]]`.
 
 The IPC client type mode opens a pool of connection workers (default is 5 and 2, respectively). You can configure the pool size.
 ```elixir
