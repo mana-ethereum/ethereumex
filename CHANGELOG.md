@@ -1,3 +1,6 @@
+# 0.5.6
+* Feature that allows measuring number of RPC calls via an adapter https://github.com/mana-ethereum/ethereumex/pull/67
+
 # 0.5.5
 * Allow request counter resetting (https://github.com/mana-ethereum/ethereumex/pull/65)
 

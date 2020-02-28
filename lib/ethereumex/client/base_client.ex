@@ -487,20 +487,22 @@ defmodule Ethereumex.Client.BaseClient do
       end
 
       defp prepare_request(params) when is_list(params) do
-        id = Counter.increment(:rpc_counter)
+        id = Counter.get(:rpc_counter)
 
         params =
           params
-          |> Enum.with_index()
+          |> Enum.with_index(1)
           |> Enum.map(fn {req_data, index} ->
             Map.put(req_data, "id", index + id)
           end)
 
-        _ = Counter.increment(:rpc_counter, id + Enum.count(params))
+        _ = Counter.increment(:rpc_counter, id + Enum.count(params), "eth_batch")
+
         params
       end
 
-      defp prepare_request(params), do: Map.put(params, "id", Counter.increment(:rpc_counter))
+      defp prepare_request(params),
+        do: Map.put(params, "id", Counter.increment(:rpc_counter, params["method"]))
 
       defp request(params, opts) do
         __MODULE__.single_request(params, opts)
