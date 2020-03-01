@@ -38,38 +38,32 @@ defmodule Ethereumex.Counter do
   @spec do_increment(binary() | nil, atom(), String.t()) :: integer()
   defp do_increment(true, key, method) do
     :ets.insert(@tab, {key, 0})
-    inc(key, method, Application.get_env(:ethereumex, :adapter))
+    inc(key, method)
   end
 
   defp do_increment(_, key, method) do
-    inc(key, method, Application.get_env(:ethereumex, :adapter))
+    inc(key, method)
   end
 
   @spec do_increment(boolean() | nil, atom(), integer(), String.t()) :: integer()
   defp do_increment(true, key, count, method) do
     :ets.insert(@tab, {key, 0})
-    inc(key, count, method, Application.get_env(:ethereumex, :adapter))
+    inc(key, count, method)
   end
 
   defp do_increment(_, key, count, method) do
-    inc(key, count, method, Application.get_env(:ethereumex, :adapter))
+    inc(key, count, method)
   end
 
-  defp inc(key, _, nil) do
+  defp inc(key, method) do
+    _ = :telemetry.execute([:ethereumex], %{counter: 1}, %{method_name: method})
+    _ = :telemetry.execute([:ethereumex, String.to_atom(method)], %{counter: 1})
     :ets.update_counter(@tab, key, {2, 1}, {key, 0})
   end
 
-  defp inc(key, method, adapter) do
-    _ = adapter.increment(method, 1, Application.get_env(:ethereumex, :adapter_options) || [])
-    :ets.update_counter(@tab, key, {2, 1}, {key, 0})
-  end
-
-  defp inc(key, count, _, nil) do
-    :ets.update_counter(@tab, key, {2, count}, {key, 0})
-  end
-
-  defp inc(key, count, method, adapter) do
-    _ = adapter.increment(method, 1, Application.get_env(:ethereumex, :adapter_options) || [])
+  defp inc(key, count, method) do
+    _ = :telemetry.execute([:ethereumex], %{counter: 1}, %{method_name: method})
+    _ = :telemetry.execute([:ethereumex, String.to_atom(method)], %{counter: 1})
     :ets.update_counter(@tab, key, {2, count}, {key, 0})
   end
 end
