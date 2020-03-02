@@ -1,5 +1,3 @@
-Application.ensure_all_started(:telemetry)
-
 defmodule Ethereumex.CounterTest do
   use ExUnit.Case
   alias Ethereumex.Counter
@@ -14,19 +12,18 @@ defmodule Ethereumex.CounterTest do
     {:ok, handler_id: handler_id}
   end
 
-  test "incrementing twice returns correct number", _ do
+  test "incrementing twice returns correct number" do
     1 = Counter.increment(:test_1, "method_1")
     2 = Counter.increment(:test_1, "method_1")
   end
 
-  test "incrementing twice and updating with a count returns correct number", _ do
+  test "incrementing twice and updating with a count returns correct number" do
     1 = Counter.increment(:test_2, "method_2")
     2 = Counter.increment(:test_2, "method_2")
     4 = Counter.increment(:test_2, 2, "method_2")
   end
 
-  test "incrementing twice, updating with a count and incrementing again returns correct number",
-       _ do
+  test "incrementing twice, updating with a count and incrementing again returns correct number" do
     1 = Counter.increment(:test_3, "method_3")
     2 = Counter.increment(:test_3, "method_3")
     4 = Counter.increment(:test_3, 2, "method_3")
