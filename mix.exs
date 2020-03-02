@@ -4,7 +4,7 @@ defmodule Ethereumex.Mixfile do
   def project do
     [
       app: :ethereumex,
-      version: "0.5.6",
+      version: "0.6.0",
       elixir: "~> 1.7",
       description: "Elixir JSON-RPC client for the Ethereum blockchain",
       package: [
@@ -40,8 +40,9 @@ defmodule Ethereumex.Mixfile do
       {:jason, "~> 1.1"},
       {:credo, "~> 0.10.2", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.19", only: :dev, runtime: false},
-      {:dialyxir, "~> 1.0.0-rc.5", only: [:dev, :test], runtime: false},
-      {:poolboy, "~> 1.5.1"}
+      {:dialyxir, "~> 1.0.0-rc.7", only: [:dev, :test], runtime: false},
+      {:poolboy, "~> 1.5.1"},
+      {:telemetry, "~> 0.4", optional: true}
     ]
   end
 end

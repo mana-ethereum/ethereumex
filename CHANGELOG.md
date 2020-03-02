@@ -1,3 +1,6 @@
+# 0.6.0
+* Deprecate measurements via adapter for :telemetry. https://github.com/mana-ethereum/ethereumex/pull/68
+
 # 0.5.6
 * Feature that allows measuring number of RPC calls via an adapter https://github.com/mana-ethereum/ethereumex/pull/67
 
