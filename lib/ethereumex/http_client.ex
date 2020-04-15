@@ -1,7 +1,8 @@
 defmodule Ethereumex.HttpClient do
+  @moduledoc false
+
   use Ethereumex.Client.BaseClient
   alias Ethereumex.Config
-  @moduledoc false
 
   @spec post_request(binary(), []) :: {:ok | :error, any()}
   def post_request(payload, opts) do

@@ -1,9 +1,11 @@
 defmodule Ethereumex do
+  @moduledoc File.read!("#{__DIR__}/../README.md")
+
   use Application
+  import Supervisor.Spec, warn: false
+
   alias Ethereumex.Config
   alias Ethereumex.Counter
-  @moduledoc File.read!("#{__DIR__}/../README.md")
-  import Supervisor.Spec, warn: false
 
   def start(_type, _args) do
     :ok = Counter.setup()
