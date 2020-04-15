@@ -7,7 +7,9 @@
         excluded: []
       },
       checks: [
-        {Credo.Check.Refactor.LongQuoteBlocks, false}
+        {Credo.Check.Readability.ParenthesesOnZeroArityDefs, [parens: true]},
+        {Credo.Check.Refactor.LongQuoteBlocks, false},
+        {Credo.Check.Readability.StrictModuleLayout, []}
       ]
     }
   ]

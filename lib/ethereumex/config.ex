@@ -2,7 +2,7 @@ defmodule Ethereumex.Config do
   @moduledoc false
   alias Ethereumex.IpcServer
 
-  def setup_children do
+  def setup_children() do
     setup_children(client_type())
   end
 
@@ -34,7 +34,7 @@ defmodule Ethereumex.Config do
   end
 
   @spec rpc_url() :: binary()
-  def rpc_url do
+  def rpc_url() do
     case Application.get_env(:ethereumex, :url) do
       url when is_binary(url) and url != "" ->
         url
@@ -49,17 +49,17 @@ defmodule Ethereumex.Config do
   end
 
   @spec http_options() :: keyword()
-  def http_options do
+  def http_options() do
     Application.get_env(:ethereumex, :http_options, [])
   end
 
   @spec client_type() :: atom()
-  def client_type do
+  def client_type() do
     Application.get_env(:ethereumex, :client_type, :http)
   end
 
   @spec ipc_path() :: binary()
-  def ipc_path do
+  def ipc_path() do
     case Application.get_env(:ethereumex, :ipc_path, "") do
       path when is_binary(path) and path != "" ->
         path
