@@ -5,18 +5,16 @@ defmodule Ethereumex.IpcClient do
   @timeout 60_000
   @spec post_request(binary(), []) :: {:ok | :error, any()}
   def post_request(payload, _opts) do
-    with {:ok, response} <- call_ipc(payload) do
-      with {:ok, decoded_body} <- Jason.decode(response) do
-        case decoded_body do
-          %{"error" => error} -> {:error, error}
-          result = [%{} | _] -> {:ok, format_batch(result)}
-          result -> {:ok, Map.get(result, "result")}
-        end
-      else
-        {:error, %Jason.DecodeError{data: ""}} -> {:error, :empty_response}
-        {:error, error} -> {:error, {:invalid_json, error}}
+    with {:ok, response} <- call_ipc(payload),
+         {:ok, decoded_body} <- Jason.decode(response) do
+      case decoded_body do
+        %{"error" => error} -> {:error, error}
+        result = [%{} | _] -> {:ok, format_batch(result)}
+        result -> {:ok, Map.get(result, "result")}
       end
     else
+      {:error, %Jason.DecodeError{data: ""}} -> {:error, :empty_response}
+      {:error, %Jason.DecodeError{} = error} -> {:error, {:invalid_json, error}}
       {:error, error} -> {:error, error}
     end
   end

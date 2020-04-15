@@ -1,7 +1,7 @@
 defmodule Ethereumex do
   use Application
-  alias Ethereumex.Counter
   alias Ethereumex.Config
+  alias Ethereumex.Counter
   @moduledoc File.read!("#{__DIR__}/../README.md")
   import Supervisor.Spec, warn: false
 
