@@ -16,9 +16,6 @@ defmodule Ethereumex.HttpClient do
 
       {:error, %HTTPoison.Error{reason: reason}} ->
         {:error, reason}
-
-      e ->
-        {:error, e}
     end
   end
 
