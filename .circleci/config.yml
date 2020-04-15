@@ -29,6 +29,7 @@ jobs:
           command: mix compile
           environment:
             MIX_ENV: test
+          no_output_timeout: 3400
 
       - save_cache:
           key: v2-dependency-cache-{{ arch }}-{{ checksum "mix.lock" }}
