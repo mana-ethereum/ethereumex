@@ -10,7 +10,7 @@ Add Ethereumex to your `mix.exs` dependencies:
 1. Add `ethereumex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
-  [{:ethereumex, "~> 0.5.5"}]
+  [{:ethereumex, "~> 0.6.1"}]
 end
 ```
 
@@ -61,7 +61,7 @@ config :ethereumex,
 ```
 
 If you want to count the number of RPC calls per RPC method or overall,
-you can attach yourself to executed telemetry events. 
+you can attach yourself to executed telemetry events.
 There are two events you can attach yourself to:
 `[:ethereumex]` # has RPC method name in metadata
 Emitted event: `{:event, [:ethereumex], %{counter: 1}, %{method_name: "method_name"}}`
