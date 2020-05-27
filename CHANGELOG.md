@@ -1,3 +1,6 @@
+# 0.6.2
+* Make `telemetry` required dependency (https://github.com/mana-ethereum/ethereumex/pull/73)
+
 # 0.6.1
 * Dependency updates: :httpoison 1.4 -> 1.6, :jason 1.1 -> 1.2, :credo 0.10.2 -> 1.3, :ex_doc 0.19 -> 0.21, :dialyxir 1.0.0-rc.7 -> 1.0.0. And small refactors according to Credo. https://github.com/mana-ethereum/ethereumex/pull/69
 
