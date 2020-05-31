@@ -179,8 +179,8 @@ In order to call a smart contract using the JSON-RPC interface you need to prope
 defp deps do
   [
     ...
-    {:ethereumex, "~> 0.4.0"},
-    {:abi, "~> 0.1.8"}
+    {:ethereumex, "~> 0.6.2"},
+    {:ex_abi, "~> 0.4.0"}
     ...
   ]
 end
@@ -213,31 +213,8 @@ balance_bytes
 |> List.first
 ```
 
-#### eth_send_raw_transaction example - Payable smart contract call
-Calling a smart contract method that requires computation will cost you gas or ether (if that method requires payment also). This means you will have to sign your transactions using the private key that owns some ethereum. In order to send signed transactions you will need both [ABI](https://hex.pm/packages/abi) and [Blockchain](https://hex.pm/packages/blockchain) hex packages.
-
-```elixir
-abi_encoded_data = ABI.encode("transferFrom(address,address,uint)", [from_address, to_address, token_id])
-contract_address = "0x123" |> String.slice(2..-1) |> Base.decode16(case: :mixed)
-
-transaction_data = %Blockchain.Transaction{
-    data: abi_encoded_data,
-    gas_limit: 100_000,
-    gas_price: 16_000_000_000,
-    init: <<>>,
-    nonce: 5,
-    to: contract_address,
-    value: 0
-}
-|> Blockchain.Transaction.Signature.sign_transaction(private_key)
-|> Blockchain.Transaction.serialize()
-|> ExRLP.encode()
-|> Base.encode16(case: :lower)
-
-Ethereumex.HttpClient.eth_send_raw_transaction("0x" <> transaction_data)
-```
-
 ### Custom requests
+
 Many Ethereum protocol implementations support additional JSON-RPC API methods. To use them, you should call Ethereumex.HttpClient.request/3 method.
 
 For example, let's call parity's personal_listAccounts method.
@@ -250,6 +227,7 @@ iex> Ethereumex.HttpClient.request("personal_listAccounts", [], [])
 ```
 
 ### Batch requests
+
 To send batch requests use Ethereumex.HttpClient.batch_request/1 method.
 
 ```elixir
