@@ -173,7 +173,7 @@ iex> Ethereumex.HttpClient.eth_get_balance("0x407d73d8a49eeb85d32cf465507dd71d50
 Note that all method names are snakecases, so, for example, shh_getMessages method has corresponding Ethereumex.HttpClient.shh_get_messages/1 method. Signatures can be found in Ethereumex.Client.Behaviour. There are more examples in tests.
 
 #### eth_call example - Read only smart contract calls
-In order to call a smart contract using the JSON-RPC interface you need to properly hash the data attribute (this will need to include the contract method signature along with arguments if any). You can do this manually or use a hex package like (ABI)[https://github.com/exthereum/abi] to parse your smart contract interface or encode individual calls.
+In order to call a smart contract using the JSON-RPC interface you need to properly hash the data attribute (this will need to include the contract method signature along with arguments if any). You can do this manually or use a hex package like [ABI](https://hex.pm/packages/ex_abi) to parse your smart contract interface or encode individual calls.
 
 ```elixir
 defp deps do
