@@ -5,9 +5,13 @@ defmodule Ethereumex.Client.BaseClientTest do
     use Ethereumex.Client.BaseClient
 
     def post_request(payload, opts) do
-      %{"method" => method, "jsonrpc" => "2.0", "params" => params} = Jason.decode!(payload)
+      case Jason.decode!(payload) do
+        %{"method" => method, "jsonrpc" => "2.0", "params" => params} ->
+          {method, params, opts}
 
-      {method, params, opts}
+        batch_requests when is_list(batch_requests) ->
+          batch_requests
+      end
     end
   end
 
@@ -312,4 +316,21 @@ defmodule Ethereumex.Client.BaseClientTest do
 
   test ".shh_get_messages/1",
     do: Helpers.check("shh_get_messages", ["0x7"])
+
+  describe ".batch_request/1" do
+    test "increases rpc_counter by request count" do
+      _ = Ethereumex.Counter.increment(:rpc_counter, 42, "stub_method")
+      initial_count = Ethereumex.Counter.get(:rpc_counter)
+
+      requests = [
+        {:web3_client_version, []},
+        {:net_version, []},
+        {:web3_sha3, ["0x68656c6c6f20776f726c64"]}
+      ]
+
+      _ = ClientMock.batch_request(requests)
+
+      assert Ethereumex.Counter.get(:rpc_counter) == initial_count + length(requests)
+    end
+  end
 end

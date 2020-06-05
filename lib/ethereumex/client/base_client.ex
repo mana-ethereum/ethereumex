@@ -496,7 +496,7 @@ defmodule Ethereumex.Client.BaseClient do
             Map.put(req_data, "id", index + id)
           end)
 
-        _ = Counter.increment(:rpc_counter, id + Enum.count(params), "eth_batch")
+        _ = Counter.increment(:rpc_counter, Enum.count(params), "eth_batch")
 
         params
       end
