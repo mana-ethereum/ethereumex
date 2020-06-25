@@ -79,5 +79,5 @@ defmodule Ethereumex.Client.Behaviour do
   @callback request(binary(), list(boolean() | binary()), keyword()) ::
               {:ok, any() | [any()]} | error
   @callback single_request(map(), keyword()) :: {:ok, any() | [any()]} | error
-  @callback batch_request([{atom(), list(boolean() | binary())}]) :: {:ok, [any()]} | error
+  @callback batch_request([{atom(), list(boolean() | binary())}], keyword()) :: {:ok, [any()]} | error
 end

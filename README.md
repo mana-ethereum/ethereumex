@@ -228,7 +228,7 @@ iex> Ethereumex.HttpClient.request("personal_listAccounts", [], [])
 
 ### Batch requests
 
-To send batch requests use Ethereumex.HttpClient.batch_request/1 method.
+To send batch requests use Ethereumex.HttpClient.batch_request/1 or batch_request/2 method.
 
 ```elixir
 requests = [
