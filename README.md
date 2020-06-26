@@ -10,7 +10,7 @@ Add Ethereumex to your `mix.exs` dependencies:
 1. Add `ethereumex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
-  [{:ethereumex, "~> 0.6.1"}]
+  [{:ethereumex, "~> 0.6.3"}]
 end
 ```
 
@@ -179,7 +179,7 @@ In order to call a smart contract using the JSON-RPC interface you need to prope
 defp deps do
   [
     ...
-    {:ethereumex, "~> 0.6.2"},
+    {:ethereumex, "~> 0.6.3"},
     {:ex_abi, "~> 0.4.0"}
     ...
   ]
@@ -228,7 +228,7 @@ iex> Ethereumex.HttpClient.request("personal_listAccounts", [], [])
 
 ### Batch requests
 
-To send batch requests use Ethereumex.HttpClient.batch_request/1 method.
+To send batch requests use Ethereumex.HttpClient.batch_request/1 or batch_request/2 method.
 
 ```elixir
 requests = [
