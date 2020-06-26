@@ -1,3 +1,6 @@
+# 0.6.3
+* Make batch requests support configurable url via opts argument (https://github.com/mana-ethereum/ethereumex/pull/77)
+
 # 0.6.2
 * Make `telemetry` required dependency (https://github.com/mana-ethereum/ethereumex/pull/73)
 
