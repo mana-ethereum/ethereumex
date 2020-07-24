@@ -1,3 +1,6 @@
+# 0.6.4
+* Fix request id exhaustion due to exponential increment (https://github.com/mana-ethereum/ethereumex/pull/76)
+
 # 0.6.3
 * Make batch requests support configurable url via opts argument (https://github.com/mana-ethereum/ethereumex/pull/77)
 
