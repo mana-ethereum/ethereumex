@@ -1,3 +1,6 @@
+# 0.6.3
+* Fix request id exhaustion due to exponential increment (https://github.com/mana-ethereum/ethereumex/pull/76)
+
 # 0.6.2
 * Make `telemetry` required dependency (https://github.com/mana-ethereum/ethereumex/pull/73)
 
