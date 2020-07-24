@@ -438,7 +438,7 @@ defmodule Ethereumex.Client.BaseClient do
       end
 
       @impl true
-      def batch_request(methods) do
+      def batch_request(methods, opts \\ []) do
         methods
         |> Enum.map(fn {method, params} ->
           opts = [batch: true]
@@ -446,7 +446,7 @@ defmodule Ethereumex.Client.BaseClient do
 
           apply(__MODULE__, method, params)
         end)
-        |> server_request
+        |> server_request(opts)
       end
 
       @impl true
