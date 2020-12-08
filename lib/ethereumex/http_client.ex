@@ -7,10 +7,9 @@ defmodule Ethereumex.HttpClient do
   @spec post_request(binary(), []) :: {:ok | :error, any()}
   def post_request(payload, opts) do
     headers = [{"Content-Type", "application/json"}]
-    options = [hackney: [pool: :default]] ++ Config.http_options()
     url = Keyword.get(opts, :url) || Config.rpc_url()
 
-    case HTTPoison.post(url, payload, headers, options) do
+    case HTTPoison.post(url, payload, headers, Config.http_options()) do
       {:ok, response} ->
         %HTTPoison.Response{body: body, status_code: code} = response
         decode_body(body, code)
