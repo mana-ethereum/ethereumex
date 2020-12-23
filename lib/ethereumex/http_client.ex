@@ -4,7 +4,9 @@ defmodule Ethereumex.HttpClient do
   use Ethereumex.Client.BaseClient
   alias Ethereumex.Config
 
-  @spec post_request(binary(), []) :: {:ok | :error, any()}
+  @type opt :: {:url, String.t()}
+
+  @spec post_request(binary(), [opt()]) :: {:ok | :error, any()}
   def post_request(payload, opts) do
     headers = [{"Content-Type", "application/json"}]
     options = [hackney: [pool: :default]] ++ Config.http_options()
