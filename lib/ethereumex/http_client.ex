@@ -4,7 +4,11 @@ defmodule Ethereumex.HttpClient do
   use Ethereumex.Client.BaseClient
   alias Ethereumex.Config
 
-  @spec post_request(binary(), []) :: {:ok | :error, any()}
+  @type empty_response :: :empty_response
+  @type invalid_json :: {:invalid_json, any}
+
+  @spec post_request(binary, []) ::
+          {:ok, any} | {:error, empty_response | invalid_json | any}
   def post_request(payload, opts) do
     headers = [{"Content-Type", "application/json"}]
     options = [hackney: [pool: :default]] ++ Config.http_options()
@@ -20,7 +24,8 @@ defmodule Ethereumex.HttpClient do
     end
   end
 
-  @spec decode_body(binary(), integer()) :: {:ok | :error, any()}
+  @spec decode_body(binary, integer) ::
+          {:ok, any} | {:error, empty_response | invalid_json | any}
   defp decode_body(body, code) do
     case Jason.decode(body) do
       {:ok, decoded_body} ->
