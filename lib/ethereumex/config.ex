@@ -20,8 +20,8 @@ defmodule Ethereumex.Config do
     end
   end
 
-  @spec rpc_url() :: binary
-  def rpc_url do
+  @spec rpc_url() :: binary()
+  def rpc_url() do
     case Application.get_env(:ethereumex, :url) do
       url when is_binary(url) and url != "" ->
         url
@@ -35,8 +35,8 @@ defmodule Ethereumex.Config do
     end
   end
 
-  @spec ipc_path() :: binary
-  def ipc_path do
+  @spec ipc_path() :: binary()
+  def ipc_path() do
     case Application.get_env(:ethereumex, :ipc_path, "") do
       path when is_binary(path) and path != "" ->
         path
@@ -50,18 +50,18 @@ defmodule Ethereumex.Config do
     end
   end
 
-  @spec http_options() :: keyword
-  def http_options do
+  @spec http_options() :: keyword()
+  def http_options() do
     Application.get_env(:ethereumex, :http_options, [])
   end
 
-  @spec client_type() :: atom
-  def client_type do
+  @spec client_type() :: atom()
+  def client_type() do
     Application.get_env(:ethereumex, :client_type, :http)
   end
 
-  @spec poolboy_config() :: keyword
-  defp poolboy_config do
+  @spec poolboy_config() :: keyword()
+  defp poolboy_config() do
     [
       {:name, {:local, :ipc_worker}},
       {:worker_module, IpcServer},
@@ -70,18 +70,18 @@ defmodule Ethereumex.Config do
     ]
   end
 
-  @spec ipc_worker_size() :: integer
-  defp ipc_worker_size do
+  @spec ipc_worker_size() :: integer()
+  defp ipc_worker_size() do
     Application.get_env(:ethereumex, :ipc_worker_size, 5)
   end
 
-  @spec ipc_max_worker_overflow() :: integer
-  defp ipc_max_worker_overflow do
+  @spec ipc_max_worker_overflow() :: integer()
+  defp ipc_max_worker_overflow() do
     Application.get_env(:ethereumex, :ipc_max_worker_overflow, 2)
   end
 
-  @spec ipc_request_timeout() :: integer
-  defp ipc_request_timeout do
+  @spec ipc_request_timeout() :: integer()
+  defp ipc_request_timeout() do
     Application.get_env(:ethereumex, :ipc_request_timeout, 60_000)
   end
 end
