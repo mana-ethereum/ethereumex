@@ -2,23 +2,19 @@ defmodule Ethereumex.Config do
   @moduledoc false
   alias Ethereumex.IpcServer
 
-  def setup_children(type \\ client_type()) do
-    case type do
-      :ipc ->
-        [
-          :poolboy.child_spec(:worker, poolboy_config(),
-            path: Enum.join([System.user_home!(), ipc_path()]),
-            ipc_request_timeout: ipc_request_timeout()
-          )
-        ]
+  def setup_children(), do: setup_children(client_type())
 
-      :http ->
-        []
-
-      opt ->
-        raise "Invalid :client option (#{opt}) in config"
-    end
+  def setup_children(:ipc) do
+    [
+      :poolboy.child_spec(:worker, poolboy_config(),
+        path: Enum.join([System.user_home!(), ipc_path()]),
+        ipc_request_timeout: ipc_request_timeout()
+      )
+    ]
   end
+
+  def setup_children(:http), do: []
+  def setup_children(opt), do: raise("Invalid :client option (#{opt}) in config")
 
   @spec rpc_url() :: binary()
   def rpc_url() do
