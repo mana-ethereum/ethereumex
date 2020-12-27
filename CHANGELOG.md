@@ -1,3 +1,10 @@
+# 0.7.0
+* Remove unremovable default hackney pool (https://github.com/mana-ethereum/ethereumex/pull/82)
+* Change ipc_path to absolute path (https://github.com/mana-ethereum/ethereumex/pull/87)
+* Bump deps (https://github.com/mana-ethereum/ethereumex/pull/88)
+* Config.setup_children can inject client type (https://github.com/mana-ethereum/ethereumex/pull/83)
+* Improve typespecs (https://github.com/mana-ethereum/ethereumex/pull/80, https://github.com/mana-ethereum/ethereumex/pull/85, https://github.com/mana-ethereum/ethereumex/pull/86)
+
 # 0.6.4
 * Fix request id exhaustion due to exponential increment (https://github.com/mana-ethereum/ethereumex/pull/76)
 

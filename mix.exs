@@ -4,7 +4,7 @@ defmodule Ethereumex.Mixfile do
   def project do
     [
       app: :ethereumex,
-      version: "0.6.4",
+      version: "0.7.0",
       elixir: "~> 1.7",
       description: "Elixir JSON-RPC client for the Ethereum blockchain",
       package: [
