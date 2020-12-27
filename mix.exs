@@ -42,7 +42,8 @@ defmodule Ethereumex.Mixfile do
       {:ex_doc, "~> 0.21", only: :dev, runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
       {:poolboy, "~> 1.5.1"},
-      {:telemetry, "~> 0.4"}
+      {:telemetry, "~> 0.4"},
+      {:with_env, "~> 0.1", only: :test}
     ]
   end
 end

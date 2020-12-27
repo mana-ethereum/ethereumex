@@ -2,36 +2,19 @@ defmodule Ethereumex.Config do
   @moduledoc false
   alias Ethereumex.IpcServer
 
-  def setup_children() do
-    setup_children(client_type())
-  end
+  def setup_children(), do: setup_children(client_type())
 
-  defp setup_children(:ipc) do
-    path = Enum.join([System.user_home!(), ipc_path()])
-
+  def setup_children(:ipc) do
     [
       :poolboy.child_spec(:worker, poolboy_config(),
-        path: path,
+        path: Enum.join([System.user_home!(), ipc_path()]),
         ipc_request_timeout: ipc_request_timeout()
       )
     ]
   end
 
-  defp setup_children(:http), do: []
-
-  defp setup_children(opt) do
-    raise "Invalid :client option (#{opt}) in config"
-  end
-
-  @spec poolboy_config() :: keyword()
-  defp poolboy_config() do
-    [
-      {:name, {:local, :ipc_worker}},
-      {:worker_module, IpcServer},
-      {:size, ipc_worker_size()},
-      {:max_overflow, ipc_max_worker_overflow()}
-    ]
-  end
+  def setup_children(:http), do: []
+  def setup_children(opt), do: raise("Invalid :client option (#{opt}) in config")
 
   @spec rpc_url() :: binary()
   def rpc_url() do
@@ -44,18 +27,8 @@ defmodule Ethereumex.Config do
           message:
             "Please set config variable `config :ethereumex, :url, \"http://...\", got: `#{
               inspect(els)
-            }``"
+            }`"
     end
-  end
-
-  @spec http_options() :: keyword()
-  def http_options() do
-    Application.get_env(:ethereumex, :http_options, [])
-  end
-
-  @spec client_type() :: atom()
-  def client_type() do
-    Application.get_env(:ethereumex, :client_type, :http)
   end
 
   @spec ipc_path() :: binary()
@@ -71,6 +44,26 @@ defmodule Ethereumex.Config do
               not_a_path
             }`. Note: System.user_home! will be prepended to path for you on initialization"
     end
+  end
+
+  @spec http_options() :: keyword()
+  def http_options() do
+    Application.get_env(:ethereumex, :http_options, [])
+  end
+
+  @spec client_type() :: atom()
+  def client_type() do
+    Application.get_env(:ethereumex, :client_type, :http)
+  end
+
+  @spec poolboy_config() :: keyword()
+  defp poolboy_config() do
+    [
+      {:name, {:local, :ipc_worker}},
+      {:worker_module, IpcServer},
+      {:size, ipc_worker_size()},
+      {:max_overflow, ipc_max_worker_overflow()}
+    ]
   end
 
   @spec ipc_worker_size() :: integer()
