@@ -7,7 +7,7 @@ defmodule Ethereumex.Config do
   def setup_children(:ipc) do
     [
       :poolboy.child_spec(:worker, poolboy_config(),
-        path: Enum.join([System.user_home!(), ipc_path()]),
+        path: ipc_path(),
         ipc_request_timeout: ipc_request_timeout()
       )
     ]

@@ -25,7 +25,7 @@ defmodule Ethereumex.ConfigTest do
                      {:size, 3},
                      {:max_overflow, 4}
                    ],
-                   path: "#{System.user_home!()}/tmp/socket.ipc",
+                   path: "/tmp/socket.ipc",
                    ipc_request_timeout: 5
                  )
       end
