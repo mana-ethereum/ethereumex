@@ -1,7 +1,9 @@
 defmodule Ethereumex.Client.BaseClient do
   @moduledoc """
-  The Base Client exposes the Ethereum Client RPC functionality. We use a macro so that exposed functions can be used in
-  different behaviours (HTTP or IPC).
+  The Base Client exposes the Ethereum Client RPC functionality.
+
+  We use a macro so that exposed functions can be used in different behaviours
+  (HTTP or IPC).
   """
 
   alias Ethereumex.Client.Behaviour
