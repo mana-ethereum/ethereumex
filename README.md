@@ -1,24 +1,37 @@
-# Ethereumex [![CircleCI](https://circleci.com/gh/mana-ethereum/ethereumex.svg?style=svg)](https://circleci.com/gh/exthereum/ethereumex)
+# Ethereumex
 
-Elixir JSON-RPC client for the Ethereum blockchain
+[![CircleCI](https://circleci.com/gh/mana-ethereum/ethereumex.svg?style=svg)](https://circleci.com/gh/exthereum/ethereumex)
+[![Module Version](https://img.shields.io/hexpm/v/ethereumex.svg)](https://hex.pm/packages/ethereumex)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-lightgreen.svg)](https://hexdocs.pm/ethereumex/)
+[![Total Download](https://img.shields.io/hexpm/dt/ethereumex.svg)](https://hex.pm/packages/ethereumex)
+[![License](https://img.shields.io/hexpm/l/ethereumex.svg)](https://github.com/mana-ethereum/ethereumex/blob/master/LICENSE.md)
+[![Last Updated](https://img.shields.io/github/last-commit/mana-ethereum/ethereumex.svg)](https://github.com/mana-ethereum/ethereumex/commits/master)
+
+<!-- MDOC !-->
+
+Elixir JSON-RPC client for the Ethereum blockchain.
 
 Check out the documentation [here](https://hexdocs.pm/ethereumex/Ethereumex.html#content).
 
 ## Installation
-Add Ethereumex to your `mix.exs` dependencies:
 
-1. Add `ethereumex` to your list of dependencies in `mix.exs`:
+Add `:ethereumex` to your list of dependencies in `mix.exs`:
+
 ```elixir
 def deps do
-  [{:ethereumex, "~> 0.7.0"}]
+  [
+    {:ethereumex, "~> 0.7.0"}
+  ]
 end
 ```
 
-2. Ensure `ethereumex` is started before your application:
+Ensure `:ethereumex` is started before your application:
 
 ```elixir
 def application do
-  [applications: [:ethereumex]]
+  [
+    applications: [:ethereumex]
+  ]
 end
 ```
 
@@ -38,10 +51,10 @@ http requests use no pools, if you want to use hackney default http request pool
 ```elixir
 config :ethereumex,
   http_options: [timeout: 8000, recv_timeout: 5000, hackney: [pool: :default]]
-
 ```
-:timeout - timeout to establish a connection, in milliseconds. Default is 8000
-:recv_timeout - timeout used when receiving a connection. Default is 5000
+
+`:timeout` - timeout to establish a connection, in milliseconds. Default is 8000
+`:recv_timeout` - timeout used when receiving a connection. Default is 5000
 
 If you want to use IPC you will need to set a few things in your config.
 
@@ -76,6 +89,7 @@ Be sure to add :telemetry as project dependency.
 
 
 The IPC client type mode opens a pool of connection workers (default is 5 and 2, respectively). You can configure the pool size.
+
 ```elixir
 config :ethereumex,
   ipc_worker_size: 5,
@@ -187,7 +201,7 @@ defp deps do
 end
 ```
 
-Now load the abi and pass the method signature. Note that the address needs to be converted to bytes
+Now load the ABI and pass the method signature. Note that the address needs to be converted to bytes:
 
 ```elixir
 address           = "0x123" |> String.slice(2..-1) |> Base.decode16(case: :mixed)
@@ -229,7 +243,7 @@ iex> Ethereumex.HttpClient.request("personal_listAccounts", [], [])
 
 ### Batch requests
 
-To send batch requests use Ethereumex.HttpClient.batch_request/1 or batch_request/2 method.
+To send batch requests use Ethereumex.HttpClient.batch_request/1 or Ethereumex.HttpClient.batch_request/2 method.
 
 ```elixir
 requests = [
@@ -247,6 +261,8 @@ requests = [
    ]
  }
 ```
+
+<!-- MDOC !-->
 
 ## Built on Ethereumex
 
@@ -266,10 +282,9 @@ If you are curious what others are building with ethereumex, you might want to t
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
-## Author
+## Copyright and License
 
-Ayrat Badykov (@ayrat555)
+Copyright (c) 2018 Ayrat Badykov
 
-## License
-
-Ethereumex is released under the MIT License.
+Released under the MIT License, which can be found in the repository in
+[LICENSE.md](./LICENSE.md).
