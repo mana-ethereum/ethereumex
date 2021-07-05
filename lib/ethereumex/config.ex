@@ -25,9 +25,7 @@ defmodule Ethereumex.Config do
       els ->
         raise ArgumentError,
           message:
-            "Please set config variable `config :ethereumex, :url, \"http://...\", got: `#{
-              inspect(els)
-            }`"
+            "Please set config variable `config :ethereumex, :url, \"http://...\", got: `#{inspect(els)}`"
     end
   end
 
@@ -40,9 +38,7 @@ defmodule Ethereumex.Config do
       not_a_path ->
         raise ArgumentError,
           message:
-            "Please set config variable `config :ethereumex, :ipc_path, \"path/to/ipc\", got `#{
-              not_a_path
-            }`. Note: System.user_home! will be prepended to path for you on initialization"
+            "Please set config variable `config :ethereumex, :ipc_path, \"path/to/ipc\", got `#{not_a_path}`. Note: System.user_home! will be prepended to path for you on initialization"
     end
   end
 
