@@ -50,7 +50,7 @@ defmodule Ethereumex.Mixfile do
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
       {:poolboy, "~> 1.5"},
-      {:telemetry, "~> 0.4"},
+      {:telemetry, "~> 0.4 or ~> 1.0"},
       {:with_env, "~> 0.1", only: :test}
     ]
   end
