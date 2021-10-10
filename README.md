@@ -20,7 +20,7 @@ Add `:ethereumex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:ethereumex, "~> 0.7.0"}
+    {:ethereumex, "~> 0.7.1"}
   ]
 end
 ```
@@ -194,8 +194,8 @@ In order to call a smart contract using the JSON-RPC interface you need to prope
 defp deps do
   [
     ...
-    {:ethereumex, "~> 0.7.0"},
-    {:ex_abi, "~> 0.5.2"}
+    {:ethereumex, "~> 0.7.1"},
+    {:ex_abi, "~> 0.5.5"}
     ...
   ]
 end

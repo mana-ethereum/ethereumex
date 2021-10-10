@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.1 - 2021-10-10
+* Change telemetry version (https://github.com/mana-ethereum/ethereumex/pull/92)
+
 ## 0.7.0 - 2020-12-07
 * Remove unremovable default hackney pool (https://github.com/mana-ethereum/ethereumex/pull/82)
 * Change ipc_path to absolute path (https://github.com/mana-ethereum/ethereumex/pull/87)
