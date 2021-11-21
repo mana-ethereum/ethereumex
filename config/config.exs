@@ -1,5 +1,8 @@
 use Mix.Config
 
-config :ethereumex, http_options: [timeout: 8000, recv_timeout: 5000]
+config :ethereumex,
+  http_options: [pool_timeout: 5000, receive_timeout: 15_000],
+  http_pool_options: %{}
+
 # config :ethereumex, ipc_path: "/Library/Application Support/io.parity.ethereum/jsonrpc.ipc"
 import_config "#{Mix.env()}.exs"

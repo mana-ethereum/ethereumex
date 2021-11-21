@@ -14,8 +14,10 @@ defmodule Ethereumex.Config do
   end
 
   def setup_children(:http) do
+    pool_opts = http_pool_options()
+
     [
-      {Finch, name: EthereumexFinch}
+      {Finch, name: EthereumexFinch, pools: pool_opts}
     ]
   end
 
@@ -80,5 +82,10 @@ defmodule Ethereumex.Config do
   @spec ipc_request_timeout() :: integer()
   defp ipc_request_timeout() do
     Application.get_env(:ethereumex, :ipc_request_timeout, 60_000)
+  end
+
+  @spec http_pool_options() :: map()
+  defp http_pool_options() do
+    Application.get_env(:ethereumex, :http_pool_options, %{})
   end
 end
