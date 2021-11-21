@@ -13,7 +13,12 @@ defmodule Ethereumex.Config do
     ]
   end
 
-  def setup_children(:http), do: []
+  def setup_children(:http) do
+    [
+      {Finch, name: EthereumexFinch}
+    ]
+  end
+
   def setup_children(opt), do: raise("Invalid :client option (#{opt}) in config")
 
   @spec rpc_url() :: binary()
