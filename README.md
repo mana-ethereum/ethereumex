@@ -45,12 +45,11 @@ config :ethereumex,
 ```
 
 You can also configure the `HTTP` request timeout for requests sent to the Ethereum JSON-RPC
-(you can also overwrite this configuration in `opts` used when calling the client). By default
-http requests use no pools, if you want to use hackney default http request pool:
+(you can also overwrite this configuration in `opts` used when calling the client).
 
 ```elixir
 config :ethereumex,
-  http_options: [timeout: 8000, recv_timeout: 5000, hackney: [pool: :default]]
+  http_options: [pool_timeout: 5000, receive_timeout: 15_000]
 ```
 
 `:timeout` - timeout to establish a connection, in milliseconds. Default is 8000
