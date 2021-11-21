@@ -25,7 +25,7 @@ defmodule Ethereumex.HttpClient do
     end
   end
 
-  @spec decode_body(binary(), integer()) :: {:ok, any()} | http_client_error()
+  @spec decode_body(binary(), non_neg_integer()) :: {:ok, any()} | http_client_error()
   defp decode_body(body, code) do
     case Jason.decode(body) do
       {:ok, decoded_body} ->
