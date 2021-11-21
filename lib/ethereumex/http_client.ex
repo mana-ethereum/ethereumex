@@ -13,18 +13,19 @@ defmodule Ethereumex.HttpClient do
   def post_request(payload, opts) do
     headers = [{"Content-Type", "application/json"}]
     url = Keyword.get(opts, :url) || Config.rpc_url()
+    request = Finch.build(:post, url, headers, payload)
 
-    case HTTPoison.post(url, payload, headers, Config.http_options()) do
+    case Finch.request(request, EthereumexFinch, Config.http_options()) do
       {:ok, response} ->
-        %HTTPoison.Response{body: body, status_code: code} = response
+        %Finch.Response{body: body, status: code} = response
         decode_body(body, code)
 
-      {:error, %HTTPoison.Error{reason: reason}} ->
-        {:error, reason}
+      {:error, error} ->
+        {:error, error}
     end
   end
 
-  @spec decode_body(binary(), integer()) :: {:ok, any()} | http_client_error()
+  @spec decode_body(binary(), non_neg_integer()) :: {:ok, any()} | http_client_error()
   defp decode_body(body, code) do
     case Jason.decode(body) do
       {:ok, decoded_body} ->
