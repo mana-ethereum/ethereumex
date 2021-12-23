@@ -11,7 +11,7 @@ defmodule Ethereumex.HttpClient do
 
   @spec post_request(binary(), [opt()]) :: {:ok, any()} | http_client_error()
   def post_request(payload, opts) do
-    headers = [{"Content-Type", "application/json"}]
+    headers = Config.http_headers()
     url = Keyword.get(opts, :url) || Config.rpc_url()
     request = Finch.build(:post, url, headers, payload)
 
