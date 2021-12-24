@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :ethereumex,
   http_options: [pool_timeout: 5000, receive_timeout: 15_000],

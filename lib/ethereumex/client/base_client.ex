@@ -463,14 +463,21 @@ defmodule Ethereumex.Client.BaseClient do
         payload |> Jason.encode!()
       end
 
-      @spec format_batch([map()]) :: [map() | nil | binary()]
+      @spec format_batch([map()]) :: [{:ok, map() | nil | binary()} | {:error, any}]
       def format_batch(list) do
         list
         |> Enum.sort(fn %{"id" => id1}, %{"id" => id2} ->
           id1 <= id2
         end)
-        |> Enum.map(fn %{"result" => result} ->
-          result
+        |> Enum.map(fn
+          %{"result" => result} ->
+            {:ok, result}
+
+          %{"error" => error} ->
+            {:error, error}
+
+          other ->
+            {:error, other}
         end)
       end
 
