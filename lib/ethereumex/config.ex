@@ -54,6 +54,11 @@ defmodule Ethereumex.Config do
     Application.get_env(:ethereumex, :http_options, [])
   end
 
+  @spec http_headers() :: [{String.t(), String.t()}]
+  def http_headers() do
+    Application.get_env(:ethereumex, :http_headers, [])
+  end
+
   @spec client_type() :: atom()
   def client_type() do
     Application.get_env(:ethereumex, :client_type, :http)
