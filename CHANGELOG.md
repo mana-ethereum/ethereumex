@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.0 - 2021-12-25
+* Allow adding custom headers (https://github.com/mana-ethereum/ethereumex/pull/97)
+* Handle errors in batch requests (https://github.com/mana-ethereum/ethereumex/pull/98)
+
 ## 0.8.0 - 2021-11-21
 * Switch from `httpoison` to `finch` (https://github.com/mana-ethereum/ethereumex/pull/94)
 

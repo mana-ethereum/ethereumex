@@ -20,7 +20,7 @@ Add `:ethereumex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:ethereumex, "~> 0.8"}
+    {:ethereumex, "~> 0.9"}
   ]
 end
 ```
@@ -49,11 +49,12 @@ You can also configure the `HTTP` request timeout for requests sent to the Ether
 
 ```elixir
 config :ethereumex,
-  http_options: [pool_timeout: 5000, receive_timeout: 15_000]
+  http_options: [pool_timeout: 5000, receive_timeout: 15_000],
+  http_headers: [{"Content-Type", "application/json"}]
 ```
 
-`:timeout` - timeout to establish a connection, in milliseconds. Default is 8000
-`:recv_timeout` - timeout used when receiving a connection. Default is 5000
+`:pool_timeout` - This timeout is applied when we check out a connection from the pool. Default value is `5_000`.
+`:receive_timeout` - The maximum time to wait for a response before returning an error. Default value is `15_000`
 
 If you want to use IPC you will need to set a few things in your config.
 
