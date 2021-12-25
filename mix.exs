@@ -8,7 +8,7 @@ defmodule Ethereumex.Mixfile do
     [
       app: :ethereumex,
       version: @version,
-      elixir: "~> 1.7",
+      elixir: "~> 1.13",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       package: package(),
@@ -44,7 +44,7 @@ defmodule Ethereumex.Mixfile do
 
   defp deps do
     [
-      {:finch, "~> 0.9"},
+      {:finch, "~> 0.10"},
       {:jason, "~> 1.2"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},

@@ -49,10 +49,7 @@ defmodule Ethereumex.Client.BaseClientTest do
     def uppercase([first, second]), do: Enum.join([first, second], "_")
     # web3_client_version -> web3_clientVersion and keep this logic
     def uppercase([first, second | tail]) do
-      uppered =
-        tail
-        |> Enum.map(&String.capitalize/1)
-        |> Enum.join()
+      uppered = Enum.map_join(tail, &String.capitalize/1)
 
       Enum.join([first, second], "_") <> uppered
     end
@@ -328,9 +325,37 @@ defmodule Ethereumex.Client.BaseClientTest do
         {:web3_sha3, ["0x68656c6c6f20776f726c64"]}
       ]
 
-      _ = ClientMock.batch_request(requests)
+      assert _ = ClientMock.batch_request(requests)
 
       assert Ethereumex.Counter.get(:rpc_counter) == initial_count + length(requests)
+    end
+  end
+
+  describe ".format_batch/1" do
+    test "formats batch response" do
+      batch = [
+        %{
+          "error" => %{"code" => -32_000, "message" => "execution reverted"},
+          "id" => 86,
+          "jsonrpc" => "2.0"
+        },
+        %{
+          "result" => 42,
+          "id" => 87,
+          "jsonrpc" => "2.0"
+        },
+        %{
+          "result" => 50,
+          "id" => 85,
+          "jsonrpc" => "2.0"
+        }
+      ]
+
+      assert [
+               {:ok, 50},
+               {:error, %{"code" => -32_000, "message" => "execution reverted"}},
+               {:ok, 42}
+             ] = ClientMock.format_batch(batch)
     end
   end
 end

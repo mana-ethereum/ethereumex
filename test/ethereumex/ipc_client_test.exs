@@ -652,9 +652,9 @@ defmodule Ethereumex.IpcClientTest do
       {
         :ok,
         [
-          <<_::binary>>,
-          <<_::binary>>,
-          "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad"
+          {:ok, <<_::binary>>},
+          {:ok, <<_::binary>>},
+          {:ok, "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad"}
         ]
       } = result
     end

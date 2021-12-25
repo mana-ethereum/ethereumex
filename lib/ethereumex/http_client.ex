@@ -16,8 +16,7 @@ defmodule Ethereumex.HttpClient do
     request = Finch.build(:post, url, headers, payload)
 
     case Finch.request(request, EthereumexFinch, Config.http_options()) do
-      {:ok, response} ->
-        %Finch.Response{body: body, status: code} = response
+      {:ok, %Finch.Response{body: body, status: code}} ->
         decode_body(body, code)
 
       {:error, error} ->
