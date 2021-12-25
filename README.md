@@ -255,9 +255,9 @@ requests = [
  {
    :ok,
    [
-     "Parity//v1.7.2-beta-9f47909-20170918/x86_64-macos/rustc1.19.0",
-     "42",
-     "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad"
+     {:ok, "Parity//v1.7.2-beta-9f47909-20170918/x86_64-macos/rustc1.19.0"},
+     {:ok, "42"},
+     {:ok, "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad"}
    ]
  }
 ```
