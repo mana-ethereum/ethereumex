@@ -204,7 +204,7 @@ end
 Now load the ABI and pass the method signature. Note that the address needs to be converted to bytes:
 
 ```elixir
-address           = "0x123" |> String.slice(2..-1) |> Base.decode16(case: :mixed)
+address           = "0x123" |> String.slice(2..-1) |> Base.decode16!(case: :mixed)
 contract_address  = "0x432"
 abi_encoded_data  = ABI.encode("balanceOf(address)", [address]) |> Base.encode16(case: :lower)
 ```
