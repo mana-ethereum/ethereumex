@@ -29,7 +29,7 @@ defmodule Ethereumex.Mixfile do
     [
       env: [],
       extra_applications: [:logger],
-      mod: {Ethereumex, []}
+      mod: {Ethereumex.Application, []}
     ]
   end
 
