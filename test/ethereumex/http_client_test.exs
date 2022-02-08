@@ -359,29 +359,6 @@ defmodule Ethereumex.HttpClientTest do
   end
 
   @tag :eth
-  describe "HttpClient.eth_new_12" do
-    test "creates a filter object" do
-      filter = %{
-        fromBlock: "0x1",
-        toBlock: "0x2",
-        address: "0x8888f1f195afa192cfee860698584c030f4c9db1",
-        topics: [
-          "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b",
-          nil,
-          [
-            "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b",
-            "0x0000000000000000000000000aff3454fce5edbc8cca8697c15331677e6ebccc"
-          ]
-        ]
-      }
-
-      result = HttpClient.eth_new_filter(filter)
-
-      {:ok, <<_::binary>>} = result
-    end
-  end
-
-  @tag :eth
   describe "HttpClient.eth_new_block_filter/1" do
     test "creates new block filter" do
       result = HttpClient.eth_new_block_filter()
