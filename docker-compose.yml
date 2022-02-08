@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  openethereum:
+    image: openethereum/openethereum:v3.3.0
+    command: '--chain=dev --unlock=0x00a329c0648769a73afac7f9381e08fb43dbea72 --password=/home/openethereum/.local/share/openethereum/passfile --jsonrpc-interface=0.0.0.0'
+    ports:
+      - '8545:8545'
+      - '8546:8546'
+    volumes:
+      - ./docker:/home/openethereum/.local/share
