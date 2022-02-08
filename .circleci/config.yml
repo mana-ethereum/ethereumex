@@ -38,7 +38,7 @@ jobs:
             - deps
             - ~/.mix
 
-      - run: mix test --include eth --include batch
+      - run: mix test
 
       - restore_cache:
           keys:
