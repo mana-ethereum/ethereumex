@@ -1,0 +1,3 @@
+#!/bin/bash
+
+./parity/parity --chain dev

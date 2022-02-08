@@ -97,6 +97,26 @@ config :ethereumex,
   ipc_request_timeout: 60_000
 ```
 
+## Test
+
+Download `parity` and initialize the password file
+
+```
+$ make setup
+```
+
+Run `parity`
+
+```
+$ make run
+```
+
+Run tests
+
+```
+$ make test
+```
+
 ## Usage
 
 ### Available methods:

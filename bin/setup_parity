@@ -1,0 +1,7 @@
+#!/bin/bash
+
+mkdir -p parity
+echo > ./parity/passfile
+
+curl https://releases.parity.io/ethereum/v1.10.7/x86_64-unknown-linux-gnu/parity --output ./parity/parity
+chmod +x ./parity/parity
