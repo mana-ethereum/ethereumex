@@ -17,7 +17,7 @@ defmodule Ethereumex.Config do
     pool_opts = http_pool_options()
 
     [
-      {Finch, name: EthereumexFinch, pools: pool_opts}
+      {Finch, name: Ethereumex.Finch, pools: pool_opts}
     ]
   end
 

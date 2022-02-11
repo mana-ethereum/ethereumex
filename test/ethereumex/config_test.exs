@@ -33,7 +33,7 @@ defmodule Ethereumex.ConfigTest do
 
     test ":http has Finch chiild" do
       assert Ethereumex.Config.setup_children(:http) == [
-               {Finch, [name: EthereumexFinch, pools: %{}]}
+               {Finch, [name: Ethereumex.Finch, pools: %{}]}
              ]
     end
 
@@ -50,7 +50,7 @@ defmodule Ethereumex.ConfigTest do
     test "defaults to the configured client_type" do
       with_env put: [ethereumex: [client_type: :http]] do
         assert Ethereumex.Config.setup_children() == [
-                 {Finch, [name: EthereumexFinch, pools: %{}]}
+                 {Finch, [name: Ethereumex.Finch, pools: %{}]}
                ]
       end
     end
