@@ -214,7 +214,7 @@ In order to call a smart contract using the JSON-RPC interface you need to prope
 defp deps do
   [
     ...
-    {:ethereumex, "~> 0.8"},
+    {:ethereumex, "~> 0.9"},
     {:ex_abi, "~> 0.5"}
     ...
   ]

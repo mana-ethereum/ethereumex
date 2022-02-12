@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.9.1 - 2022-02-12
+* Namespace finch adapter under Ethereumex (https://github.com/mana-ethereum/ethereumex/pull/113)
+* Move application into a separate module (https://github.com/mana-ethereum/ethereumex/pull/108)
+* Add http_headers as optional param (https://github.com/mana-ethereum/ethereumex/pull/111)
+
 ## 0.9.0 - 2021-12-25
 * Allow adding custom headers (https://github.com/mana-ethereum/ethereumex/pull/97)
 * Handle errors in batch requests (https://github.com/mana-ethereum/ethereumex/pull/98)
