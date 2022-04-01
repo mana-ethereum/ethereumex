@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.2 - 2022-04-01
+* Update `finch` to `0.9.2` (https://github.com/mana-ethereum/ethereumex/commit/28fcb106c04cfc26b78cfbc558acc2385a816ebe)
+
 ## 0.9.1 - 2022-02-12
 * Namespace finch adapter under Ethereumex (https://github.com/mana-ethereum/ethereumex/pull/113)
 * Move application into a separate module (https://github.com/mana-ethereum/ethereumex/pull/108)
