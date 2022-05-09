@@ -95,6 +95,7 @@ defmodule Ethereumex.Client.BaseClientTest do
   test ".eth_mining/0", do: Helpers.check("eth_mining")
   test ".eth_hashrate/0", do: Helpers.check("eth_hashrate")
   test ".eth_gas_price/0", do: Helpers.check("eth_gas_price")
+  test ".eth_max_priority_fee_per_gas/0", do: Helpers.check("eth_max_priority_fee_per_gas")
   test ".eth_accounts/0", do: Helpers.check("eth_accounts")
   test ".eth_block_number/0", do: Helpers.check("eth_block_number")
   test ".eth_get_compilers/0", do: Helpers.check("eth_get_compilers")

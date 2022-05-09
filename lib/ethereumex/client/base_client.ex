@@ -72,6 +72,11 @@ defmodule Ethereumex.Client.BaseClient do
       end
 
       @impl true
+      def eth_max_priority_fee_per_gas(opts \\ []) do
+        request("eth_maxPriorityFeePerGas", [], opts)
+      end
+
+      @impl true
       def eth_accounts(opts \\ []) do
         request("eth_accounts", [], opts)
       end

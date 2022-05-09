@@ -105,6 +105,15 @@ defmodule Ethereumex.HttpClientTest do
   end
 
   @tag :eth
+  describe "HttpClient.eth_max_priority_fee_per_gas/1" do
+    test "returns current max priority fee per gas" do
+      result = HttpClient.eth_max_priority_fee_per_gas()
+
+      {:ok, <<_::binary>>} = result
+    end
+  end
+
+  @tag :eth
   describe "HttpClient.eth_accounts/1" do
     test "returns addresses owned by client" do
       {:ok, result} = HttpClient.eth_accounts()

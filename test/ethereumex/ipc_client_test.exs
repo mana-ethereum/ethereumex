@@ -116,6 +116,15 @@ defmodule Ethereumex.IpcClientTest do
   end
 
   @tag :eth
+  describe "IpcClient.eth_max_priority_fee_per_gas/1" do
+    test "returns current max priority fee per gas" do
+      result = IpcClient.eth_max_priority_fee_per_gas()
+
+      {:ok, <<_::binary>>} = result
+    end
+  end
+
+  @tag :eth
   describe "IpcClient.eth_accounts/1" do
     test "returns addresses owned by client" do
       {:ok, result} = IpcClient.eth_accounts()
