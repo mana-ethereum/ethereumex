@@ -125,6 +125,15 @@ defmodule Ethereumex.IpcClientTest do
   end
 
   @tag :eth
+  describe "IpcClient.eth_fee_history/1" do
+    test "returns a collection of historical gas information" do
+      result = IpcClient.eth_fee_history()
+
+      {:ok, <<_::binary>>} = result
+    end
+  end
+
+  @tag :eth
   describe "IpcClient.eth_accounts/1" do
     test "returns addresses owned by client" do
       {:ok, result} = IpcClient.eth_accounts()

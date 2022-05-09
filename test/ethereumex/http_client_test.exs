@@ -114,6 +114,15 @@ defmodule Ethereumex.HttpClientTest do
   end
 
   @tag :eth
+  describe "HttpClient.eth_fee_history/1" do
+    test "returns a collection of historical gas information" do
+      result = HttpClient.eth_fee_history()
+
+      {:ok, <<_::binary>>} = result
+    end
+  end
+
+  @tag :eth
   describe "HttpClient.eth_accounts/1" do
     test "returns addresses owned by client" do
       {:ok, result} = HttpClient.eth_accounts()
