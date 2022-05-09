@@ -125,9 +125,9 @@ defmodule Ethereumex.IpcClientTest do
   end
 
   @tag :eth
-  describe "IpcClient.eth_fee_history/1" do
+  describe "IpcClient.eth_fee_history/3" do
     test "returns a collection of historical gas information" do
-      result = IpcClient.eth_fee_history()
+      result = IpcClient.eth_fee_history(1, "latest", [25, 75])
 
       assert is_map(result)
     end

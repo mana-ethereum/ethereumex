@@ -77,8 +77,9 @@ defmodule Ethereumex.Client.BaseClient do
       end
 
       @impl true
-      def eth_fee_history(opts \\ []) do
-        request("eth_feeHistory", [], opts)
+      def eth_fee_history(block_count, newestblock, reward_percentiles, opts \\ []) do
+        params = [block_count, newestblock, reward_percentiles]
+        request("eth_feeHistory", params, opts)
       end
 
       @impl true

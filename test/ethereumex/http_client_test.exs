@@ -114,9 +114,9 @@ defmodule Ethereumex.HttpClientTest do
   end
 
   @tag :eth
-  describe "HttpClient.eth_fee_history/1" do
+  describe "HttpClient.eth_fee_history/3" do
     test "returns a collection of historical gas information" do
-      result = HttpClient.eth_fee_history()
+      result = HttpClient.eth_fee_history(1, "latest", [25, 75])
 
       assert is_map(result)
     end

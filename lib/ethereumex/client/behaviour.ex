@@ -16,7 +16,7 @@ defmodule Ethereumex.Client.Behaviour do
   @callback eth_hashrate(keyword()) :: {:ok, binary()} | error
   @callback eth_gas_price(keyword()) :: {:ok, binary()} | error
   @callback eth_max_priority_fee_per_gas(keyword()) :: {:ok, binary()} | error
-  @callback eth_fee_history(keyword()) :: {:ok, binary()} | error
+  @callback eth_fee_history(binary(), binary(), list(binary()), keyword()) :: {:ok, map()} | error
   @callback eth_accounts(keyword()) :: {:ok, [binary()]} | error
   @callback eth_block_number(keyword()) :: {:ok, binary} | error
   @callback eth_get_balance(binary(), binary(), keyword()) :: {:ok, binary()} | error
