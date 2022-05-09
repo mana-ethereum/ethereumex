@@ -129,7 +129,7 @@ defmodule Ethereumex.IpcClientTest do
     test "returns a collection of historical gas information" do
       result = IpcClient.eth_fee_history()
 
-      {:ok, <<_::binary>>} = result
+      assert is_map(result)
     end
   end
 

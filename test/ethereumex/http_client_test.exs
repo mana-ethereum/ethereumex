@@ -118,7 +118,7 @@ defmodule Ethereumex.HttpClientTest do
     test "returns a collection of historical gas information" do
       result = HttpClient.eth_fee_history()
 
-      {:ok, <<_::binary>>} = result
+      assert is_map(result)
     end
   end
 
