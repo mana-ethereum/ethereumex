@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.10.0 - 2022-05-10
+* Add EIP1559 support for eth_maxPriorityFeePerGas and eth_feeHistory (https://github.com/mana-ethereum/ethereumex/pull/127)
+* Update finch to 0.12.0 (https://github.com/mana-ethereum/ethereumex/pull/126)
+
 ## 0.9.2 - 2022-04-01
 * Update `finch` to `0.11` (https://github.com/mana-ethereum/ethereumex/commit/28fcb106c04cfc26b78cfbc558acc2385a816ebe)
 
