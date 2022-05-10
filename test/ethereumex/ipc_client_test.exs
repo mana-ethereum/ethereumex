@@ -115,7 +115,7 @@ defmodule Ethereumex.IpcClientTest do
     end
   end
 
-  @tag :eth
+  @tag :skip
   describe "IpcClient.eth_max_priority_fee_per_gas/1" do
     test "returns current max priority fee per gas" do
       result = IpcClient.eth_max_priority_fee_per_gas()
@@ -124,7 +124,7 @@ defmodule Ethereumex.IpcClientTest do
     end
   end
 
-  @tag :eth
+  @tag :skip
   describe "IpcClient.eth_fee_history/3" do
     test "returns a collection of historical gas information" do
       result = IpcClient.eth_fee_history(1, "latest", [25, 75])
