@@ -14,19 +14,20 @@ defmodule Ethereumex.HttpClient do
   def post_request(payload, opts) do
     headers = Keyword.get(opts, :http_headers) || Config.http_headers()
     url = Keyword.get(opts, :url) || Config.rpc_url()
+    format_batch = Keyword.get(opts, :format_batch) || Config.format_batch()
     request = Finch.build(:post, url, headers, payload)
 
     case Finch.request(request, Ethereumex.Finch, Config.http_options()) do
       {:ok, %Finch.Response{body: body, status: code}} ->
-        decode_body(body, code)
+        decode_body(body, code, format_batch)
 
       {:error, error} ->
         {:error, error}
     end
   end
 
-  @spec decode_body(binary(), non_neg_integer()) :: {:ok, any()} | http_client_error()
-  defp decode_body(body, code) do
+  @spec decode_body(binary(), non_neg_integer(), boolean()) :: {:ok, any()} | http_client_error()
+  defp decode_body(body, code, format_batch) do
     case Jason.decode(body) do
       {:ok, decoded_body} ->
         case {code, decoded_body} do
@@ -34,11 +35,7 @@ defmodule Ethereumex.HttpClient do
             {:error, error}
 
           {200, result = [%{} | _]} ->
-            if Config.format_batch() do
-              {:ok, format_batch(result)}
-            else
-              {:ok, result}
-            end
+            {:ok, maybe_format_batch(result, format_batch)}
 
           {200, %{"result" => result}} ->
             {:ok, result}
@@ -54,4 +51,8 @@ defmodule Ethereumex.HttpClient do
         {:error, {:invalid_json, error}}
     end
   end
+
+  defp maybe_format_batch(responses, true), do: format_batch(responses)
+
+  defp maybe_format_batch(responses, _), do: responses
 end
