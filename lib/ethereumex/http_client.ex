@@ -2,6 +2,7 @@ defmodule Ethereumex.HttpClient do
   @moduledoc false
 
   use Ethereumex.Client.BaseClient
+
   alias Ethereumex.Config
 
   @type opt :: {:url, String.t()}
@@ -29,10 +30,21 @@ defmodule Ethereumex.HttpClient do
     case Jason.decode(body) do
       {:ok, decoded_body} ->
         case {code, decoded_body} do
-          {200, %{"error" => error}} -> {:error, error}
-          {200, result = [%{} | _]} -> {:ok, format_batch(result)}
-          {200, %{"result" => result}} -> {:ok, result}
-          _ -> {:error, decoded_body}
+          {200, %{"error" => error}} ->
+            {:error, error}
+
+          {200, result = [%{} | _]} ->
+            if Config.format_batch() do
+              {:ok, format_batch(result)}
+            else
+              {:ok, result}
+            end
+
+          {200, %{"result" => result}} ->
+            {:ok, result}
+
+          _ ->
+            {:error, decoded_body}
         end
 
       {:error, %Jason.DecodeError{data: ""}} ->

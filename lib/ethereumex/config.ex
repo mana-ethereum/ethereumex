@@ -64,6 +64,11 @@ defmodule Ethereumex.Config do
     Application.get_env(:ethereumex, :client_type, :http)
   end
 
+  @spec format_batch() :: boolean()
+  def format_batch() do
+    Application.get_env(:ethereumex, :format_batch, true)
+  end
+
   @spec poolboy_config() :: keyword()
   defp poolboy_config() do
     [
