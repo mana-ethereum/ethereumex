@@ -14,7 +14,13 @@ defmodule Ethereumex.HttpClient do
   def post_request(payload, opts) do
     headers = Keyword.get(opts, :http_headers) || Config.http_headers()
     url = Keyword.get(opts, :url) || Config.rpc_url()
-    format_batch = Keyword.get(opts, :format_batch) || Config.format_batch()
+
+    format_batch =
+      case Keyword.get(opts, :format_batch) do
+        nil -> Config.format_batch()
+        value -> value
+      end
+
     request = Finch.build(:post, url, headers, payload)
 
     case Finch.request(request, Ethereumex.Finch, Config.http_options()) do
