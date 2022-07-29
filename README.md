@@ -20,7 +20,7 @@ Add `:ethereumex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:ethereumex, "~> 0.9"}
+    {:ethereumex, "~> 0.10"}
   ]
 end
 ```

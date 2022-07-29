@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.10.1 - 2022-07-29
+* Add option to not format batch requests (https://github.com/mana-ethereum/ethereumex/pull/131)
+
 ## 0.10.0 - 2022-05-10
 * Add EIP1559 support for eth_maxPriorityFeePerGas and eth_feeHistory (https://github.com/mana-ethereum/ethereumex/pull/127)
 * Update finch to 0.12.0 (https://github.com/mana-ethereum/ethereumex/pull/126)
