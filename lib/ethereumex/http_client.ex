@@ -5,12 +5,11 @@ defmodule Ethereumex.HttpClient do
 
   alias Ethereumex.Config
 
-  @type opt :: {:url, String.t()}
   @type empty_response :: :empty_response
   @type invalid_json :: {:invalid_json, any()}
   @type http_client_error :: {:error, empty_response() | invalid_json() | any()}
 
-  @spec post_request(binary(), [opt()]) :: {:ok, any()} | http_client_error()
+  @spec post_request(binary(), Keyword.t()) :: {:ok, any()} | http_client_error()
   def post_request(payload, opts) do
     headers = Keyword.get(opts, :http_headers) || Config.http_headers()
     url = Keyword.get(opts, :url) || Config.rpc_url()
