@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.10.2 - 2022-08-02
+* Fix typespec in HttpClient (https://github.com/mana-ethereum/ethereumex/pull/134)
+
 ## 0.10.1 - 2022-07-29
 * Add option to not format batch requests (https://github.com/mana-ethereum/ethereumex/pull/131)
 
