@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.10.3 - 2022-09-15
+* Update jason to 1.4 (https://github.com/mana-ethereum/ethereumex/pull/134)
+
 ## 0.10.2 - 2022-08-02
 * Fix typespec in HttpClient (https://github.com/mana-ethereum/ethereumex/pull/134)
 
