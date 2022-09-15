@@ -2,7 +2,7 @@ defmodule Ethereumex.Mixfile do
   use Mix.Project
 
   @source_url "https://github.com/exthereum/ethereumex"
-  @version "0.10.2"
+  @version "0.10.3"
 
   def project do
     [
@@ -45,7 +45,7 @@ defmodule Ethereumex.Mixfile do
   defp deps do
     [
       {:finch, "~> 0.13"},
-      {:jason, "~> 1.3"},
+      {:jason, "~> 1.4"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
