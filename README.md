@@ -294,6 +294,8 @@ If you are curious what others are building with ethereumex, you might want to t
 
 - [eth_contract](https://github.com/agilealpha/eth_contract) - A set of helper methods for calling ETH Smart Contracts via JSON RPC.
 
+- [ethers](https://github.com/alisinabh/elixir_ethers) - Interacting with EVM contracts like first-class Elixir functions similar to Ethers.js
+
 ## Contributing
 
 1. [Fork it!](http://github.com/ayrat555/ethereumex/fork)
