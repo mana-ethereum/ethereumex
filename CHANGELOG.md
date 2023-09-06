@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.10.5 - 2022-09-06
+## 0.10.5 - 2023-09-06
 * Update deps (https://github.com/mana-ethereum/ethereumex/pull/153)
 
 ## 0.10.4 - 2022-12-07
