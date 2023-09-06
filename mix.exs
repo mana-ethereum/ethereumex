@@ -44,11 +44,11 @@ defmodule Ethereumex.Mixfile do
 
   defp deps do
     [
-      {:finch, "~> 0.14"},
+      {:finch, "~> 0.16"},
       {:jason, "~> 1.4"},
-      {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
-      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:poolboy, "~> 1.5"},
       {:telemetry, "~> 0.4 or ~> 1.0"},
       {:with_env, "~> 0.1", only: :test}
