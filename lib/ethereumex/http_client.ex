@@ -11,7 +11,7 @@ defmodule Ethereumex.HttpClient do
 
   @spec post_request(binary(), Keyword.t()) :: {:ok, any()} | http_client_error()
   def post_request(payload, opts) do
-    headers = Keyword.get(opts, :http_headers) || Config.http_headers()
+    headers = headers(opts)
     url = Keyword.get(opts, :url) || Config.rpc_url()
 
     format_batch =
@@ -29,6 +29,12 @@ defmodule Ethereumex.HttpClient do
       {:error, error} ->
         {:error, error}
     end
+  end
+
+  defp headers(opts) do
+    headers = Keyword.get(opts, :http_headers) || Config.http_headers()
+
+    [{"Content-Type", "application/json"} | headers]
   end
 
   @spec decode_body(binary(), non_neg_integer(), boolean()) :: {:ok, any()} | http_client_error()
