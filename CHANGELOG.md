@@ -1,10 +1,14 @@
 # Changelog
 
+## 0.10.6 - 2023-12-12
+* Add eth_chainId RPC function (https://github.com/mana-ethereum/ethereumex/pull/155)
+* Add json header by default (https://github.com/mana-ethereum/ethereumex/pull/156)
+
 ## 0.10.5 - 2023-09-06
 * Update deps (https://github.com/mana-ethereum/ethereumex/pull/153)
 
 ## 0.10.4 - 2022-12-07
-*  Update finch to 0.14 (https://github.com/mana-ethereum/ethereumex/pull/141)
+* Update finch to 0.14 (https://github.com/mana-ethereum/ethereumex/pull/141)
 
 ## 0.10.3 - 2022-09-15
 * Update jason to 1.4 (https://github.com/mana-ethereum/ethereumex/pull/137)
