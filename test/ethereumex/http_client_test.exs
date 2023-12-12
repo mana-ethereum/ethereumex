@@ -68,7 +68,7 @@ defmodule Ethereumex.HttpClientTest do
     end
   end
 
-  @tag :eth
+  @tag :eth_chain_id
   describe "HttpClient.eth_chain_id/1" do
     test "returns chain id of the RPC serveer" do
       result = HttpClient.eth_chain_id()
