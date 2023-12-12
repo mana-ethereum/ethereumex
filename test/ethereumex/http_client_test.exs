@@ -69,6 +69,15 @@ defmodule Ethereumex.HttpClientTest do
   end
 
   @tag :eth
+  describe "HttpClient.eth_chain_id/1" do
+    test "returns chain id of the RPC serveer" do
+      result = HttpClient.eth_chain_id()
+
+      {:ok, <<_::binary>>} = result
+    end
+  end
+
+  @tag :eth
   describe "HttpClient.eth_coinbase/1" do
     test "returns coinbase address" do
       result = HttpClient.eth_coinbase()

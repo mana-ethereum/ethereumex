@@ -11,6 +11,7 @@ defmodule Ethereumex.Client.Behaviour do
   @callback net_listening(keyword()) :: {:ok, boolean()} | error
   @callback eth_protocol_version(keyword()) :: {:ok, binary()} | error
   @callback eth_syncing(keyword()) :: {:ok, map() | boolean()} | error
+  @callback eth_chain_id(keyword()) :: {:ok, binary()} | error
   @callback eth_coinbase(keyword()) :: {:ok, binary()} | error
   @callback eth_mining(keyword()) :: {:ok, boolean()} | error
   @callback eth_hashrate(keyword()) :: {:ok, binary()} | error

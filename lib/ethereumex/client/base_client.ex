@@ -52,6 +52,11 @@ defmodule Ethereumex.Client.BaseClient do
       end
 
       @impl true
+      def eth_chain_id(opts \\ []) do
+        request("eth_chainId", [], opts)
+      end
+
+      @impl true
       def eth_coinbase(opts \\ []) do
         request("eth_coinbase", [], opts)
       end

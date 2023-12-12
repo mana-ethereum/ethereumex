@@ -80,6 +80,15 @@ defmodule Ethereumex.IpcClientTest do
   end
 
   @tag :eth
+  describe "IpcClient.eth_chain_id/1" do
+    test "returns chain id of the RPC serveer" do
+      result = IpcClient.eth_chain_id()
+
+      {:ok, <<_::binary>>} = result
+    end
+  end
+
+  @tag :eth
   describe "IpcClient.eth_coinbase/1" do
     test "returns coinbase address" do
       result = IpcClient.eth_coinbase()

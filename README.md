@@ -129,6 +129,7 @@ $ make test
 * [`eth_protocolVersion`](https://eth.wiki/json-rpc/API#eth_protocolversion)
 * [`eth_syncing`](https://eth.wiki/json-rpc/API#eth_syncing)
 * [`eth_coinbase`](https://eth.wiki/json-rpc/API#eth_coinbase)
+* [`eth_chainId`](https://eth.wiki/json-rpc/API#eth_chainId)
 * [`eth_mining`](https://eth.wiki/json-rpc/API#eth_mining)
 * [`eth_hashrate`](https://eth.wiki/json-rpc/API#eth_hashrate)
 * [`eth_gasPrice`](https://eth.wiki/json-rpc/API#eth_gasprice)
