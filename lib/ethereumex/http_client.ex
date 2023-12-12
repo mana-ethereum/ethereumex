@@ -34,7 +34,7 @@ defmodule Ethereumex.HttpClient do
   defp headers(opts) do
     headers = Keyword.get(opts, :http_headers) || Config.http_headers()
 
-    headers ++ [{"Content-Type", "application/json"}]
+    [{"Content-Type", "application/json"} | headers]
   end
 
   @spec decode_body(binary(), non_neg_integer(), boolean()) :: {:ok, any()} | http_client_error()
