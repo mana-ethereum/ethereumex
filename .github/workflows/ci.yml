@@ -46,8 +46,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-mix-${{matrix.pair.elixir}}-${{matrix.pair.otp}}-
 
-      - name: NIF deps
-        run: sudo apt-get install -y build-essential erlang-dev libsodium-dev
+      - name: Run Parity in background
+        run: |
+          wget https://releases.parity.io/ethereum/v1.10.7/x86_64-unknown-linux-gnu/parity
+          chmod 755 ./parity
+          ./parity --chain dev &
 
       - name: Run mix deps.get
         run: mix deps.get --only test
