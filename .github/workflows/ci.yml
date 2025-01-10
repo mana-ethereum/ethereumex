@@ -8,24 +8,14 @@ on:
 
 jobs:
   ci:
+    name: "Elixir ${{matrix.elixir}} OTP ${{matrix.otp}}"
     env:
       MIX_ENV: test
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - pair:
-              elixir: 1.14
-              otp: 24.3
-            lint: lint
-          - pair:
-              elixir: 1.14
-              otp: 25.0
-            lint: lint
-          - pair:
-              elixir: 1.15
-              otp: 26.0
-            lint: lint
+        otp: [24.3, 25.3, 26.2]
+        elixir: [1.14.5, 1.15.7, 1.16.2, 1.17.3, 1.18.1]
 
     runs-on: ubuntu-latest
 
