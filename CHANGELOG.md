@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.10.7 - 2025-01-10
+* Add eth_blob_base_fee support (https://github.com/mana-ethereum/ethereumex/pull/160)
+
 ## 0.10.6 - 2023-12-12
 * Add eth_chainId RPC function (https://github.com/mana-ethereum/ethereumex/pull/155)
 * Add json header by default (https://github.com/mana-ethereum/ethereumex/pull/156)

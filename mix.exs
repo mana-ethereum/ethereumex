@@ -2,7 +2,7 @@ defmodule Ethereumex.Mixfile do
   use Mix.Project
 
   @source_url "https://github.com/exthereum/ethereumex"
-  @version "0.10.6"
+  @version "0.10.7"
 
   def project do
     [
@@ -20,7 +20,7 @@ defmodule Ethereumex.Mixfile do
       dialyzer: [
         flags: [:underspecs, :unknown, :unmatched_returns],
         plt_add_apps: [:mix, :jason, :iex, :logger],
-        plt_add_deps: :transitive
+        plt_add_deps: :app_tree
       ]
     ]
   end
