@@ -142,6 +142,15 @@ defmodule Ethereumex.IpcClientTest do
     end
   end
 
+  @tag :skip
+  describe "IpcClient.eth_blob_base_fee/1" do
+    test "returns the base fee for blob transactions" do
+      result = IpcClient.eth_blob_base_fee()
+
+      {:ok, <<_::binary>>} = result
+    end
+  end
+
   @tag :eth
   describe "IpcClient.eth_accounts/1" do
     test "returns addresses owned by client" do

@@ -132,6 +132,15 @@ defmodule Ethereumex.HttpClientTest do
   end
 
   @tag :eth
+  describe "HttpClient.eth_blob_base_fee/1" do
+    test "returns the blob base fee of the latest block" do
+      result = HttpClient.eth_blob_base_fee()
+
+      {:ok, <<_::binary>>} = result
+    end
+  end
+
+  @tag :eth
   describe "HttpClient.eth_accounts/1" do
     test "returns addresses owned by client" do
       {:ok, result} = HttpClient.eth_accounts()
