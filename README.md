@@ -1,6 +1,5 @@
 # Ethereumex
 
-[![CircleCI](https://circleci.com/gh/mana-ethereum/ethereumex.svg?style=svg)](https://circleci.com/gh/exthereum/ethereumex)
 [![Module Version](https://img.shields.io/hexpm/v/ethereumex.svg)](https://hex.pm/packages/ethereumex)
 [![Hex Docs](https://img.shields.io/badge/hex-docs-lightgreen.svg)](https://hexdocs.pm/ethereumex/)
 [![Total Download](https://img.shields.io/hexpm/dt/ethereumex.svg)](https://hex.pm/packages/ethereumex)
