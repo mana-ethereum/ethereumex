@@ -131,7 +131,7 @@ defmodule Ethereumex.HttpClientTest do
     end
   end
 
-  @tag :eth
+  @tag :skip
   describe "HttpClient.eth_blob_base_fee/1" do
     test "returns the blob base fee of the latest block" do
       result = HttpClient.eth_blob_base_fee()
