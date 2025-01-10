@@ -1,0 +1,78 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  ci:
+    env:
+      MIX_ENV: test
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - pair:
+              elixir: 1.14
+              otp: 24.3
+            lint: lint
+          - pair:
+              elixir: 1.14
+              otp: 25.0
+            lint: lint
+          - pair:
+              elixir: 1.15
+              otp: 26.0
+            lint: lint
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{matrix.pair.otp}}
+          elixir-version: ${{matrix.pair.elixir}}
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-mix-${{matrix.pair.elixir}}-${{matrix.pair.otp}}-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-${{matrix.pair.elixir}}-${{matrix.pair.otp}}-
+
+      - name: Run Parity in background
+        run: |
+          wget https://releases.parity.io/ethereum/v1.10.7/x86_64-unknown-linux-gnu/parity
+          chmod 755 ./parity
+          ./parity --chain dev &
+
+      - name: Run mix deps.get
+        run: mix deps.get --only test
+
+      - name: Run mix format
+        run: mix format --check-formatted
+        if: ${{ matrix.lint }}
+
+      - name: Run mix deps.compile
+        run: mix deps.compile
+
+      - name: Run mix compile
+        run: mix compile --warnings-as-errors
+        if: ${{ matrix.lint }}
+
+      - name: Run credo
+        run: mix credo --strict
+        if: ${{ matrix.lint }}
+
+      - name: Run mix test
+        run: mix test --include eth --include batch
+
+      - name: Run dialyzer
+        run: mix dialyzer
+        if: ${{ matrix.lint }}
