@@ -1,6 +1,7 @@
 defmodule Ethereumex.Config do
   @moduledoc false
   alias Ethereumex.IpcServer
+  alias Ethereumex.WebsocketServer
 
   def setup_children(), do: setup_children(client_type())
 
@@ -18,6 +19,12 @@ defmodule Ethereumex.Config do
 
     [
       {Finch, name: Ethereumex.Finch, pools: pool_opts}
+    ]
+  end
+
+  def setup_children(:websocket) do
+    [
+      {WebsocketServer, []}
     ]
   end
 
