@@ -14,5 +14,7 @@ ExUnit.configure(
   ]
 )
 
+Mimic.copy(WebSockex)
+
 Application.ensure_all_started(:telemetry)
 ExUnit.start()
