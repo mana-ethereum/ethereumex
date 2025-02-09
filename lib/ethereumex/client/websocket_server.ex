@@ -1,13 +1,55 @@
 defmodule Ethereumex.WebsocketServer do
   @moduledoc """
-  WebSocket client for Ethereum JSON-RPC API.
-  Handles connection management and request-response cycle.
+  WebSocket client implementation for Ethereum JSON-RPC API.
+
+  This module manages a persistent WebSocket connection to an Ethereum node and handles
+  the complete request-response cycle for JSON-RPC calls. It maintains state of ongoing
+  requests and matches responses to their original callers.
+
+  ## Request Lifecycle
+
+  1. Client sends a request through `post/1` with a JSON-RPC encoded payload
+  2. The request is decoded and its ID is extracted (supporting both single and batch requests)
+  3. A mapping is created between the request ID and the caller's PID
+  4. The request is sent over the WebSocket connection
+  5. The caller waits for a response (with a `@request_timeout` ms timeout)
+  6. When a response arrives, it's matched with the original request ID
+  7. The response is forwarded to the waiting caller
+  8. The request is removed from the tracking map
+
+  ## Request State Management
+
+  The module maintains a state map of pending requests in the format:
+  ```elixir
+  %{
+    request_id => caller_pid,
+    ...
+  }
+  ```
+
+  This allows multiple concurrent requests to be handled correctly, with responses
+  being routed back to their original callers.
+
+  ## Batch Requests
+
+  For batch requests (multiple JSON-RPC calls in a single request), the request IDs
+  are concatenated with "_" to create a unique identifier. The responses are collected
+  and returned as a list in the same order as the original requests.
+
+  ## Error Handling
+
+  - Connection failures are automatically retried
+  - Request timeouts after `@request_timeout` ms
+  - Invalid JSON responses are handled gracefully
+  - Unmatched responses (no waiting caller) are safely ignored
   """
   use WebSockex
 
   alias Ethereumex.Config
 
   @request_timeout 5_000
+
+  @type request_id :: pos_integer() | String.t()
 
   defmodule State do
     @moduledoc """
@@ -53,10 +95,11 @@ defmodule Ethereumex.WebsocketServer do
   Times out after #{@request_timeout}ms.
   """
   @spec post(String.t()) :: {:ok, term()} | {:error, term()}
-  def post(encoded_request) do
+  def post(encoded_request) when is_binary(encoded_request) do
     with {:ok, decoded} <- decode_request(encoded_request),
-         :ok <- send_request(decoded, encoded_request) do
-      await_response(decoded["id"])
+         id <- get_request_id(decoded),
+         :ok <- send_request(id, encoded_request) do
+      await_response(id)
     end
   end
 
@@ -79,7 +122,7 @@ defmodule Ethereumex.WebsocketServer do
   def handle_frame({:text, body}, %State{} = state) do
     case parse_response(body) do
       {:ok, id, result} -> handle_response(state, id, result)
-      {:error, _reason} -> {:ok, state}
+      _ -> {:ok, state}
     end
   end
 
@@ -89,17 +132,18 @@ defmodule Ethereumex.WebsocketServer do
   defp decode_request(encoded_request) do
     case Jason.decode(encoded_request) do
       {:ok, %{"id" => _id} = decoded} -> {:ok, decoded}
+      {:ok, decoded} when is_list(decoded) -> {:ok, decoded}
       {:ok, _} -> {:error, :invalid_request_format}
       error -> error
     end
   end
 
-  @spec send_request(map(), String.t()) :: :ok | {:error, term()}
-  defp send_request(%{"id" => id}, encoded_request) do
+  @spec send_request(request_id(), String.t()) :: :ok
+  defp send_request(id, encoded_request) do
     WebSockex.cast(__MODULE__, {:request, id, encoded_request, self()})
   end
 
-  @spec await_response(String.t()) :: {:ok, term()} | {:error, :timeout}
+  @spec await_response(request_id()) :: {:ok, term()} | {:error, :timeout}
   defp await_response(id) do
     receive do
       {:response, ^id, result} -> {:ok, result}
@@ -108,7 +152,7 @@ defmodule Ethereumex.WebsocketServer do
     end
   end
 
-  @spec update_requests(State.t(), String.t(), pid()) :: State.t()
+  @spec update_requests(State.t(), request_id(), pid()) :: State.t()
   defp update_requests(state, id, from) do
     %State{state | requests: Map.put(state.requests, id, from)}
   end
@@ -116,13 +160,31 @@ defmodule Ethereumex.WebsocketServer do
   @spec parse_response(String.t()) :: {:ok, String.t(), term()} | {:error, term()}
   defp parse_response(body) do
     case Jason.decode(body) do
-      {:ok, %{"id" => id, "result" => result}} -> {:ok, id, result}
-      {:ok, %{"id" => id}} -> {:ok, id, nil}
-      error -> error
+      {:ok, result} ->
+        {:ok, get_request_id(result), get_response_result(result)}
+
+      error ->
+        error
     end
   end
 
-  @spec handle_response(State.t(), String.t(), term()) :: {:ok, State.t()}
+  @spec get_request_id(list(map()) | map()) :: request_id()
+  defp get_request_id(%{"id" => id}), do: id
+
+  defp get_request_id(decoded_request) when is_list(decoded_request) do
+    Enum.map_join(decoded_request, "_", & &1["id"])
+  end
+
+  @spec get_response_result(list(map()) | map()) :: term() | nil
+  defp get_response_result(%{"result" => result}), do: result
+
+  defp get_response_result(result) when is_list(result) do
+    Enum.map(result, & &1["result"])
+  end
+
+  defp get_response_result(_), do: nil
+
+  @spec handle_response(State.t(), request_id(), term()) :: {:ok, State.t()}
   defp handle_response(state, id, result) do
     case Map.get(state.requests, id) do
       nil ->
