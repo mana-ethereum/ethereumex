@@ -142,23 +142,10 @@ defmodule Ethereumex.WebsocketServer do
   def handle_disconnect(connection_status, %State{} = state) do
     new_attempts = state.reconnect_attempts + 1
 
-    if new_attempts <= @max_reconnect_attempts do
-      Logger.warning(
-        "WebSocket disconnected: #{inspect(connection_status.reason)}. " <>
-          "Attempting reconnection #{new_attempts}/#{@max_reconnect_attempts}"
-      )
-
-      backoff = @backoff_initial_delay * :math.pow(2, new_attempts - 1)
-      Process.sleep(trunc(backoff))
-
-      {:reconnect, %State{state | reconnect_attempts: new_attempts}}
+    if should_retry?(new_attempts) do
+      handle_retry(connection_status, state, new_attempts)
     else
-      Logger.error(
-        "WebSocket disconnected: #{inspect(connection_status.reason)}. " <>
-          "Max reconnection attempts (#{@max_reconnect_attempts}) reached."
-      )
-
-      {:ok, state}
+      handle_max_attempts_reached(connection_status, state)
     end
   end
 
@@ -230,5 +217,34 @@ defmodule Ethereumex.WebsocketServer do
         send(from, {:response, id, result})
         {:ok, %State{state | requests: Map.delete(state.requests, id)}}
     end
+  end
+
+  defp should_retry?(attempts), do: attempts <= @max_reconnect_attempts
+
+  defp handle_retry(connection_status, state, attempts) do
+    log_retry_attempt(connection_status.reason, attempts)
+    apply_backoff_delay(attempts)
+    {:reconnect, %State{state | reconnect_attempts: attempts}}
+  end
+
+  defp handle_max_attempts_reached(connection_status, state) do
+    Logger.error(
+      "WebSocket disconnected: #{inspect(connection_status.reason)}. " <>
+        "Max reconnection attempts (#{@max_reconnect_attempts}) reached."
+    )
+
+    {:ok, state}
+  end
+
+  defp log_retry_attempt(reason, attempts) do
+    Logger.warning(
+      "WebSocket disconnected: #{inspect(reason)}. " <>
+        "Attempting reconnection #{attempts}/#{@max_reconnect_attempts}"
+    )
+  end
+
+  defp apply_backoff_delay(attempts) do
+    backoff = @backoff_initial_delay * :math.pow(2, attempts - 1)
+    Process.sleep(trunc(backoff))
   end
 end
