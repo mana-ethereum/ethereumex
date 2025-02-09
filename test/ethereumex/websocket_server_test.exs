@@ -141,4 +141,75 @@ defmodule Ethereumex.WebsocketServerTest do
       assert {:error, :invalid_request_format} = WebsocketServer.post(request)
     end
   end
+
+  describe "reconnection handling" do
+    test "resets reconnection attempts after successful connection" do
+      state = %WebsocketServer.State{
+        url: "ws://localhost:8545",
+        reconnect_attempts: 3
+      }
+
+      {:ok, new_state} = WebsocketServer.handle_connect(%{}, state)
+      assert new_state.reconnect_attempts == 0
+    end
+
+    test "does not attempt reconnection for local disconnects" do
+      state = %WebsocketServer.State{
+        url: "ws://localhost:8545",
+        reconnect_attempts: 0
+      }
+
+      disconnect_status = %{reason: {:local, :normal}}
+      assert {:ok, ^state} = WebsocketServer.handle_disconnect(disconnect_status, state)
+    end
+
+    test "attempts reconnection with exponential backoff" do
+      state = %WebsocketServer.State{
+        url: "ws://localhost:8545",
+        reconnect_attempts: 0
+      }
+
+      disconnect_status = %{reason: {:remote, :closed}}
+
+      log =
+        capture_log(fn ->
+          {:reconnect, new_state} = WebsocketServer.handle_disconnect(disconnect_status, state)
+          assert new_state.reconnect_attempts == 1
+        end)
+
+      assert log =~ "Attempting reconnection 1/5"
+    end
+
+    test "stops reconnecting after max attempts" do
+      state = %WebsocketServer.State{
+        url: "ws://localhost:8545",
+        reconnect_attempts: 5
+      }
+
+      disconnect_status = %{reason: {:remote, :closed}}
+
+      log =
+        capture_log(fn ->
+          {:ok, _new_state} = WebsocketServer.handle_disconnect(disconnect_status, state)
+        end)
+
+      assert log =~ "Max reconnection attempts (5) reached"
+    end
+
+    test "implements exponential backoff delay" do
+      state = %WebsocketServer.State{
+        url: "ws://localhost:8545",
+        reconnect_attempts: 0
+      }
+
+      disconnect_status = %{reason: {:remote, :closed}}
+
+      {time, _} =
+        :timer.tc(fn ->
+          WebsocketServer.handle_disconnect(disconnect_status, state)
+        end)
+
+      assert_in_delta time / 1000, 1000, 100
+    end
+  end
 end

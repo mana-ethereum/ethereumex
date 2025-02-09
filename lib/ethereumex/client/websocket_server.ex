@@ -38,16 +38,23 @@ defmodule Ethereumex.WebsocketServer do
 
   ## Error Handling
 
-  - Connection failures are automatically retried
+  - Connection failures are automatically retried with exponential backoff:
+    * Up to `@max_reconnect_attempts` attempts
+    * Starting with `@backoff_initial_delay` ms delay, doubling each attempt
+    * Reconnection attempts are logged
   - Request timeouts after `@request_timeout` ms
   - Invalid JSON responses are handled gracefully
   - Unmatched responses (no waiting caller) are safely ignored
   """
   use WebSockex
 
+  require Logger
+
   alias Ethereumex.Config
 
   @request_timeout 5_000
+  @max_reconnect_attempts 5
+  @backoff_initial_delay 1_000
 
   @type request_id :: pos_integer() | String.t()
 
@@ -57,11 +64,12 @@ defmodule Ethereumex.WebsocketServer do
     - url: WebSocket endpoint URL
     - requests: Map of pending requests with their corresponding sender PIDs
     """
-    defstruct [:url, requests: %{}]
+    defstruct [:url, requests: %{}, reconnect_attempts: 0]
 
     @type t :: %__MODULE__{
             url: String.t(),
-            requests: %{String.t() => pid()}
+            requests: %{Ethereumex.WebsocketServer.request_id() => pid()},
+            reconnect_attempts: non_neg_integer()
           }
   end
 
@@ -107,9 +115,8 @@ defmodule Ethereumex.WebsocketServer do
 
   @impl WebSockex
   def handle_connect(_conn, %State{} = state) do
-    require Logger
     Logger.info("Connected to WebSocket server at #{state.url}")
-    {:ok, state}
+    {:ok, %State{state | reconnect_attempts: 0}}
   end
 
   @impl WebSockex
@@ -123,6 +130,35 @@ defmodule Ethereumex.WebsocketServer do
     case parse_response(body) do
       {:ok, id, result} -> handle_response(state, id, result)
       _ -> {:ok, state}
+    end
+  end
+
+  @impl WebSockex
+  def handle_disconnect(%{reason: {:local, _reason}}, state) do
+    {:ok, state}
+  end
+
+  @impl WebSockex
+  def handle_disconnect(connection_status, %State{} = state) do
+    new_attempts = state.reconnect_attempts + 1
+
+    if new_attempts <= @max_reconnect_attempts do
+      Logger.warning(
+        "WebSocket disconnected: #{inspect(connection_status.reason)}. " <>
+          "Attempting reconnection #{new_attempts}/#{@max_reconnect_attempts}"
+      )
+
+      backoff = @backoff_initial_delay * :math.pow(2, new_attempts - 1)
+      Process.sleep(trunc(backoff))
+
+      {:reconnect, %State{state | reconnect_attempts: new_attempts}}
+    else
+      Logger.error(
+        "WebSocket disconnected: #{inspect(connection_status.reason)}. " <>
+          "Max reconnection attempts (#{@max_reconnect_attempts}) reached."
+      )
+
+      {:ok, state}
     end
   end
 
