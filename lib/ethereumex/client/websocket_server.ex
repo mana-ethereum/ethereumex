@@ -48,9 +48,9 @@ defmodule Ethereumex.WebsocketServer do
   """
   use WebSockex
 
-  require Logger
-
   alias Ethereumex.Config
+
+  require Logger
 
   @request_timeout 5_000
   @max_reconnect_attempts 5
