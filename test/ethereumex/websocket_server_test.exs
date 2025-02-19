@@ -133,7 +133,7 @@ defmodule Ethereumex.WebsocketServerTest do
     end
 
     test "handles invalid JSON request" do
-      assert {:error, %Jason.DecodeError{}} = WebsocketServer.post("invalid json")
+      assert {:error, :decode_error} = WebsocketServer.post("invalid json")
     end
 
     test "handles request without id" do
