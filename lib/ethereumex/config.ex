@@ -43,6 +43,19 @@ defmodule Ethereumex.Config do
     end
   end
 
+  @spec websocket_url() :: binary()
+  def websocket_url() do
+    case Application.get_env(:ethereumex, :websocket_url, "") do
+      url when is_binary(url) and url != "" ->
+        url
+
+      not_a_url ->
+        raise ArgumentError,
+          message:
+            "Please set config variable `config :ethereumex, :websocket_url, \"ws://...\", got `#{not_a_url}`."
+    end
+  end
+
   @spec ipc_path() :: binary()
   def ipc_path() do
     case Application.get_env(:ethereumex, :ipc_path, "") do

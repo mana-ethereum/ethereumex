@@ -13,7 +13,7 @@ defmodule Ethereumex.WebsocketServerTest do
 
   setup_all do
     _ = Application.put_env(:ethereumex, :client_type, :websocket)
-    _ = Application.put_env(:ethereumex, :url, @default_url)
+    _ = Application.put_env(:ethereumex, :websocket_url, @default_url)
 
     on_exit(fn ->
       _ = Application.put_env(:ethereumex, :client_type, :http)
@@ -133,7 +133,7 @@ defmodule Ethereumex.WebsocketServerTest do
     end
 
     test "handles invalid JSON request" do
-      assert {:error, %Jason.DecodeError{}} = WebsocketServer.post("invalid json")
+      assert {:error, :decode_error} = WebsocketServer.post("invalid json")
     end
 
     test "handles request without id" do

@@ -79,12 +79,12 @@ defmodule Ethereumex.WebsocketServer do
   Starts the WebSocket connection.
 
   ## Options
-    - :url - WebSocket endpoint URL (defaults to Config.rpc_url())
+    - :url - WebSocket endpoint URL (defaults to Config.websocket_url())
     - :name - Process name (defaults to __MODULE__)
   """
   @spec start_link(keyword()) :: {:ok, pid()} | {:error, term()}
   def start_link(opts \\ []) do
-    url = Keyword.get(opts, :url, Config.rpc_url())
+    url = Keyword.get(opts, :url, Config.websocket_url())
     name = Keyword.get(opts, :name, __MODULE__)
 
     WebSockex.start_link(
@@ -102,7 +102,8 @@ defmodule Ethereumex.WebsocketServer do
   Returns `{:ok, result}` on success or `{:error, reason}` on failure.
   Times out after #{@request_timeout}ms.
   """
-  @spec post(String.t()) :: {:ok, term()} | {:error, term()}
+  @spec post(binary()) ::
+          {:ok, term()} | {:error, :invalid_request_format | :timeout | :decoded_error}
   def post(encoded_request) when is_binary(encoded_request) do
     with {:ok, decoded} <- decode_request(encoded_request),
          id <- get_request_id(decoded),
@@ -157,7 +158,7 @@ defmodule Ethereumex.WebsocketServer do
       {:ok, %{"id" => _id} = decoded} -> {:ok, decoded}
       {:ok, decoded} when is_list(decoded) -> {:ok, decoded}
       {:ok, _} -> {:error, :invalid_request_format}
-      error -> error
+      _error -> {:error, :decode_error}
     end
   end
 

@@ -15,17 +15,27 @@ jobs:
       matrix:
         include:
           - pair:
-              elixir: 1.14
-              otp: 24.3
+              elixir: 1.14.5
+              otp: 25.3.2
+          - pair:
+              elixir: 1.15.7
+              otp: 25.3.2
+          - pair:
+              elixir: 1.16.1
+              otp: 25.3.2
+          - pair:
+              elixir: 1.14.5
+              otp: 26.2.2
+          - pair:
+              elixir: 1.15.7
+              otp: 26.2.2
+          - pair:
+              elixir: 1.16.1
+              otp: 26.2.2
             lint: lint
           - pair:
-              elixir: 1.14
-              otp: 25.0
-            lint: lint
-          - pair:
-              elixir: 1.15
-              otp: 26.0
-            lint: lint
+              elixir: 1.17.3
+              otp: 27.2
 
     runs-on: ubuntu-latest
 
