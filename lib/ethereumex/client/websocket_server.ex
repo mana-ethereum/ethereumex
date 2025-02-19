@@ -157,7 +157,8 @@ defmodule Ethereumex.WebsocketServer do
       {:ok, %{"id" => _id} = decoded} -> {:ok, decoded}
       {:ok, decoded} when is_list(decoded) -> {:ok, decoded}
       {:ok, _} -> {:error, :invalid_request_format}
-      error -> error
+      {:error, _error} = error -> error
+      error -> {:error, error}
     end
   end
 
