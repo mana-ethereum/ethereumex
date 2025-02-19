@@ -36,6 +36,8 @@ end
 
 ## Configuration
 
+### HTTP
+
 In `config/config.exs`, add Ethereum protocol host params to your config file
 
 ```elixir
@@ -55,6 +57,8 @@ config :ethereumex,
 `:pool_timeout` - This timeout is applied when we check out a connection from the pool. Default value is `5_000`.
 `:receive_timeout` - The maximum time to wait for a response before returning an error. Default value is `15_000`
 
+### IPC
+
 If you want to use IPC you will need to set a few things in your config.
 
 First, specify the `:client_type`:
@@ -71,6 +75,15 @@ Second, specify the `:ipc_path`:
 ```elixir
 config :ethereumex,
   ipc_path: "/path/to/ipc"
+```
+
+### Websocket
+
+For websocket connection, please set `:websocket_url` and `:client_type` as `:webscoket`:
+```elixir
+config :ethereumex,
+  websocket_url: "ws://localhost:8545",
+  client_type: :websocket
 ```
 
 If you want to count the number of RPC calls per RPC method or overall,

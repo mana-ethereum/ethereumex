@@ -79,12 +79,12 @@ defmodule Ethereumex.WebsocketServer do
   Starts the WebSocket connection.
 
   ## Options
-    - :url - WebSocket endpoint URL (defaults to Config.rpc_url())
+    - :url - WebSocket endpoint URL (defaults to Config.websocket_url())
     - :name - Process name (defaults to __MODULE__)
   """
   @spec start_link(keyword()) :: {:ok, pid()} | {:error, term()}
   def start_link(opts \\ []) do
-    url = Keyword.get(opts, :url, Config.rpc_url())
+    url = Keyword.get(opts, :url, Config.websocket_url())
     name = Keyword.get(opts, :name, __MODULE__)
 
     WebSockex.start_link(
