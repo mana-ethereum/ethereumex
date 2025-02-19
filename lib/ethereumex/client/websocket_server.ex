@@ -102,7 +102,8 @@ defmodule Ethereumex.WebsocketServer do
   Returns `{:ok, result}` on success or `{:error, reason}` on failure.
   Times out after #{@request_timeout}ms.
   """
-  @spec post(binary()) :: {:ok, term()} | {:error, term()}
+  @spec post(binary()) ::
+          {:ok, term()} | {:error, :invalid_request_format | :timeout | :decoded_error}
   def post(encoded_request) when is_binary(encoded_request) do
     with {:ok, decoded} <- decode_request(encoded_request),
          id <- get_request_id(decoded),
@@ -157,7 +158,7 @@ defmodule Ethereumex.WebsocketServer do
       {:ok, %{"id" => _id} = decoded} -> {:ok, decoded}
       {:ok, decoded} when is_list(decoded) -> {:ok, decoded}
       {:ok, _} -> {:error, :invalid_request_format}
-      {:error, _error} = error -> error
+      _error -> {:error, :decode_error}
     end
   end
 
