@@ -303,13 +303,7 @@ requests = [
 
 If you are curious what others are building with ethereumex, you might want to take a look at these projects:
 
-- [exw3](https://github.com/hswick/exw3) - A high-level contract abstraction and other goodies similar to web3.js
-
-- [eth](https://github.com/izelnakri/eth) - Ethereum utilities for Elixir.
-
-- [eth_contract](https://github.com/agilealpha/eth_contract) - A set of helper methods for calling ETH Smart Contracts via JSON RPC.
-
-- [ethers](https://github.com/alisinabh/elixir_ethers) - Interacting with EVM contracts like first-class Elixir functions similar to Ethers.js
+- [ethers](https://github.com/ExWeb3/elixir_ethers) - Interacting with EVM contracts like first-class Elixir functions similar to Ethers.js
 
 ## Contributing
 
