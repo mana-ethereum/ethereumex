@@ -13,7 +13,7 @@ defmodule Ethereumex.WebsocketServerTest do
 
   setup_all do
     _ = Application.put_env(:ethereumex, :client_type, :websocket)
-    _ = Application.put_env(:ethereumex, :url, @default_url)
+    _ = Application.put_env(:ethereumex, :websocket_url, @default_url)
 
     on_exit(fn ->
       _ = Application.put_env(:ethereumex, :client_type, :http)
