@@ -19,7 +19,7 @@ Add `:ethereumex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:ethereumex, "~> 0.10"}
+    {:ethereumex, "~> 0.11"}
   ]
 end
 ```
@@ -77,6 +77,15 @@ config :ethereumex,
   ipc_path: "/path/to/ipc"
 ```
 
+The IPC client type mode opens a pool of connection workers (default is 5 and 2, respectively). You can configure the pool size.
+
+```elixir
+config :ethereumex,
+  ipc_worker_size: 5,
+  ipc_max_worker_overflow: 2,
+  ipc_request_timeout: 60_000
+```
+
 ### Websocket
 
 For websocket connection, please set `:websocket_url` and `:client_type` as `:webscoket`:
@@ -85,6 +94,8 @@ config :ethereumex,
   websocket_url: "ws://localhost:8545",
   client_type: :websocket
 ```
+
+### Telemetry
 
 If you want to count the number of RPC calls per RPC method or overall,
 you can attach yourself to executed telemetry events.
@@ -99,15 +110,6 @@ Emitted event: `{:event, [:ethereumex, :method_name_as_atom], %{counter: 1}, %{}
 Each event caries a single ticker that you can pass into your counters (like `Statix.increment/2`).
 Be sure to add :telemetry as project dependency.
 
-
-The IPC client type mode opens a pool of connection workers (default is 5 and 2, respectively). You can configure the pool size.
-
-```elixir
-config :ethereumex,
-  ipc_worker_size: 5,
-  ipc_max_worker_overflow: 2,
-  ipc_request_timeout: 60_000
-```
 
 ## Test
 
@@ -301,13 +303,7 @@ requests = [
 
 If you are curious what others are building with ethereumex, you might want to take a look at these projects:
 
-- [exw3](https://github.com/hswick/exw3) - A high-level contract abstraction and other goodies similar to web3.js
-
-- [eth](https://github.com/izelnakri/eth) - Ethereum utilities for Elixir.
-
-- [eth_contract](https://github.com/agilealpha/eth_contract) - A set of helper methods for calling ETH Smart Contracts via JSON RPC.
-
-- [ethers](https://github.com/alisinabh/elixir_ethers) - Interacting with EVM contracts like first-class Elixir functions similar to Ethers.js
+- [ethers](https://github.com/ExWeb3/elixir_ethers) - Interacting with EVM contracts like first-class Elixir functions similar to Ethers.js
 
 ## Contributing
 

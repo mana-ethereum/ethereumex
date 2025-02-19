@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.11.0 - 2025-02-19
+* WebSocket Client Implementation (https://github.com/mana-ethereum/ethereumex/pull/165)
+
 ## 0.10.7 - 2025-01-10
 * Add eth_blob_base_fee support (https://github.com/mana-ethereum/ethereumex/pull/160)
 
