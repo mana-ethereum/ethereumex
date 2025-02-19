@@ -14,5 +14,8 @@ ExUnit.configure(
   ]
 )
 
+Mimic.copy(WebSockex)
+Mimic.copy(Ethereumex.WebsocketServer)
+
 Application.ensure_all_started(:telemetry)
 ExUnit.start()
