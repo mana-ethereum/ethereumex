@@ -57,18 +57,30 @@ defmodule Ethereumex.WebsocketServer do
   @backoff_initial_delay 1_000
 
   @type request_id :: pos_integer() | String.t()
+  @type subscription_id :: String.t()
+  @type event_type :: :newHeads | :logs | :newPendingTransactions
 
   defmodule State do
     @moduledoc """
     Server state containing:
     - url: WebSocket endpoint URL
     - requests: Map of pending requests with their corresponding sender PIDs
+    - subscription requests: Map of pending subscription requests with their corresponding sender PIDs
+    - subscriptions: Map of subscription IDs to subscriber PIDs
     """
-    defstruct [:url, requests: %{}, reconnect_attempts: 0]
+    defstruct [
+      :url,
+      requests: %{},
+      subscription_requests: %{},
+      subscriptions: %{},
+      reconnect_attempts: 0
+    ]
 
     @type t :: %__MODULE__{
             url: String.t(),
             requests: %{Ethereumex.WebsocketServer.request_id() => pid()},
+            subscription_requests: %{Ethereumex.WebsocketServer.request_id() => pid()},
+            subscriptions: %{Ethereumex.WebsocketServer.subscription_id() => pid()},
             reconnect_attempts: non_neg_integer()
           }
   end
@@ -112,6 +124,11 @@ defmodule Ethereumex.WebsocketServer do
     end
   end
 
+  def subscribe(subscription) do
+    :ok = send_subscription(subscription)
+    await_response(subscription.id)
+  end
+
   # Callbacks
 
   @impl WebSockex
@@ -122,16 +139,22 @@ defmodule Ethereumex.WebsocketServer do
 
   @impl WebSockex
   def handle_cast({:request, id, request, from}, %State{} = state) do
-    new_state = update_requests(state, id, from)
+    requests = Map.put(state.requests, id, from)
+    new_state = %State{state | requests: requests}
     {:reply, {:text, request}, new_state}
+  end
+
+  def handle_cast({:subscription, request, from}, %State{} = state) do
+    subscription_requests = Map.put(state.subscription_requests, request.id, from)
+    new_state = %State{state | subscription_requests: subscription_requests}
+    {:reply, {:text, Jason.encode!(request)}, new_state}
   end
 
   @impl WebSockex
   def handle_frame({:text, body}, %State{} = state) do
-    case parse_response(body) do
-      {:ok, id, result} -> handle_response(state, id, result)
-      _ -> {:ok, state}
-    end
+    body
+    |> Jason.decode!()
+    |> handle_response(state)
   end
 
   @impl WebSockex
@@ -167,6 +190,11 @@ defmodule Ethereumex.WebsocketServer do
     WebSockex.cast(__MODULE__, {:request, id, encoded_request, self()})
   end
 
+  @spec send_subscription(map()) :: :ok
+  defp send_subscription(request) do
+    WebSockex.cast(__MODULE__, {:subscription, request, self()})
+  end
+
   @spec await_response(request_id()) :: {:ok, term()} | {:error, :timeout}
   defp await_response(id) do
     receive do
@@ -176,20 +204,46 @@ defmodule Ethereumex.WebsocketServer do
     end
   end
 
-  @spec update_requests(State.t(), request_id(), pid()) :: State.t()
-  defp update_requests(state, id, from) do
-    %State{state | requests: Map.put(state.requests, id, from)}
+  # when a response is a subscription notification
+  defp handle_response(%{"method" => "eth_subscription"} = notification, state) do
+    subscription = notification["params"]["subscription"]
+    subscriber = Map.get(state.subscriptions, subscription)
+    send(subscriber, notification)
+    {:ok, state}
   end
 
-  @spec parse_response(String.t()) :: {:ok, String.t(), term()} | {:error, term()}
-  defp parse_response(body) do
-    case Jason.decode(body) do
-      {:ok, result} ->
-        {:ok, get_request_id(result), get_response_result(result)}
+  # when a response is a regular JSON-RPC response
+  defp handle_response(response, state) do
+    id = get_request_id(response)
+    result = get_response_result(response)
 
-      error ->
-        error
-    end
+    state =
+      cond do
+        Map.has_key?(state.requests, id) ->
+          handle_request_response(state, id, result)
+
+        Map.has_key?(state.subscription_requests, id) ->
+          handle_subscription_response(state, id, result)
+
+        true ->
+          state
+      end
+
+    {:ok, state}
+  end
+
+  defp handle_request_response(state, id, result) do
+    send(Map.get(state.requests, id), {:response, id, result})
+    %State{state | requests: Map.delete(state.requests, id)}
+  end
+
+  defp handle_subscription_response(state, id, result) do
+    pid = Map.get(state.subscription_requests, id)
+    send(pid, {:response, id, result})
+
+    subscription_requests = Map.delete(state.subscription_requests, id)
+    subscriptions = Map.put(state.subscriptions, result, pid)
+    %State{state | subscription_requests: subscription_requests, subscriptions: subscriptions}
   end
 
   @spec get_request_id(list(map()) | map()) :: request_id()
@@ -207,18 +261,6 @@ defmodule Ethereumex.WebsocketServer do
   end
 
   defp get_response_result(_), do: nil
-
-  @spec handle_response(State.t(), request_id(), term()) :: {:ok, State.t()}
-  defp handle_response(state, id, result) do
-    case Map.get(state.requests, id) do
-      nil ->
-        {:ok, state}
-
-      from ->
-        send(from, {:response, id, result})
-        {:ok, %State{state | requests: Map.delete(state.requests, id)}}
-    end
-  end
 
   defp should_retry?(attempts), do: attempts <= @max_reconnect_attempts
 
