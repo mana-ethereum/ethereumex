@@ -66,12 +66,14 @@ defmodule Ethereumex.WebsocketServer do
     - url: WebSocket endpoint URL
     - requests: Map of pending requests with their corresponding sender PIDs
     - subscription requests: Map of pending subscription requests with their corresponding sender PIDs
+    - unsubscription requests: Map of pending unsubscription requests with their corresponding sender PIDs
     - subscriptions: Map of subscription IDs to subscriber PIDs
     """
     defstruct [
       :url,
       requests: %{},
       subscription_requests: %{},
+      unsubscription_requests: %{},
       subscriptions: %{},
       reconnect_attempts: 0
     ]
@@ -80,6 +82,7 @@ defmodule Ethereumex.WebsocketServer do
             url: String.t(),
             requests: %{Ethereumex.WebsocketServer.request_id() => pid()},
             subscription_requests: %{Ethereumex.WebsocketServer.request_id() => pid()},
+            unsubscription_requests: %{Ethereumex.WebsocketServer.request_id() => pid()},
             subscriptions: %{Ethereumex.WebsocketServer.subscription_id() => pid()},
             reconnect_attempts: non_neg_integer()
           }
@@ -124,9 +127,40 @@ defmodule Ethereumex.WebsocketServer do
     end
   end
 
-  def subscribe(subscription) do
-    :ok = send_subscription(subscription)
-    await_response(subscription.id)
+  @doc """
+  Subscribes to Ethereum events via WebSocket.
+
+  The request should be a map containing:
+  - id: A unique request identifier
+  - method: "eth_subscribe"
+  - params: Parameters for the subscription, including the event type
+
+  Returns `{:ok, subscription_id}` on success or `{:error, reason}` on failure.
+  Times out after #{@request_timeout}ms.
+  """
+  @spec subscribe(map()) ::
+          {:ok, subscription_id()} | {:error, :invalid_request_format | :timeout | :decoded_error}
+  def subscribe(request) do
+    :ok = WebSockex.cast(__MODULE__, {:subscription, request, self()})
+    await_response(request.id)
+  end
+
+  @doc """
+  Unsubscribes from an existing Ethereum event subscription.
+
+  The request should be a map containing:
+  - id: A unique request identifier
+  - method: "eth_unsubscribe"
+  - params: A list containing the subscription IDs to unsubscribe from
+
+  Returns `{:ok, true}` on success or `{:error, reason}` on failure.
+  Times out after #{@request_timeout}ms.
+  """
+  @spec unsubscribe(map()) ::
+          {:ok, true} | {:error, :invalid_request_format | :timeout | :decoded_error}
+  def unsubscribe(request) do
+    :ok = WebSockex.cast(__MODULE__, {:unsubscribe, request, self()})
+    await_response(request.id)
   end
 
   # Callbacks
@@ -150,6 +184,14 @@ defmodule Ethereumex.WebsocketServer do
     {:reply, {:text, Jason.encode!(request)}, new_state}
   end
 
+  def handle_cast({:unsubscribe, request, from}, %State{} = state) do
+    unsubscription_requests =
+      Map.put(state.unsubscription_requests, request.id, {from, request.params})
+
+    new_state = %State{state | unsubscription_requests: unsubscription_requests}
+    {:reply, {:text, Jason.encode!(request)}, new_state}
+  end
+
   @impl WebSockex
   def handle_frame({:text, body}, %State{} = state) do
     body
@@ -158,12 +200,15 @@ defmodule Ethereumex.WebsocketServer do
   end
 
   @impl WebSockex
-  def handle_disconnect(%{reason: {:local, _reason}}, state) do
+  def handle_disconnect(%{reason: {:local, _reason}} = msg, state) do
+    IO.inspect(msg, label: "local disconnect")
     {:ok, state}
   end
 
   @impl WebSockex
   def handle_disconnect(connection_status, %State{} = state) do
+    IO.inspect(connection_status, label: "remote disconnect")
+
     new_attempts = state.reconnect_attempts + 1
 
     if should_retry?(new_attempts) do
@@ -188,11 +233,6 @@ defmodule Ethereumex.WebsocketServer do
   @spec send_request(request_id(), String.t()) :: :ok
   defp send_request(id, encoded_request) do
     WebSockex.cast(__MODULE__, {:request, id, encoded_request, self()})
-  end
-
-  @spec send_subscription(map()) :: :ok
-  defp send_subscription(request) do
-    WebSockex.cast(__MODULE__, {:subscription, request, self()})
   end
 
   @spec await_response(request_id()) :: {:ok, term()} | {:error, :timeout}
@@ -225,6 +265,9 @@ defmodule Ethereumex.WebsocketServer do
         Map.has_key?(state.subscription_requests, id) ->
           handle_subscription_response(state, id, result)
 
+        Map.has_key?(state.unsubscription_requests, id) ->
+          handle_unsubscription_response(state, id, result)
+
         true ->
           state
       end
@@ -243,6 +286,15 @@ defmodule Ethereumex.WebsocketServer do
 
     subscription_requests = Map.delete(state.subscription_requests, id)
     subscriptions = Map.put(state.subscriptions, result, pid)
+    %State{state | subscription_requests: subscription_requests, subscriptions: subscriptions}
+  end
+
+  defp handle_unsubscription_response(state, id, result) do
+    {pid, subscription_ids} = Map.get(state.unsubscription_requests, id)
+    send(pid, {:response, id, result})
+
+    subscription_requests = Map.delete(state.subscription_requests, id)
+    subscriptions = Map.drop(state.subscriptions, subscription_ids)
     %State{state | subscription_requests: subscription_requests, subscriptions: subscriptions}
   end
 
