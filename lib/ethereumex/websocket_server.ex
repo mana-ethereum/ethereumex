@@ -200,15 +200,12 @@ defmodule Ethereumex.WebsocketServer do
   end
 
   @impl WebSockex
-  def handle_disconnect(%{reason: {:local, _reason}} = msg, state) do
-    IO.inspect(msg, label: "local disconnect")
+  def handle_disconnect(%{reason: {:local, _reason}}, state) do
     {:ok, state}
   end
 
   @impl WebSockex
   def handle_disconnect(connection_status, %State{} = state) do
-    IO.inspect(connection_status, label: "remote disconnect")
-
     new_attempts = state.reconnect_attempts + 1
 
     if should_retry?(new_attempts) do
