@@ -69,4 +69,31 @@ defmodule Ethereumex.WebsocketClient do
 
     WebsocketServer.subscribe(request)
   end
+
+  @doc """
+  Unsubscribes from an existing subscription.
+
+  ## Parameters
+    - subscription_id: The ID returned from subscribe/2
+
+  ## Example
+
+      iex> unsubscribe("0x9cef478923ff08bf67fde6c64013158d")
+      {:ok, true}
+
+  Returns `{:ok, true}` on success or `{:error, reason}` on failure.
+  """
+  @spec unsubscribe(String.t()) :: {:ok, boolean()} | {:error, term()}
+  def unsubscribe(subscription_id) do
+    method = "eth_unsubscribe"
+
+    request = %{
+      jsonrpc: "2.0",
+      method: method,
+      params: [subscription_id],
+      id: Counter.increment(:rpc_counter, method)
+    }
+
+    WebsocketServer.unsubscribe(request)
+  end
 end
