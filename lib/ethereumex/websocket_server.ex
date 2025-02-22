@@ -194,9 +194,10 @@ defmodule Ethereumex.WebsocketServer do
 
   @impl WebSockex
   def handle_frame({:text, body}, %State{} = state) do
-    body
-    |> Jason.decode!()
-    |> handle_response(state)
+    case Jason.decode(body) do
+      {:ok, response} -> handle_response(response, state)
+      _ -> {:ok, state}
+    end
   end
 
   @impl WebSockex
@@ -245,7 +246,11 @@ defmodule Ethereumex.WebsocketServer do
   defp handle_response(%{"method" => "eth_subscription"} = notification, state) do
     subscription = notification["params"]["subscription"]
     subscriber = Map.get(state.subscriptions, subscription)
-    send(subscriber, notification)
+
+    if not is_nil(subscriber) do
+      send(subscriber, notification)
+    end
+
     {:ok, state}
   end
 
