@@ -3,38 +3,104 @@ defmodule Ethereumex.WebsocketServer do
   WebSocket client implementation for Ethereum JSON-RPC API.
 
   This module manages a persistent WebSocket connection to an Ethereum node and handles
-  the complete request-response cycle for JSON-RPC calls. It maintains state of ongoing
-  requests and matches responses to their original callers.
+  the complete request-response cycle for JSON-RPC calls, including subscriptions. It maintains 
+  state of ongoing requests, subscriptions, and matches responses to their original callers.
 
-  ## Request Lifecycle
+  ## Features
 
-  1. Client sends a request through `post/1` with a JSON-RPC encoded payload
-  2. The request is decoded and its ID is extracted (supporting both single and batch requests)
-  3. A mapping is created between the request ID and the caller's PID
-  4. The request is sent over the WebSocket connection
-  5. The caller waits for a response (with a `@request_timeout` ms timeout)
-  6. When a response arrives, it's matched with the original request ID
-  7. The response is forwarded to the waiting caller
-  8. The request is removed from the tracking map
+  * Standard JSON-RPC requests via WebSocket
+  * Real-time event subscriptions (newHeads, logs, newPendingTransactions)
+  * Automatic reconnection with exponential backoff
+  * Batch request support
+  * Concurrent request handling
 
-  ## Request State Management
+  ## Request Types
 
-  The module maintains a state map of pending requests in the format:
+  ### Standard Requests
+
+  Standard JSON-RPC requests are handled through the `post/1` function:
+
   ```elixir
-  %{
-    request_id => caller_pid,
-    ...
+  {:ok, result} = WebsocketServer.post(encoded_request)
+  ```
+
+  ### Subscriptions
+
+  The module supports Ethereum's pub/sub functionality for real-time events:
+
+  ```elixir
+  # Subscribe to new block headers
+  {:ok, subscription_id} = WebsocketServer.subscribe(%{
+    jsonrpc: "2.0",
+    method: "eth_subscribe",
+    params: ["newHeads"],
+    id: 1
+  })
+
+  # Subscribe to logs with filter
+  {:ok, subscription_id} = WebsocketServer.subscribe(%{
+    jsonrpc: "2.0",
+    method: "eth_subscribe",
+    params: ["logs", %{address: "0x123..."}],
+    id: 2
+  })
+
+  # Unsubscribe (single or multiple subscriptions)
+  {:ok, true} = WebsocketServer.unsubscribe(%{
+    jsonrpc: "2.0",
+    method: "eth_unsubscribe",
+    params: [subscription_id],
+    id: 3
+  })
+  ```
+
+  ## State Management
+
+  The module maintains several state maps:
+
+  ```elixir
+  %State{
+    requests: %{request_id => caller_pid},                    # Standard requests
+    subscription_requests: %{request_id => caller_pid},       # Pending subscriptions
+    unsubscription_requests: %{request_id => caller_pid},     # Pending unsubscriptions
+    subscriptions: %{subscription_id => subscriber_pid}       # Active subscriptions
   }
   ```
 
-  This allows multiple concurrent requests to be handled correctly, with responses
-  being routed back to their original callers.
+  ## Subscription Notifications
 
-  ## Batch Requests
+  When a subscribed event occurs, the notification is automatically forwarded to the
+  subscriber process. Notifications are received as messages in the format:
 
-  For batch requests (multiple JSON-RPC calls in a single request), the request IDs
-  are concatenated with "_" to create a unique identifier. The responses are collected
-  and returned as a list in the same order as the original requests.
+  ```elixir
+  # New headers notification
+  %{
+    "jsonrpc" => "2.0",
+    "method" => "eth_subscription",
+    "params" => %{
+      "subscription" => "0x9cef478923ff08bf67fde6c64013158d",
+      "result" => %{
+        "number" => "0x1b4",
+        "hash" => "0x8216c5785ac562ff41e2dcfdf5785ac562ff41e2dcfdf829c5a142f1fccd7d",
+        "parentHash" => "0x9646252be9520f6e71339a8df9c55e4d7619deeb018d2a3f2d21fc165dde5eb5"
+      }
+    }
+  }
+
+  # Logs notification
+  %{
+    "jsonrpc" => "2.0",
+    "method" => "eth_subscription",
+    "params" => %{
+      "subscription" => "0x4a8a4c0517381924f9838102c5a4dcb7",
+      "result" => %{
+        "address" => "0x8320fe7702b96808f7bbc0d4a888ed1468216cfd",
+        "topics" => ["0xd78a0cb8bb633d06981248b816e7bd33c2a35a6089241d099fa519e361cab902"],
+        "data" => "0x000000000000000000000000000000000000000000000000000000000000000a"
+      }
+    }
+  }
+  ```
 
   ## Error Handling
 
@@ -45,6 +111,7 @@ defmodule Ethereumex.WebsocketServer do
   - Request timeouts after `@request_timeout` ms
   - Invalid JSON responses are handled gracefully
   - Unmatched responses (no waiting caller) are safely ignored
+  - Subscription errors are propagated to the subscriber
   """
   use WebSockex
 
