@@ -86,14 +86,68 @@ config :ethereumex,
   ipc_request_timeout: 60_000
 ```
 
-### Websocket
+### WebSocket
 
-For websocket connection, please set `:websocket_url` and `:client_type` as `:webscoket`:
+The WebSocket client supports both standard JSON-RPC requests and real-time subscriptions.
+To use it, configure your application with:
+
 ```elixir
 config :ethereumex,
   websocket_url: "ws://localhost:8545",
   client_type: :websocket
 ```
+
+#### Standard RPC Calls
+
+All standard RPC methods work the same as with HTTP:
+
+```elixir
+iex> Ethereumex.WebsocketClient.eth_block_number()
+{:ok, "0x1234"}
+```
+
+#### Real-time Subscriptions
+
+Subscribe to various blockchain events:
+
+```elixir
+# Subscribe to new block headers
+iex> {:ok, subscription_id} = Ethereumex.WebsocketClient.subscribe(:newHeads)
+{:ok, "0x9cef478923ff08bf67fde6c64013158d"}
+
+# Subscribe to logs/events from specific contracts
+iex> filter = %{
+...>   address: "0x8320fe7702b96808f7bbc0d4a888ed1468216cfd",
+...>   topics: ["0xd78a0cb8bb633d06981248b816e7bd33c2a35a6089241d099fa519e361cab902"]
+...> }
+iex> {:ok, subscription_id} = Ethereumex.WebsocketClient.subscribe(:logs, filter)
+{:ok, "0x4a8a4c0517381924f9838102c5a4dcb7"}
+
+# Subscribe to pending transactions
+iex> {:ok, subscription_id} = Ethereumex.WebsocketClient.subscribe(:newPendingTransactions)
+{:ok, "0x1234567890abcdef1234567890abcdef"}
+
+# Receive notifications in your process
+receive do
+  %{
+    "method" => "eth_subscription",
+    "params" => %{
+      "subscription" => subscription_id,
+      "result" => result
+    }
+  } -> handle_notification(result)
+end
+
+# Unsubscribe when done
+iex> Ethereumex.WebsocketClient.unsubscribe(subscription_id)
+{:ok, true}
+```
+
+Available subscription types:
+
+- `:newHeads` - New block headers
+- `:logs` - Contract events/logs with optional filtering
+- `:newPendingTransactions` - Pending transaction hashes
 
 ### Telemetry
 
@@ -109,7 +163,6 @@ Emitted event: `{:event, [:ethereumex, :method_name_as_atom], %{counter: 1}, %{}
 
 Each event caries a single ticker that you can pass into your counters (like `Statix.increment/2`).
 Be sure to add :telemetry as project dependency.
-
 
 ## Test
 
@@ -135,70 +188,75 @@ $ make test
 
 ### Available methods:
 
-* [`web3_clientVersion`](https://eth.wiki/json-rpc/API#web3_clientversion)
-* [`web3_sha3`](https://eth.wiki/json-rpc/API#web3_sha3)
-* [`net_version`](https://eth.wiki/json-rpc/API#net_version)
-* [`net_peerCount`](https://eth.wiki/json-rpc/API#net_peercount)
-* [`net_listening`](https://eth.wiki/json-rpc/API#net_listening)
-* [`eth_protocolVersion`](https://eth.wiki/json-rpc/API#eth_protocolversion)
-* [`eth_syncing`](https://eth.wiki/json-rpc/API#eth_syncing)
-* [`eth_coinbase`](https://eth.wiki/json-rpc/API#eth_coinbase)
-* [`eth_chainId`](https://eth.wiki/json-rpc/API#eth_chainId)
-* [`eth_mining`](https://eth.wiki/json-rpc/API#eth_mining)
-* [`eth_hashrate`](https://eth.wiki/json-rpc/API#eth_hashrate)
-* [`eth_gasPrice`](https://eth.wiki/json-rpc/API#eth_gasprice)
-* [`eth_accounts`](https://eth.wiki/json-rpc/API#eth_accounts)
-* [`eth_blockNumber`](https://eth.wiki/json-rpc/API#eth_blocknumber)
-* [`eth_getBalance`](https://eth.wiki/json-rpc/API#eth_getbalance)
-* [`eth_getStorageAt`](https://eth.wiki/json-rpc/API#eth_getstorageat)
-* [`eth_getTransactionCount`](https://eth.wiki/json-rpc/API#eth_gettransactioncount)
-* [`eth_getBlockTransactionCountByHash`](https://eth.wiki/json-rpc/API#eth_getblocktransactioncountbyhash)
-* [`eth_getBlockTransactionCountByNumber`](https://eth.wiki/json-rpc/API#eth_getblocktransactioncountbynumber)
-* [`eth_getUncleCountByBlockHash`](https://eth.wiki/json-rpc/API#eth_getunclecountbyblockhash)
-* [`eth_getUncleCountByBlockNumber`](https://eth.wiki/json-rpc/API#eth_getunclecountbyblocknumber)
-* [`eth_getCode`](https://eth.wiki/json-rpc/API#eth_getcode)
-* [`eth_sign`](https://eth.wiki/json-rpc/API#eth_sign)
-* [`eth_sendTransaction`](https://eth.wiki/json-rpc/API#eth_sendtransaction)
-* [`eth_sendRawTransaction`](https://eth.wiki/json-rpc/API#eth_sendrawtransaction)
-* [`eth_call`](https://eth.wiki/json-rpc/API#eth_call)
-* [`eth_estimateGas`](https://eth.wiki/json-rpc/API#eth_estimategas)
-* [`eth_getBlockByHash`](https://eth.wiki/json-rpc/API#eth_getblockbyhash)
-* [`eth_getBlockByNumber`](https://eth.wiki/json-rpc/API#eth_getblockbynumber)
-* [`eth_getTransactionByHash`](https://eth.wiki/json-rpc/API#eth_gettransactionbyhash)
-* [`eth_getTransactionByBlockHashAndIndex`](https://eth.wiki/json-rpc/API#eth_gettransactionbyblockhashandindex)
-* [`eth_getTransactionByBlockNumberAndIndex`](https://eth.wiki/json-rpc/API#eth_gettransactionbyblocknumberandindex)
-* [`eth_getTransactionReceipt`](https://eth.wiki/json-rpc/API#eth_gettransactionreceipt)
-* [`eth_getUncleByBlockHashAndIndex`](https://eth.wiki/json-rpc/API#eth_getunclebyblockhashandindex)
-* [`eth_getUncleByBlockNumberAndIndex`](https://eth.wiki/json-rpc/API#eth_getunclebyblocknumberandindex)
-* [`eth_getCompilers`](https://eth.wiki/json-rpc/API#eth_getcompilers)
-* [`eth_compileLLL`](https://eth.wiki/json-rpc/API#eth_compilelll)
-* [`eth_compileSolidity`](https://eth.wiki/json-rpc/API#eth_compilesolidity)
-* [`eth_compileSerpent`](https://eth.wiki/json-rpc/API#eth_compileserpent)
-* [`eth_newFilter`](https://eth.wiki/json-rpc/API#eth_newfilter)
-* [`eth_newBlockFilter`](https://eth.wiki/json-rpc/API#eth_newblockfilter)
-* [`eth_newPendingTransactionFilter`](https://eth.wiki/json-rpc/API#eth_newpendingtransactionfilter)
-* [`eth_uninstallFilter`](https://eth.wiki/json-rpc/API#eth_uninstallfilter)
-* [`eth_getFilterChanges`](https://eth.wiki/json-rpc/API#eth_getfilterchanges)
-* [`eth_getFilterLogs`](https://eth.wiki/json-rpc/API#eth_getfilterlogs)
-* [`eth_getLogs`](https://eth.wiki/json-rpc/API#eth_getlogs)
-* eth_getProof
-* [`eth_getWork`](https://eth.wiki/json-rpc/API#eth_getwork)
-* [`eth_submitWork`](https://eth.wiki/json-rpc/API#eth_submitwork)
-* [`eth_submitHashrate`](https://eth.wiki/json-rpc/API#eth_submithashrate)
-* [`db_putString`](https://eth.wiki/json-rpc/API#db_putstring)
-* [`db_getString`](https://eth.wiki/json-rpc/API#db_getstring)
-* [`db_putHex`](https://eth.wiki/json-rpc/API#db_puthex)
-* [`db_getHex`](https://eth.wiki/json-rpc/API#db_gethex)
-* [`shh_post`](https://eth.wiki/json-rpc/API#shh_post)
-* [`shh_version`](https://eth.wiki/json-rpc/API#shh_version)
-* [`shh_newIdentity`](https://eth.wiki/json-rpc/API#shh_newidentity)
-* [`shh_hasIdentity`](https://eth.wiki/json-rpc/API#shh_hasidentity)
-* [`shh_newGroup`](https://eth.wiki/json-rpc/API#shh_newgroup)
-* [`shh_addToGroup`](https://eth.wiki/json-rpc/API#shh_addtogroup)
-* [`shh_newFilter`](https://eth.wiki/json-rpc/API#shh_newfilter)
-* [`shh_uninstallFilter`](https://eth.wiki/json-rpc/API#shh_uninstallfilter)
-* [`shh_getFilterChanges`](https://eth.wiki/json-rpc/API#shh_getfilterchanges)
-* [`shh_getMessages`](https://eth.wiki/json-rpc/API#shh_getmessages)
+- [`web3_clientVersion`](https://eth.wiki/json-rpc/API#web3_clientversion)
+- [`web3_sha3`](https://eth.wiki/json-rpc/API#web3_sha3)
+- [`net_version`](https://eth.wiki/json-rpc/API#net_version)
+- [`net_peerCount`](https://eth.wiki/json-rpc/API#net_peercount)
+- [`net_listening`](https://eth.wiki/json-rpc/API#net_listening)
+- [`eth_protocolVersion`](https://eth.wiki/json-rpc/API#eth_protocolversion)
+- [`eth_syncing`](https://eth.wiki/json-rpc/API#eth_syncing)
+- [`eth_coinbase`](https://eth.wiki/json-rpc/API#eth_coinbase)
+- [`eth_chainId`](https://eth.wiki/json-rpc/API#eth_chainId)
+- [`eth_mining`](https://eth.wiki/json-rpc/API#eth_mining)
+- [`eth_hashrate`](https://eth.wiki/json-rpc/API#eth_hashrate)
+- [`eth_gasPrice`](https://eth.wiki/json-rpc/API#eth_gasprice)
+- [`eth_accounts`](https://eth.wiki/json-rpc/API#eth_accounts)
+- [`eth_blockNumber`](https://eth.wiki/json-rpc/API#eth_blocknumber)
+- [`eth_getBalance`](https://eth.wiki/json-rpc/API#eth_getbalance)
+- [`eth_getStorageAt`](https://eth.wiki/json-rpc/API#eth_getstorageat)
+- [`eth_getTransactionCount`](https://eth.wiki/json-rpc/API#eth_gettransactioncount)
+- [`eth_getBlockTransactionCountByHash`](https://eth.wiki/json-rpc/API#eth_getblocktransactioncountbyhash)
+- [`eth_getBlockTransactionCountByNumber`](https://eth.wiki/json-rpc/API#eth_getblocktransactioncountbynumber)
+- [`eth_getUncleCountByBlockHash`](https://eth.wiki/json-rpc/API#eth_getunclecountbyblockhash)
+- [`eth_getUncleCountByBlockNumber`](https://eth.wiki/json-rpc/API#eth_getunclecountbyblocknumber)
+- [`eth_getCode`](https://eth.wiki/json-rpc/API#eth_getcode)
+- [`eth_sign`](https://eth.wiki/json-rpc/API#eth_sign)
+- [`eth_sendTransaction`](https://eth.wiki/json-rpc/API#eth_sendtransaction)
+- [`eth_sendRawTransaction`](https://eth.wiki/json-rpc/API#eth_sendrawtransaction)
+- [`eth_call`](https://eth.wiki/json-rpc/API#eth_call)
+- [`eth_estimateGas`](https://eth.wiki/json-rpc/API#eth_estimategas)
+- [`eth_getBlockByHash`](https://eth.wiki/json-rpc/API#eth_getblockbyhash)
+- [`eth_getBlockByNumber`](https://eth.wiki/json-rpc/API#eth_getblockbynumber)
+- [`eth_getTransactionByHash`](https://eth.wiki/json-rpc/API#eth_gettransactionbyhash)
+- [`eth_getTransactionByBlockHashAndIndex`](https://eth.wiki/json-rpc/API#eth_gettransactionbyblockhashandindex)
+- [`eth_getTransactionByBlockNumberAndIndex`](https://eth.wiki/json-rpc/API#eth_gettransactionbyblocknumberandindex)
+- [`eth_getTransactionReceipt`](https://eth.wiki/json-rpc/API#eth_gettransactionreceipt)
+- [`eth_getUncleByBlockHashAndIndex`](https://eth.wiki/json-rpc/API#eth_getunclebyblockhashandindex)
+- [`eth_getUncleByBlockNumberAndIndex`](https://eth.wiki/json-rpc/API#eth_getunclebyblocknumberandindex)
+- [`eth_getCompilers`](https://eth.wiki/json-rpc/API#eth_getcompilers)
+- [`eth_compileLLL`](https://eth.wiki/json-rpc/API#eth_compilelll)
+- [`eth_compileSolidity`](https://eth.wiki/json-rpc/API#eth_compilesolidity)
+- [`eth_compileSerpent`](https://eth.wiki/json-rpc/API#eth_compileserpent)
+- [`eth_newFilter`](https://eth.wiki/json-rpc/API#eth_newfilter)
+- [`eth_newBlockFilter`](https://eth.wiki/json-rpc/API#eth_newblockfilter)
+- [`eth_newPendingTransactionFilter`](https://eth.wiki/json-rpc/API#eth_newpendingtransactionfilter)
+- [`eth_uninstallFilter`](https://eth.wiki/json-rpc/API#eth_uninstallfilter)
+- [`eth_getFilterChanges`](https://eth.wiki/json-rpc/API#eth_getfilterchanges)
+- [`eth_getFilterLogs`](https://eth.wiki/json-rpc/API#eth_getfilterlogs)
+- [`eth_getLogs`](https://eth.wiki/json-rpc/API#eth_getlogs)
+- eth_getProof
+- [`eth_getWork`](https://eth.wiki/json-rpc/API#eth_getwork)
+- [`eth_submitWork`](https://eth.wiki/json-rpc/API#eth_submitwork)
+- [`eth_submitHashrate`](https://eth.wiki/json-rpc/API#eth_submithashrate)
+- [`db_putString`](https://eth.wiki/json-rpc/API#db_putstring)
+- [`db_getString`](https://eth.wiki/json-rpc/API#db_getstring)
+- [`db_putHex`](https://eth.wiki/json-rpc/API#db_puthex)
+- [`db_getHex`](https://eth.wiki/json-rpc/API#db_gethex)
+- [`shh_post`](https://eth.wiki/json-rpc/API#shh_post)
+- [`shh_version`](https://eth.wiki/json-rpc/API#shh_version)
+- [`shh_newIdentity`](https://eth.wiki/json-rpc/API#shh_newidentity)
+- [`shh_hasIdentity`](https://eth.wiki/json-rpc/API#shh_hasidentity)
+- [`shh_newGroup`](https://eth.wiki/json-rpc/API#shh_newgroup)
+- [`shh_addToGroup`](https://eth.wiki/json-rpc/API#shh_addtogroup)
+- [`shh_newFilter`](https://eth.wiki/json-rpc/API#shh_newfilter)
+- [`shh_uninstallFilter`](https://eth.wiki/json-rpc/API#shh_uninstallfilter)
+- [`shh_getFilterChanges`](https://eth.wiki/json-rpc/API#shh_getfilterchanges)
+- [`shh_getMessages`](https://eth.wiki/json-rpc/API#shh_getmessages)
+
+#### WebSocket Subscription Methods
+
+- [`eth_subscribe`](https://geth.ethereum.org/docs/interacting-with-geth/rpc/pubsub#create-subscriptions) - Subscribe to real-time events
+- [`eth_unsubscribe`](https://geth.ethereum.org/docs/interacting-with-geth/rpc/pubsub#cancel-subscriptions) - Unsubscribe from events
 
 ### IpcClient
 
@@ -220,9 +278,11 @@ iex> Ethereumex.HttpClient.web3_sha3("wrong_param")
 iex> Ethereumex.HttpClient.eth_get_balance("0x407d73d8a49eeb85d32cf465507dd71d507100c1")
 {:ok, "0x0"}
 ```
+
 Note that all method names are snakecases, so, for example, shh_getMessages method has corresponding Ethereumex.HttpClient.shh_get_messages/1 method. Signatures can be found in Ethereumex.Client.Behaviour. There are more examples in tests.
 
 #### eth_call example - Read only smart contract calls
+
 In order to call a smart contract using the JSON-RPC interface you need to properly hash the data attribute (this will need to include the contract method signature along with arguments if any). You can do this manually or use a hex package like [ABI](https://hex.pm/packages/ex_abi) to parse your smart contract interface or encode individual calls.
 
 ```elixir
