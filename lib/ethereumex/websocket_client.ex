@@ -1,12 +1,14 @@
 defmodule Ethereumex.WebsocketClient do
   @moduledoc """
-  WebSocket-based Ethereum JSON-RPC client implementation.
+  WebSocket-based Ethereum JSON-RPC client implementation with real-time subscription support.
 
-  This module provides a WebSocket client interface for Ethereum JSON-RPC calls by:
-  1. Inheriting the standard JSON-RPC method definitions from BaseClient
-  2. Implementing request handling through a persistent WebSocket connection
+  This module provides a WebSocket client interface for both standard Ethereum JSON-RPC calls
+  and real-time event subscriptions. It:
+  1. Inherits the standard JSON-RPC method definitions from BaseClient
+  2. Implements request handling through a persistent WebSocket connection
+  3. Provides subscription management for real-time events
 
-  ## Usage
+  ## Standard RPC Usage
 
       iex> Ethereumex.WebsocketClient.eth_block_number()
       {:ok, "0x1234"}
@@ -14,12 +16,61 @@ defmodule Ethereumex.WebsocketClient do
       iex> Ethereumex.WebsocketClient.eth_get_balance("0x407d73d8a49eeb85d32cf465507dd71d507100c1")
       {:ok, "0x0234c8a3397aab58"}
 
-  The client maintains a persistent WebSocket connection through `WebsocketServer`,
-  which handles connection management, request-response matching, and automatic
-  reconnection on failures.
+  ## Subscription Usage
 
-  All JSON-RPC methods defined in `Ethereumex.Client.BaseClient` are available
-  through this client, with requests being sent over WebSocket instead of HTTP.
+  ### Subscribe to New Blocks
+      iex> {:ok, subscription_id} = Ethereumex.WebsocketClient.subscribe(:newHeads)
+      {:ok, "0x9cef478923ff08bf67fde6c64013158d"}
+
+      # Receive notifications in the subscriber process
+      receive do
+        %{
+          "method" => "eth_subscription",
+          "params" => %{
+            "subscription" => "0x9cef478923ff08bf67fde6c64013158d",
+            "result" => %{"number" => "0x1b4", ...}
+          }
+        } -> :ok
+      end
+
+  ### Subscribe to Contract Events
+      iex> filter = %{
+      ...>   address: "0x8320fe7702b96808f7bbc0d4a888ed1468216cfd",
+      ...>   topics: ["0xd78a0cb8bb633d06981248b816e7bd33c2a35a6089241d099fa519e361cab902"]
+      ...> }
+      iex> {:ok, subscription_id} = Ethereumex.WebsocketClient.subscribe(:logs, filter)
+      {:ok, "0x4a8a4c0517381924f9838102c5a4dcb7"}
+
+  ### Subscribe to Pending Transactions
+      iex> {:ok, subscription_id} = Ethereumex.WebsocketClient.subscribe(:newPendingTransactions)
+      {:ok, "0x1234567890abcdef1234567890abcdef"}
+
+  ### Unsubscribe
+      # Single subscription
+      iex> Ethereumex.WebsocketClient.unsubscribe("0x9cef478923ff08bf67fde6c64013158d")
+      {:ok, true}
+
+      # Multiple subscriptions
+      iex> Ethereumex.WebsocketClient.unsubscribe([
+      ...>   "0x9cef478923ff08bf67fde6c64013158d",
+      ...>   "0x4a8a4c0517381924f9838102c5a4dcb7"
+      ...> ])
+      {:ok, true}
+
+  ## Features
+
+  * All standard JSON-RPC methods from `Ethereumex.Client.BaseClient`
+  * Real-time event subscriptions:
+    - New block headers (`:newHeads`)
+    - Log events (`:logs`)
+    - Pending transactions (`:newPendingTransactions`)
+  * Automatic WebSocket connection management
+  * Request-response matching
+  * Automatic reconnection on failures
+
+  The client maintains a persistent WebSocket connection through `WebsocketServer`,
+  which handles connection management, request-response matching, subscription
+  management, and automatic reconnection on failures.
   """
 
   use Ethereumex.Client.BaseClient
