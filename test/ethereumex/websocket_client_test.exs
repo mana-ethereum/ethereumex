@@ -608,7 +608,54 @@ defmodule Ethereumex.WebsocketClientTest do
     end
   end
 
+  describe "WebsocketClient.subscribe/2" do
+    test "subscribes to newHeads events" do
+      subscription_id = "0x9cef478923ff08bf67fde6c64013158d"
+      expect_ws_subscribe(subscription_id)
+      assert {:ok, ^subscription_id} = WebsocketClient.subscribe(:newHeads)
+    end
+
+    test "subscribes to logs with filter params" do
+      subscription_id = "0x4a8a4c0517381924f9838102c5a4dcb7"
+      filter_params = %{address: "0x8320fe7702b96808f7bbc0d4a888ed1468216cfd"}
+      expect_ws_subscribe(subscription_id)
+      assert {:ok, ^subscription_id} = WebsocketClient.subscribe(:logs, filter_params)
+    end
+
+    test "subscribes to newPendingTransactions" do
+      subscription_id = "0x1234567890abcdef1234567890abcdef"
+      expect_ws_subscribe(subscription_id)
+      assert {:ok, ^subscription_id} = WebsocketClient.subscribe(:newPendingTransactions)
+    end
+  end
+
+  describe "WebsocketClient.unsubscribe/1" do
+    test "unsubscribes from a single subscription" do
+      subscription_id = "0x9cef478923ff08bf67fde6c64013158d"
+      expect_ws_unsubscribe(true)
+      assert {:ok, true} = WebsocketClient.unsubscribe(subscription_id)
+    end
+
+    test "unsubscribes from multiple subscriptions" do
+      subscription_ids = [
+        "0x9cef478923ff08bf67fde6c64013158d",
+        "0x4a8a4c0517381924f9838102c5a4dcb7"
+      ]
+
+      expect_ws_unsubscribe(true)
+      assert {:ok, true} = WebsocketClient.unsubscribe(subscription_ids)
+    end
+  end
+
   defp expect_ws_post(response) do
     expect(WebsocketServer, :post, fn _ -> {:ok, response} end)
+  end
+
+  defp expect_ws_subscribe(response) do
+    expect(WebsocketServer, :subscribe, fn _ -> {:ok, response} end)
+  end
+
+  defp expect_ws_unsubscribe(response) do
+    expect(WebsocketServer, :unsubscribe, fn _ -> {:ok, response} end)
   end
 end
