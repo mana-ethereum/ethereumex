@@ -2,7 +2,7 @@ defmodule Ethereumex.Mixfile do
   use Mix.Project
 
   @source_url "https://github.com/exthereum/ethereumex"
-  @version "0.11.0"
+  @version "0.11.1"
 
   def project do
     [
@@ -36,7 +36,7 @@ defmodule Ethereumex.Mixfile do
   defp package do
     [
       description: "Elixir JSON-RPC client for the Ethereum blockchain",
-      maintainers: ["Ayrat Badykov", "Izel Nakri", "Geoff Hayes"],
+      maintainers: ["Ayrat Badykov"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/exthereum/ethereumex"}
     ]
