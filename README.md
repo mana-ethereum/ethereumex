@@ -19,17 +19,7 @@ Add `:ethereumex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:ethereumex, "~> 0.11"}
-  ]
-end
-```
-
-Ensure `:ethereumex` is started before your application:
-
-```elixir
-def application do
-  [
-    applications: [:ethereumex]
+    {:ethereumex, "~> 0.11.1"}
   ]
 end
 ```

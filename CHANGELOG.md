@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.11.1 - 2025-02-27
+* Add WebSocket subscription support (https://github.com/mana-ethereum/ethereumex/pull/167)
+
 ## 0.11.0 - 2025-02-19
 * WebSocket Client Implementation (https://github.com/mana-ethereum/ethereumex/pull/165)
 
