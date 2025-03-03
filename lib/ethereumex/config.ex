@@ -99,6 +99,11 @@ defmodule Ethereumex.Config do
     ]
   end
 
+  @spec json_module() :: module()
+  def json_module do
+    Application.get_env(:ethereumex, :json_module, Jason)
+  end
+
   @spec ipc_worker_size() :: integer()
   defp ipc_worker_size() do
     Application.get_env(:ethereumex, :ipc_worker_size, 5)
