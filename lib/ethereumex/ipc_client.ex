@@ -2,8 +2,9 @@ defmodule Ethereumex.IpcClient do
   @moduledoc false
 
   use Ethereumex.Client.BaseClient
-  alias Ethereumex.IpcServer
+
   alias Ethereumex.Config
+  alias Ethereumex.IpcServer
 
   @timeout 60_000
   @spec post_request(binary(), []) :: {:ok | :error, any()}
