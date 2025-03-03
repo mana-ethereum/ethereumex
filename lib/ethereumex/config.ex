@@ -100,7 +100,7 @@ defmodule Ethereumex.Config do
   end
 
   @spec json_module() :: module()
-  def json_module do
+  def json_module() do
     Application.get_env(:ethereumex, :json_module, Jason)
   end
 
