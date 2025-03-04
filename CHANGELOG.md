@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.12.0 - 2025-03-04
+* Make json library configurable (https://github.com/mana-ethereum/ethereumex/pull/169)
+
 ## 0.11.1 - 2025-02-27
 * Add WebSocket subscription support (https://github.com/mana-ethereum/ethereumex/pull/167)
 

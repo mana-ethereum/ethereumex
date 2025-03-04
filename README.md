@@ -19,7 +19,9 @@ Add `:ethereumex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:ethereumex, "~> 0.11.1"}
+    {:ethereumex, "~> 0.12.0"},
+    # json library is configurable
+    {:jason, "~> 1.4"}
   ]
 end
 ```
@@ -153,6 +155,15 @@ Emitted event: `{:event, [:ethereumex, :method_name_as_atom], %{counter: 1}, %{}
 
 Each event caries a single ticker that you can pass into your counters (like `Statix.increment/2`).
 Be sure to add :telemetry as project dependency.
+
+
+### Json library
+
+The default json library is set to `jason` but that can be overridden with a different module. The module should implement functions `encode/1`, `decode/2`, `encode!/`, `decode!/1`
+
+```elixir
+config :ethereumex, json_module: MyCustomJson
+```
 
 ## Test
 
