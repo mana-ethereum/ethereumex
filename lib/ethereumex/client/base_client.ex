@@ -7,6 +7,7 @@ defmodule Ethereumex.Client.BaseClient do
   """
 
   alias Ethereumex.Client.Behaviour
+  alias Ethereumex.Config
   alias Ethereumex.Counter
 
   defmacro __using__(_) do
@@ -481,7 +482,7 @@ defmodule Ethereumex.Client.BaseClient do
 
       @spec encode_payload(map()) :: binary()
       defp encode_payload(payload) do
-        payload |> Jason.encode!()
+        Config.json_module().encode!(payload)
       end
 
       @spec format_batch([map()]) :: [{:ok, map() | nil | binary()} | {:error, any}]

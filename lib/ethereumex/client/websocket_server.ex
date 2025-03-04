@@ -3,7 +3,7 @@ defmodule Ethereumex.WebsocketServer do
   WebSocket client implementation for Ethereum JSON-RPC API.
 
   This module manages a persistent WebSocket connection to an Ethereum node and handles
-  the complete request-response cycle for JSON-RPC calls, including subscriptions. It maintains 
+  the complete request-response cycle for JSON-RPC calls, including subscriptions. It maintains
   state of ongoing requests, subscriptions, and matches responses to their original callers.
 
   ## Features
@@ -248,7 +248,7 @@ defmodule Ethereumex.WebsocketServer do
   def handle_cast({:subscription, request, from}, %State{} = state) do
     subscription_requests = Map.put(state.subscription_requests, request.id, from)
     new_state = %State{state | subscription_requests: subscription_requests}
-    {:reply, {:text, Jason.encode!(request)}, new_state}
+    {:reply, {:text, Config.json_module().encode!(request)}, new_state}
   end
 
   def handle_cast({:unsubscribe, request, from}, %State{} = state) do
@@ -256,12 +256,12 @@ defmodule Ethereumex.WebsocketServer do
       Map.put(state.unsubscription_requests, request.id, {from, request.params})
 
     new_state = %State{state | unsubscription_requests: unsubscription_requests}
-    {:reply, {:text, Jason.encode!(request)}, new_state}
+    {:reply, {:text, Config.json_module().encode!(request)}, new_state}
   end
 
   @impl WebSockex
   def handle_frame({:text, body}, %State{} = state) do
-    case Jason.decode(body) do
+    case Config.json_module().decode(body) do
       {:ok, response} -> handle_response(response, state)
       _ -> {:ok, state}
     end
@@ -287,7 +287,7 @@ defmodule Ethereumex.WebsocketServer do
 
   @spec decode_request(String.t()) :: {:ok, map()} | {:error, term()}
   defp decode_request(encoded_request) do
-    case Jason.decode(encoded_request) do
+    case Config.json_module().decode(encoded_request) do
       {:ok, %{"id" => _id} = decoded} -> {:ok, decoded}
       {:ok, decoded} when is_list(decoded) -> {:ok, decoded}
       {:ok, _} -> {:error, :invalid_request_format}

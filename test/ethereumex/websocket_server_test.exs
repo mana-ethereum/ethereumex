@@ -6,6 +6,7 @@ defmodule Ethereumex.WebsocketServerTest do
 
   alias Ethereumex.WebsocketServer
   alias Ethereumex.WebsocketServer.State
+  alias Ethereumex.Config
 
   @valid_request ~s({"jsonrpc": "2.0", "method": "eth_blockNumber", "params": [], "id": "1"})
   @valid_response ~s({"jsonrpc": "2.0", "id": "1", "result": "0x1234"})
@@ -361,7 +362,7 @@ defmodule Ethereumex.WebsocketServerTest do
       }
 
       assert {:ok, ^state} =
-               WebsocketServer.handle_frame({:text, Jason.encode!(notification)}, state)
+               WebsocketServer.handle_frame({:text, json_encode!(notification)}, state)
 
       assert_received ^notification
     end
@@ -386,7 +387,7 @@ defmodule Ethereumex.WebsocketServerTest do
       }
 
       assert {:ok, ^state} =
-               WebsocketServer.handle_frame({:text, Jason.encode!(notification)}, state)
+               WebsocketServer.handle_frame({:text, json_encode!(notification)}, state)
 
       assert_received ^notification
     end
@@ -407,9 +408,13 @@ defmodule Ethereumex.WebsocketServerTest do
       }
 
       assert {:ok, ^state} =
-               WebsocketServer.handle_frame({:text, Jason.encode!(notification)}, state)
+               WebsocketServer.handle_frame({:text, json_encode!(notification)}, state)
 
       refute_received ^notification
     end
+  end
+
+  defp json_encode!(map) do
+    Config.json_module().encode!(map)
   end
 end

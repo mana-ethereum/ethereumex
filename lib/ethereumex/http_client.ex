@@ -39,7 +39,7 @@ defmodule Ethereumex.HttpClient do
 
   @spec decode_body(binary(), non_neg_integer(), boolean()) :: {:ok, any()} | http_client_error()
   defp decode_body(body, code, format_batch) do
-    case Jason.decode(body) do
+    case Config.json_module().decode(body) do
       {:ok, decoded_body} ->
         case {code, decoded_body} do
           {200, %{"error" => error}} ->
@@ -54,9 +54,6 @@ defmodule Ethereumex.HttpClient do
           _ ->
             {:error, decoded_body}
         end
-
-      {:error, %Jason.DecodeError{data: ""}} ->
-        {:error, :empty_response}
 
       {:error, error} ->
         {:error, {:invalid_json, error}}
