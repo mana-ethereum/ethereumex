@@ -86,7 +86,7 @@ defmodule Ethereumex.Config do
 
   @spec enable_request_error_logs() :: boolean()
   def enable_request_error_logs() do
-    Application.get_env(:ethereumex, :enabled_request_error_logs, false)
+    Application.get_env(:ethereumex, :enable_request_error_logs, false)
   end
 
   @spec format_batch() :: boolean()
