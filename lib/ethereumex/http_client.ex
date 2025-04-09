@@ -5,6 +5,8 @@ defmodule Ethereumex.HttpClient do
 
   alias Ethereumex.Config
 
+  require Logger
+
   @type empty_response :: :empty_response
   @type invalid_json :: {:invalid_json, any()}
   @type http_client_error :: {:error, empty_response() | invalid_json() | any()}
@@ -24,9 +26,23 @@ defmodule Ethereumex.HttpClient do
 
     case Finch.request(request, Ethereumex.Finch, Config.http_options()) do
       {:ok, %Finch.Response{body: body, status: code}} ->
-        decode_body(body, code, format_batch)
+        case decode_body(body, code, format_batch) do
+          {:ok, _response} = result ->
+            result
+
+          error ->
+            maybe_log_error(
+              "[#{__MODULE__}] Decode failed, body - #{inspect(body)}, payload - #{inspect(payload)}, error - #{inspect(error)}"
+            )
+
+            error
+        end
 
       {:error, error} ->
+        maybe_log_error(
+          "[#{__MODULE__}] Request failed, payload - #{inspect(payload)}, error - #{inspect(error)}"
+        )
+
         {:error, error}
     end
   end
@@ -63,4 +79,12 @@ defmodule Ethereumex.HttpClient do
   defp maybe_format_batch(responses, true), do: format_batch(responses)
 
   defp maybe_format_batch(responses, _), do: responses
+
+  defp maybe_log_error(message) do
+    if Config.enable_request_error_logs() do
+      Logger.error(message)
+    else
+      :ok
+    end
+  end
 end
