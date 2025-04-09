@@ -19,7 +19,7 @@ Add `:ethereumex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:ethereumex, "~> 0.12.0"},
+    {:ethereumex, "~> 0.12.1"},
     # json library is configurable
     {:jason, "~> 1.4"}
   ]
@@ -48,6 +48,7 @@ config :ethereumex,
 
 `:pool_timeout` - This timeout is applied when we check out a connection from the pool. Default value is `5_000`.
 `:receive_timeout` - The maximum time to wait for a response before returning an error. Default value is `15_000`
+`:enable_request_error_logs` - Optional request error logs. Default value is false
 
 ### IPC
 

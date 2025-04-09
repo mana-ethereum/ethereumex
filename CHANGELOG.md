@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.12.1 - 2025-04-09
+* Add optional http request logs (https://github.com/mana-ethereum/ethereumex/pull/176)
+
 ## 0.12.0 - 2025-03-04
 * Make json library configurable (https://github.com/mana-ethereum/ethereumex/pull/169)
 
