@@ -235,19 +235,19 @@ defmodule Ethereumex.WebsocketServer do
   @impl WebSockex
   def handle_connect(_conn, %State{} = state) do
     Logger.info("Connected to WebSocket server at #{state.url}")
-    {:ok, %State{state | reconnect_attempts: 0}}
+    {:ok, %{state | reconnect_attempts: 0}}
   end
 
   @impl WebSockex
   def handle_cast({:request, id, request, from}, %State{} = state) do
     requests = Map.put(state.requests, id, from)
-    new_state = %State{state | requests: requests}
+    new_state = %{state | requests: requests}
     {:reply, {:text, request}, new_state}
   end
 
   def handle_cast({:subscription, request, from}, %State{} = state) do
     subscription_requests = Map.put(state.subscription_requests, request.id, from)
-    new_state = %State{state | subscription_requests: subscription_requests}
+    new_state = %{state | subscription_requests: subscription_requests}
     {:reply, {:text, Config.json_module().encode!(request)}, new_state}
   end
 
@@ -255,7 +255,7 @@ defmodule Ethereumex.WebsocketServer do
     unsubscription_requests =
       Map.put(state.unsubscription_requests, request.id, {from, request.params})
 
-    new_state = %State{state | unsubscription_requests: unsubscription_requests}
+    new_state = %{state | unsubscription_requests: unsubscription_requests}
     {:reply, {:text, Config.json_module().encode!(request)}, new_state}
   end
 
@@ -344,27 +344,27 @@ defmodule Ethereumex.WebsocketServer do
     {:ok, state}
   end
 
-  defp handle_request_response(state, id, result) do
+  defp handle_request_response(%State{} = state, id, result) do
     send(Map.get(state.requests, id), {:response, id, result})
-    %State{state | requests: Map.delete(state.requests, id)}
+    %{state | requests: Map.delete(state.requests, id)}
   end
 
-  defp handle_subscription_response(state, id, result) do
+  defp handle_subscription_response(%State{} = state, id, result) do
     pid = Map.get(state.subscription_requests, id)
     send(pid, {:response, id, result})
 
     subscription_requests = Map.delete(state.subscription_requests, id)
     subscriptions = Map.put(state.subscriptions, result, pid)
-    %State{state | subscription_requests: subscription_requests, subscriptions: subscriptions}
+    %{state | subscription_requests: subscription_requests, subscriptions: subscriptions}
   end
 
-  defp handle_unsubscription_response(state, id, result) do
+  defp handle_unsubscription_response(%State{} = state, id, result) do
     {pid, subscription_ids} = Map.get(state.unsubscription_requests, id)
     send(pid, {:response, id, result})
 
     subscription_requests = Map.delete(state.subscription_requests, id)
     subscriptions = Map.drop(state.subscriptions, subscription_ids)
-    %State{state | subscription_requests: subscription_requests, subscriptions: subscriptions}
+    %{state | subscription_requests: subscription_requests, subscriptions: subscriptions}
   end
 
   @spec get_request_id(list(map()) | map()) :: request_id()
@@ -385,10 +385,10 @@ defmodule Ethereumex.WebsocketServer do
 
   defp should_retry?(attempts), do: attempts <= @max_reconnect_attempts
 
-  defp handle_retry(connection_status, state, attempts) do
+  defp handle_retry(connection_status, %State{} = state, attempts) do
     log_retry_attempt(connection_status.reason, attempts)
     apply_backoff_delay(attempts)
-    {:reconnect, %State{state | reconnect_attempts: attempts}}
+    {:reconnect, %{state | reconnect_attempts: attempts}}
   end
 
   defp handle_max_attempts_reached(connection_status, state) do
