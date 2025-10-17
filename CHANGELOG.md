@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.12.2 - 2025-10-17
+* Fix compiler warnings for elixir 1.19 (https://github.com/mana-ethereum/ethereumex/pull/193)
+
 ## 0.12.1 - 2025-04-09
 * Add optional http request logs (https://github.com/mana-ethereum/ethereumex/pull/176)
 
