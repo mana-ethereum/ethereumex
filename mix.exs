@@ -52,7 +52,7 @@ defmodule Ethereumex.Mixfile do
       {:mimic, "~> 1.10", only: :test},
       {:poolboy, "~> 1.5"},
       {:telemetry, "~> 0.4 or ~> 1.0"},
-      {:websockex, "~> 0.4.3"},
+      {:websockex, "~> 0.5.0"},
       {:with_env, "~> 0.1", only: :test}
     ]
   end
