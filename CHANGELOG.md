@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.12.3 - 2026-03-04
+* Bump websockex from 0.4.3 to 0.5.1 (https://github.com/mana-ethereum/ethereumex/pull/202)
+
 ## 0.12.2 - 2025-10-17
 * Fix compiler warnings for elixir 1.19 (https://github.com/mana-ethereum/ethereumex/pull/193)
 
