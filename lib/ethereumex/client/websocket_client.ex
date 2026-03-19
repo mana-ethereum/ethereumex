@@ -87,6 +87,7 @@ defmodule Ethereumex.WebsocketClient do
         nil -> Config.format_batch()
         value -> value
       end
+
     case WebsocketServer.post(payload) do
       {:ok, %{"result" => result}} -> {:ok, result}
       {:ok, %{"error" => result}} -> {:error, result}
