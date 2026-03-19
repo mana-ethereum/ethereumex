@@ -503,6 +503,10 @@ defmodule Ethereumex.Client.BaseClient do
         end)
       end
 
+      defp maybe_format_batch(responses, true), do: format_batch(responses)
+
+      defp maybe_format_batch(responses, _), do: responses
+
       defp post_request(payload, opts) do
         {:error, :not_implemented}
       end

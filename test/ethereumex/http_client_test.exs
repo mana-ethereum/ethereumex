@@ -250,6 +250,21 @@ defmodule Ethereumex.HttpClientTest do
   end
 
   @tag :eth
+  describe "HttpClient.eth_call/3" do
+    test "makes off-chain call" do
+      result = HttpClient.eth_call(%{data: "0x4360005260206000f3"})
+
+      assert {:ok, <<_::binary>>} = result
+    end
+
+    test "handles error responses" do
+      result = HttpClient.eth_call(%{data: "0xdeadbeaf"})
+
+      assert {:error, %{"code" => _, "message" => _}} = result
+    end
+  end
+
+  @tag :eth
   describe "HttpClient.eth_estimate_gas/3" do
     test "estimates gas" do
       data =
@@ -646,17 +661,21 @@ defmodule Ethereumex.HttpClientTest do
       requests = [
         {:web3_client_version, []},
         {:net_version, []},
-        {:web3_sha3, ["0x68656c6c6f20776f726c64"]}
+        {:web3_sha3, ["0x68656c6c6f20776f726c64"]},
+        {:eth_call, [%{data: "0x4360005260206000f3"}, "latest"]},
+        {:eth_call, [%{data: "0xdeadbeaf"}, "latest"]}
       ]
 
       result = HttpClient.batch_request(requests)
 
-      {
+      assert {
         :ok,
         [
           {:ok, <<_::binary>>},
           {:ok, <<_::binary>>},
-          {:ok, "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad"}
+          {:ok, "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad"},
+          {:ok, <<_::binary>>},
+          {:error, %{"code" => _, "message" => _}}
         ]
       } = result
     end

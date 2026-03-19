@@ -85,7 +85,7 @@ defmodule Ethereumex.WebsocketServerTest do
 
       assert {:ok, new_state} = WebsocketServer.handle_frame({:text, @valid_response}, state)
       assert new_state.requests == %{}
-      assert_received {:response, "1", "0x1234"}
+      assert_received {:response, "1", %{"result" => "0x1234"}}
     end
 
     test "ignores response with unknown request id" do
