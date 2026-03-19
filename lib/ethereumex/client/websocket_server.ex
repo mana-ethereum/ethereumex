@@ -235,7 +235,14 @@ defmodule Ethereumex.WebsocketServer do
   @impl WebSockex
   def handle_connect(_conn, %State{} = state) do
     Logger.info("Connected to WebSocket server at #{state.url}")
-    {:ok, %{state | reconnect_attempts: 0}}
+
+    if state.reconnect_attempts > 0 do
+      Map.values(state.subscriptions)
+      |> Enum.uniq()
+      |> Enum.each(&send(&1, :reconnected))
+    end
+
+    {:ok, %{state | reconnect_attempts: 0, subscriptions: %{}}}
   end
 
   @impl WebSockex
