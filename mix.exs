@@ -2,7 +2,7 @@ defmodule Ethereumex.Mixfile do
   use Mix.Project
 
   @source_url "https://github.com/exthereum/ethereumex"
-  @version "0.12.3"
+  @version "0.14.0"
 
   def project do
     [
