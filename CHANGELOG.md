@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.14.0 - 2026-03-26
+* Notify websocket subscribers of reconnection (https://github.com/mana-ethereum/ethereumex/pull/216)
+* Fix request id race condition when using batches (https://github.com/mana-ethereum/ethereumex/pull/217)
+* Add error handling and batch support to WebsocketClient (https://github.com/mana-ethereum/ethereumex/pull/215)
+
 ## 0.12.3 - 2026-03-04
 * Bump websockex from 0.4.3 to 0.5.1 (https://github.com/mana-ethereum/ethereumex/pull/202)
 

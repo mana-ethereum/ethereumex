@@ -19,7 +19,7 @@ Add `:ethereumex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:ethereumex, "~> 0.12.3"},
+    {:ethereumex, "~> 0.14.0"},
     # json library is configurable
     {:jason, "~> 1.4"}
   ]
