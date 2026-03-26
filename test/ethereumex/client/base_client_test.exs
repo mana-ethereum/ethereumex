@@ -333,6 +333,26 @@ defmodule Ethereumex.Client.BaseClientTest do
 
       assert Ethereumex.Counter.get(:rpc_counter) == initial_count + length(requests)
     end
+
+    test "does not reuse request ids" do
+      requests = [
+        {:web3_client_version, []},
+        {:net_version, []},
+        {:web3_sha3, ["0x68656c6c6f20776f726c64"]}
+      ]
+
+      tasks =
+        Enum.map(1..1000, fn _ ->
+          Task.async(fn -> ClientMock.batch_request(requests) end)
+        end)
+
+      ids =
+        Enum.map(tasks, &Task.await/1)
+        |> List.flatten()
+        |> Enum.map(&Map.get(&1, "id"))
+
+      assert length(ids) == length(Enum.uniq(ids))
+    end
   end
 
   describe ".format_batch/1" do
