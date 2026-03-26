@@ -55,7 +55,7 @@ defmodule Ethereumex.HttpClientTest do
     test "returns true" do
       result = HttpClient.eth_protocol_version()
 
-      {:ok, <<_::binary>>} = result
+      {:ok, 1} = result
     end
   end
 
@@ -86,7 +86,7 @@ defmodule Ethereumex.HttpClientTest do
     end
   end
 
-  @tag :eth
+  @tag :skip
   describe "HttpClient.eth_mining/1" do
     test "checks mining status" do
       result = HttpClient.eth_mining()
@@ -213,12 +213,11 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_get_uncle_count_by_block_hash/2" do
     test "the number of uncles in a block from a block matching the given block hash" do
-      result =
-        HttpClient.eth_get_uncle_count_by_block_hash(
-          "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238"
-        )
+      {:ok, %{"hash" => block_hash}} = HttpClient.eth_get_block_by_number("latest", false)
 
-      {:ok, nil} = result
+      result = HttpClient.eth_get_uncle_count_by_block_hash(block_hash)
+
+      {:ok, "0x0"} = result
     end
   end
 
@@ -246,6 +245,21 @@ defmodule Ethereumex.HttpClientTest do
       result = HttpClient.eth_sign("0x71cf0b576a95c347078ec2339303d13024a26910", "0xdeadbeaf")
 
       {:ok, <<_::binary>>} = result
+    end
+  end
+
+  @tag :eth
+  describe "HttpClient.eth_call/3" do
+    test "makes off-chain call" do
+      result = HttpClient.eth_call(%{data: "0x4360005260206000f3"})
+
+      assert {:ok, <<_::binary>>} = result
+    end
+
+    test "handles error responses" do
+      result = HttpClient.eth_call(%{data: "0xdeadbeaf"})
+
+      assert {:error, %{"code" => _, "message" => _}} = result
     end
   end
 
@@ -343,11 +357,9 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_get_uncle_by_block_hash_and_index/3" do
     test "returns information about a uncle of a block by hash and uncle index position" do
-      result =
-        HttpClient.eth_get_uncle_by_block_hash_and_index(
-          "0xc6ef2fc5426d6ad6fd9e2a26abeab0aa2411b7ab17f30a99d3cb96aed1d1055b",
-          "0x0"
-        )
+      {:ok, %{"hash" => block_hash}} = HttpClient.eth_get_block_by_number("latest", false)
+
+      result = HttpClient.eth_get_uncle_by_block_hash_and_index(block_hash, "0x0")
 
       {:ok, nil} = result
     end
@@ -356,9 +368,9 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_get_uncle_by_block_number_and_index/3" do
     test "returns information about a uncle of a block by number and uncle index position" do
-      result = HttpClient.eth_get_uncle_by_block_number_and_index("0x29c", "0x0")
+      result = HttpClient.eth_get_uncle_by_block_number_and_index("latest", "0x0")
 
-      {:ok, _} = result
+      {:ok, nil} = result
     end
   end
 
@@ -646,19 +658,23 @@ defmodule Ethereumex.HttpClientTest do
       requests = [
         {:web3_client_version, []},
         {:net_version, []},
-        {:web3_sha3, ["0x68656c6c6f20776f726c64"]}
+        {:web3_sha3, ["0x68656c6c6f20776f726c64"]},
+        {:eth_call, [%{data: "0x4360005260206000f3"}, "latest"]},
+        {:eth_call, [%{data: "0xdeadbeaf"}, "latest"]}
       ]
 
       result = HttpClient.batch_request(requests)
 
-      {
-        :ok,
-        [
-          {:ok, <<_::binary>>},
-          {:ok, <<_::binary>>},
-          {:ok, "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad"}
-        ]
-      } = result
+      assert {
+               :ok,
+               [
+                 {:ok, <<_::binary>>},
+                 {:ok, <<_::binary>>},
+                 {:ok, "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad"},
+                 {:ok, <<_::binary>>},
+                 {:error, %{"code" => _, "message" => _}}
+               ]
+             } = result
     end
   end
 end

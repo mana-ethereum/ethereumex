@@ -62,11 +62,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-mix-${{matrix.pair.elixir}}-${{matrix.pair.otp}}-
 
-      - name: Run Parity in background
-        run: |
-          wget https://releases.parity.io/ethereum/v1.10.7/x86_64-unknown-linux-gnu/parity
-          chmod 755 ./parity
-          ./parity --chain dev &
+      - name: Install Foundry (anvil)
+        uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Run anvil
+        run: anvil --ipcpath anvil.ipc
 
       - name: Run mix deps.get
         run: mix deps.get --only test

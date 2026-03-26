@@ -75,13 +75,25 @@ defmodule Ethereumex.WebsocketClient do
 
   use Ethereumex.Client.BaseClient
 
+  alias Ethereumex.Config
   alias Ethereumex.Counter
   alias Ethereumex.WebsocketServer
 
   @event_types [:newHeads, :logs, :newPendingTransactions]
 
-  def post_request(payload, _opts) do
-    WebsocketServer.post(payload)
+  def post_request(payload, opts) do
+    format_batch =
+      case Keyword.get(opts, :format_batch) do
+        nil -> Config.format_batch()
+        value -> value
+      end
+
+    case WebsocketServer.post(payload) do
+      {:ok, %{"result" => result}} -> {:ok, result}
+      {:ok, %{"error" => result}} -> {:error, result}
+      {:ok, [%{} | _] = responses} -> {:ok, maybe_format_batch(responses, format_batch)}
+      result -> result
+    end
   end
 
   @doc """

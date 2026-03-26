@@ -11,6 +11,8 @@ defmodule Ethereumex.WebsocketClientTest do
     _ = Application.put_env(:ethereumex, :client_type, :websocket)
     _ = Application.put_env(:ethereumex, :websocket_url, @default_url)
 
+    {:ok, _} = start_supervised(WebsocketServer)
+
     on_exit(fn ->
       _ = Application.put_env(:ethereumex, :client_type, :http)
     end)
@@ -252,6 +254,20 @@ defmodule Ethereumex.WebsocketClientTest do
                  "0x71cf0b576a95c347078ec2339303d13024a26910",
                  "0xdeadbeaf"
                )
+    end
+  end
+
+  describe "WebsocketClient.eth_call/3" do
+    test "makes off-chain call" do
+      result = WebsocketClient.eth_call(%{data: "0x4360005260206000f3"})
+
+      assert {:ok, <<_::binary>>} = result
+    end
+
+    test "handles error responses" do
+      result = WebsocketClient.eth_call(%{data: "0xdeadbeaf"})
+
+      assert {:error, %{"code" => _, "message" => _}} = result
     end
   end
 
@@ -605,6 +621,31 @@ defmodule Ethereumex.WebsocketClientTest do
     test "returns all messages matching a filter" do
       expect_ws_post([])
       assert {:ok, []} = WebsocketClient.shh_get_messages("0x7")
+    end
+  end
+
+  describe "WebsocketClient.batch_request/1" do
+    test "sends batch request" do
+      requests = [
+        {:web3_client_version, []},
+        {:net_version, []},
+        {:web3_sha3, ["0x68656c6c6f20776f726c64"]},
+        {:eth_call, [%{data: "0x4360005260206000f3"}, "latest"]},
+        {:eth_call, [%{data: "0xdeadbeaf"}, "latest"]}
+      ]
+
+      result = WebsocketClient.batch_request(requests)
+
+      assert {
+               :ok,
+               [
+                 {:ok, <<_::binary>>},
+                 {:ok, <<_::binary>>},
+                 {:ok, "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad"},
+                 {:ok, <<_::binary>>},
+                 {:error, %{"code" => _, "message" => _}}
+               ]
+             } = result
     end
   end
 

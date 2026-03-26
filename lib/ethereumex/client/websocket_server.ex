@@ -331,18 +331,17 @@ defmodule Ethereumex.WebsocketServer do
   # when a response is a regular JSON-RPC response
   defp handle_response(response, state) do
     id = get_request_id(response)
-    result = get_response_result(response)
 
     state =
       cond do
         Map.has_key?(state.requests, id) ->
-          handle_request_response(state, id, result)
+          handle_request_response(state, id, response)
 
         Map.has_key?(state.subscription_requests, id) ->
-          handle_subscription_response(state, id, result)
+          handle_subscription_response(state, id, response)
 
         Map.has_key?(state.unsubscription_requests, id) ->
-          handle_unsubscription_response(state, id, result)
+          handle_unsubscription_response(state, id, response)
 
         true ->
           state
@@ -351,12 +350,12 @@ defmodule Ethereumex.WebsocketServer do
     {:ok, state}
   end
 
-  defp handle_request_response(%State{} = state, id, result) do
-    send(Map.get(state.requests, id), {:response, id, result})
+  defp handle_request_response(%State{} = state, id, response) do
+    send(Map.get(state.requests, id), {:response, id, response})
     %{state | requests: Map.delete(state.requests, id)}
   end
 
-  defp handle_subscription_response(%State{} = state, id, result) do
+  defp handle_subscription_response(%State{} = state, id, %{"result" => result}) do
     pid = Map.get(state.subscription_requests, id)
     send(pid, {:response, id, result})
 
@@ -365,7 +364,7 @@ defmodule Ethereumex.WebsocketServer do
     %{state | subscription_requests: subscription_requests, subscriptions: subscriptions}
   end
 
-  defp handle_unsubscription_response(%State{} = state, id, result) do
+  defp handle_unsubscription_response(%State{} = state, id, %{"result" => result}) do
     {pid, subscription_ids} = Map.get(state.unsubscription_requests, id)
     send(pid, {:response, id, result})
 
@@ -380,15 +379,6 @@ defmodule Ethereumex.WebsocketServer do
   defp get_request_id(decoded_request) when is_list(decoded_request) do
     Enum.map_join(decoded_request, "_", & &1["id"])
   end
-
-  @spec get_response_result(list(map()) | map()) :: term() | nil
-  defp get_response_result(%{"result" => result}), do: result
-
-  defp get_response_result(result) when is_list(result) do
-    Enum.map(result, & &1["result"])
-  end
-
-  defp get_response_result(_), do: nil
 
   defp should_retry?(attempts), do: attempts <= @max_reconnect_attempts
 

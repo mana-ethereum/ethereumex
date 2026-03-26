@@ -66,7 +66,7 @@ defmodule Ethereumex.IpcClientTest do
     test "returns true" do
       result = IpcClient.eth_protocol_version()
 
-      {:ok, <<_::binary>>} = result
+      {:ok, 1} = result
     end
   end
 
@@ -97,7 +97,7 @@ defmodule Ethereumex.IpcClientTest do
     end
   end
 
-  @tag :eth
+  @tag :skip
   describe "IpcClient.eth_mining/1" do
     test "checks mining status" do
       result = IpcClient.eth_mining()
@@ -224,12 +224,11 @@ defmodule Ethereumex.IpcClientTest do
   @tag :eth
   describe "IpcClient.eth_get_uncle_count_by_block_hash/2" do
     test "the number of uncles in a block from a block matching the given block hash" do
-      result =
-        IpcClient.eth_get_uncle_count_by_block_hash(
-          "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238"
-        )
+      {:ok, %{"hash" => block_hash}} = IpcClient.eth_get_block_by_number("latest", false)
 
-      {:ok, nil} = result
+      result = IpcClient.eth_get_uncle_count_by_block_hash(block_hash)
+
+      {:ok, "0x0"} = result
     end
   end
 
@@ -354,11 +353,9 @@ defmodule Ethereumex.IpcClientTest do
   @tag :eth
   describe "IpcClient.eth_get_uncle_by_block_hash_and_index/3" do
     test "returns information about a uncle of a block by hash and uncle index position" do
-      result =
-        IpcClient.eth_get_uncle_by_block_hash_and_index(
-          "0xc6ef2fc5426d6ad6fd9e2a26abeab0aa2411b7ab17f30a99d3cb96aed1d1055b",
-          "0x0"
-        )
+      {:ok, %{"hash" => block_hash}} = IpcClient.eth_get_block_by_number("latest", false)
+
+      result = IpcClient.eth_get_uncle_by_block_hash_and_index(block_hash, "0x0")
 
       {:ok, nil} = result
     end
@@ -367,9 +364,9 @@ defmodule Ethereumex.IpcClientTest do
   @tag :eth
   describe "IpcClient.eth_get_uncle_by_block_number_and_index/3" do
     test "returns information about a uncle of a block by number and uncle index position" do
-      result = IpcClient.eth_get_uncle_by_block_number_and_index("0x29c", "0x0")
+      result = IpcClient.eth_get_uncle_by_block_number_and_index("latest", "0x0")
 
-      {:ok, _} = result
+      {:ok, nil} = result
     end
   end
 

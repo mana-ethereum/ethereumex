@@ -76,10 +76,6 @@ defmodule Ethereumex.HttpClient do
     end
   end
 
-  defp maybe_format_batch(responses, true), do: format_batch(responses)
-
-  defp maybe_format_batch(responses, _), do: responses
-
   defp maybe_log_error(message) do
     if Config.enable_request_error_logs() do
       Logger.error(message)
