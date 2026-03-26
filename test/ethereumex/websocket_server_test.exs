@@ -212,6 +212,22 @@ defmodule Ethereumex.WebsocketServerTest do
 
       assert_in_delta time / 1000, 1000, 100
     end
+
+    test "notifies subscribers once" do
+      state = %WebsocketServer.State{
+        url: "ws://localhost:8545",
+        reconnect_attempts: 3,
+        subscriptions: %{
+          "subscription_id_1" => self(),
+          "subscription_id_2" => self()
+        }
+      }
+
+      {:ok, new_state} = WebsocketServer.handle_connect(%{}, state)
+      assert new_state.subscriptions == %{}
+      assert_received :reconnected
+      refute_received :reconnected
+    end
   end
 
   describe "subscribe/1" do
