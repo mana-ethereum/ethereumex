@@ -24,7 +24,7 @@ defmodule Ethereumex.HttpClient do
 
     request = Finch.build(:post, url, headers, payload)
 
-    case Finch.request(request, Ethereumex.Finch, Config.http_options()) do
+    case Finch.request(request, Ethereumex.Finch, http_options(opts)) do
       {:ok, %Finch.Response{body: body, status: code}} ->
         case decode_body(body, code, format_batch) do
           {:ok, _response} = result ->
@@ -45,6 +45,12 @@ defmodule Ethereumex.HttpClient do
 
         {:error, error}
     end
+  end
+
+  # Per-request `:http_options` are merged over the configured ones, so a
+  # caller can override a single key (e.g. `:receive_timeout`) and keep the rest.
+  defp http_options(opts) do
+    Keyword.merge(Config.http_options(), Keyword.get(opts, :http_options, []))
   end
 
   defp headers(opts) do

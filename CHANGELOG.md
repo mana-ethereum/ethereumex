@@ -1,5 +1,8 @@
 # Changelog
 
+## Unreleased
+* Honor per-request `:http_options` in `HttpClient`, merged over the configured ones
+
 ## 0.14.0 - 2026-03-26
 * Notify websocket subscribers of reconnection (https://github.com/mana-ethereum/ethereumex/pull/216)
 * Fix request id race condition when using batches (https://github.com/mana-ethereum/ethereumex/pull/217)
