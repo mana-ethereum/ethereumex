@@ -387,8 +387,8 @@ defmodule Ethereumex.HttpClientTest do
   describe "HttpClient.eth_new_filter/2" do
     test "creates a filter object" do
       filter = %{
-        fromBlock: "0x1",
-        toBlock: "0x2",
+        fromBlock: "earliest",
+        toBlock: "latest",
         address: "0x8888f1f195afa192cfee860698584c030f4c9db1",
         topics: [
           "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b",
@@ -436,7 +436,10 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_get_filter_changes/2" do
     test "returns an array of logs which occurred since last poll" do
-      result = HttpClient.eth_get_filter_changes("0x16")
+      {:ok, filter_id} =
+        HttpClient.eth_new_filter(%{fromBlock: "earliest", toBlock: "latest"})
+
+      result = HttpClient.eth_get_filter_changes(filter_id)
 
       {:ok, []} = result
     end
@@ -445,7 +448,10 @@ defmodule Ethereumex.HttpClientTest do
   @tag :eth
   describe "HttpClient.eth_get_filter_logs/2" do
     test "returns an array of all logs matching filter with given id" do
-      result = HttpClient.eth_get_filter_logs("0x16")
+      {:ok, filter_id} =
+        HttpClient.eth_new_filter(%{fromBlock: "earliest", toBlock: "latest"})
+
+      result = HttpClient.eth_get_filter_logs(filter_id)
 
       {:ok, []} = result
     end
