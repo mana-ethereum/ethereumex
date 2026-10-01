@@ -48,6 +48,14 @@ config :ethereumex,
 
 `:pool_timeout` - This timeout is applied when we check out a connection from the pool. Default value is `5_000`.
 `:receive_timeout` - The maximum time to wait for a response before returning an error. Default value is `15_000`
+
+To override them for a single request, pass `:http_options` in `opts`. The given keys are merged
+over the configured ones, so keys you leave out keep their configured values:
+
+```elixir
+Ethereumex.HttpClient.eth_block_number(http_options: [receive_timeout: 2_000])
+Ethereumex.HttpClient.batch_request(requests, http_options: [receive_timeout: 30_000])
+```
 `:enable_request_error_logs` - Optional request error logs. Default value is false
 
 ### IPC
