@@ -2,13 +2,13 @@ defmodule Ethereumex.Mixfile do
   use Mix.Project
 
   @source_url "https://github.com/exthereum/ethereumex"
-  @version "0.14.0"
+  @version "0.15.0"
 
   def project do
     [
       app: :ethereumex,
       version: @version,
-      elixir: "~> 1.13",
+      elixir: "~> 1.16",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       package: package(),
@@ -49,7 +49,7 @@ defmodule Ethereumex.Mixfile do
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:mimic, "~> 1.10", only: :test},
+      {:mimic, "~> 2.0", only: :test},
       {:poolboy, "~> 1.5"},
       {:telemetry, "~> 0.4 or ~> 1.0"},
       {:websockex, "~> 0.5.1"},

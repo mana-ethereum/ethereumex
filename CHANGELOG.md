@@ -1,7 +1,11 @@
 # Changelog
 
-## Unreleased
+## 0.15.0 - 2026-10-01
 * Honor per-request `:http_options` in `HttpClient`, merged over the configured ones
+* Require Elixir ~> 1.16 (was ~> 1.13)
+* Update Finch from 0.19.0 to 0.24.0 (Mint from 1.7.1 to 1.11.0, hpax from 1.0.2 to 1.1.0). HTTP transport errors are now `%Finch.TransportError{}`
+* Update Jason from 1.4.4 to 1.4.5, telemetry from 1.3.0 to 1.4.2, and Mimic from 1.11.0 to 2.4.2
+* Update Credo from 1.7.12 to 1.7.19, dialyxir from 1.4.5 to 1.4.8, and ex_doc from 0.37.2 to 0.40.4
 
 ## 0.14.0 - 2026-03-26
 * Notify websocket subscribers of reconnection (https://github.com/mana-ethereum/ethereumex/pull/216)

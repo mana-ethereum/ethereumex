@@ -16,7 +16,7 @@ defmodule Ethereumex.HttpClientOptionsTest do
     test "configured options apply when none are given", %{url: url} do
       Application.put_env(:ethereumex, :http_options, receive_timeout: 50)
 
-      assert {:error, %Mint.TransportError{reason: :timeout}} =
+      assert {:error, %Finch.TransportError{reason: :timeout}} =
                HttpClient.eth_block_number(url: url)
     end
 
@@ -30,7 +30,7 @@ defmodule Ethereumex.HttpClientOptionsTest do
     test "can tighten the configured options", %{url: url} do
       Application.put_env(:ethereumex, :http_options, receive_timeout: 2_000)
 
-      assert {:error, %Mint.TransportError{reason: :timeout}} =
+      assert {:error, %Finch.TransportError{reason: :timeout}} =
                HttpClient.eth_block_number(url: url, http_options: [receive_timeout: 50])
     end
 
@@ -39,14 +39,14 @@ defmodule Ethereumex.HttpClientOptionsTest do
 
       # Overriding only :pool_timeout must not drop the configured
       # :receive_timeout back to Finch's default.
-      assert {:error, %Mint.TransportError{reason: :timeout}} =
+      assert {:error, %Finch.TransportError{reason: :timeout}} =
                HttpClient.eth_block_number(url: url, http_options: [pool_timeout: 5_000])
     end
 
     test "apply to batch requests", %{url: url} do
       Application.put_env(:ethereumex, :http_options, receive_timeout: 50)
 
-      assert {:ok, _responses} =
+      assert {:ok, [{:ok, "0x10"}]} =
                HttpClient.batch_request([{:eth_block_number, []}],
                  url: url,
                  http_options: [receive_timeout: 2_000]
