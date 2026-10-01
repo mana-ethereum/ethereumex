@@ -19,7 +19,7 @@ Add `:ethereumex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:ethereumex, "~> 0.14.0"},
+    {:ethereumex, "~> 0.15.0"},
     # json library is configurable
     {:jason, "~> 1.4"}
   ]
@@ -56,6 +56,7 @@ over the configured ones, so keys you leave out keep their configured values:
 Ethereumex.HttpClient.eth_block_number(http_options: [receive_timeout: 2_000])
 Ethereumex.HttpClient.batch_request(requests, http_options: [receive_timeout: 30_000])
 ```
+
 `:enable_request_error_logs` - Optional request error logs. Default value is false
 
 ### IPC
